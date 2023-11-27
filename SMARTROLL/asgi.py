@@ -16,7 +16,9 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SMARTROLL.settings')
 
 django_asgi_app = get_asgi_application()
 
+from Session.routing import session_urlpatterns
+
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
-    # "websocket": URLRouter((websocket_urlpatterns + videochat_urlpatterns)) 
+    "websocket": URLRouter((session_urlpatterns)) 
 })

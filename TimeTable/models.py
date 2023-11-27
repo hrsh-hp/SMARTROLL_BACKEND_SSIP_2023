@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 import time
+from Session.models import Session
 
 def generate_unique_hash():    
     random_hash = str(uuid.uuid4().int)[:6]    
@@ -43,10 +44,11 @@ class Classroom(models.Model):
 class Lecture(models.Model):
     subject = models.ForeignKey('Manage.Subject', on_delete=models.DO_NOTHING,blank=True,null=True)
     teacher = models.ForeignKey('StakeHolders.Teacher',on_delete=models.DO_NOTHING,blank=True,null=True)
+    teacher_proxy = models.ForeignKey('StakeHolders.Teacher',on_delete=models.DO_NOTHING,blank=True,null=True,related_name='proxy')
     classroom = models.ForeignKey(Classroom, on_delete=models.DO_NOTHING,blank=True,null=True)
     start_time = models.TimeField(blank=True,null=True)
     end_time = models.TimeField(blank=True,null=True)
-    session = models.CharField(max_length=255, null=True, blank=True)
+    session = models.ForeignKey(Session,on_delete=models.SET_NULL,null=True,blank=True)
     slug = models.SlugField(unique=True, null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -55,6 +57,8 @@ class Lecture(models.Model):
             super(Lecture, self).save(*args, **kwargs)
         else:
             super(Lecture, self).save(*args, **kwargs)
+    def __str__(self) -> str:
+        return f"{self.start_time} {self.end_time}"
 
 class Schedule(models.Model):
     day = models.CharField(max_length=10,null=True,blank=True)

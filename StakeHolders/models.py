@@ -47,3 +47,4 @@ class Student(models.Model):
     
     def __str__(self) -> str:
         return self.profile.email
+    

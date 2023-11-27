@@ -19,7 +19,7 @@ from django.urls import path,include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-from .views import check_server_avaibility,check_token_authenticity,student_registration,studet_registration_response
+from .views import check_server_avaibility,check_token_authenticity,student_registration
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -42,11 +42,12 @@ urlpatterns = [
     # path('__debug__/', include('debug_toolbar.urls')),
     path('admin/', admin.site.urls),
     path('student_registration/', student_registration,name='student_registration'),
-    path('student_registration_response/', studet_registration_response,name='student_registration'),
+    # path('student_registration_response/', studet_registration_response,name='student_registration_response'),
     path('check_server_avaibility/', check_server_avaibility,name='check_server_avaibility'),
     path('check_token_authenticity/', check_token_authenticity,name='check_token_authenticity'),
     path('auth/',include('StakeHolders.urls')),
     path('manage/',include('Manage.urls')),    
+    path('session/',include('Session.urls')),
     path('student/',include('Student.urls')),    
     path('api_endpoints/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+import django
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,7 +35,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CSRF_COOKIE_SECURE = False
 CSRF_USE_SESSIONS = False
-CSRF_TRUSTED_ORIGINS = ["https://submit.jotform.com","https://356f-49-36-66-75.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://submit.jotform.com","https://1a25-2405-201-2024-b862-23a4-a2ed-46a3-ad69.ngrok-free.app"]
 
 
 # Application definition
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'django_extensions',
     'debug_toolbar',
     'corsheaders',
     'drf_yasg',
@@ -57,7 +60,8 @@ INSTALLED_APPS = [
     'StakeHolders',
     'TimeTable',
     'Manage',
-    'Student'
+    'Student',
+    'Session'
 ]
 SSL_CERTIFICATE = SSL_CERTIFICATE_PATH
 SSL_KEY = SSL_KEY_PATH
@@ -122,6 +126,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'SMARTROLL.wsgi.application'
 ASGI_APPLICATION = "SMARTROLL.asgi.application"
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -132,6 +142,7 @@ ASGI_APPLICATION = "SMARTROLL.asgi.application"
 #     }
 # }
 
+import dj_database_url
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -142,6 +153,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+DATABASES['default'] = dj_database_url.parse('postgres://manavshahpostgres:31Hbhp1Buy1s0QLxLubr5PKVlfXIAUpH@dpg-cli3muvjc5ks73epmarg-a/smartroll')
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -180,6 +192,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 INTERNAL_IPS = [  
     '127.0.0.1',
     '127.0.0.10', 

@@ -178,10 +178,14 @@ def get_batches(request):
     ---
     '''
     try:        
-        if request.user.role == 'admin':
-            # If batch is not from current year deactivate it
-            batch_objects = Batch.objects.all()
-            admin_obj = Admin.objects.get(profile=request.user)
+        if request.user.role == 'admin' or request.user.role == 'teacher':
+            if request.user.role == 'teacher':
+                teacher_obj = Teacher.objects.get(profile=request.user)
+                admin_obj = teacher_obj.branch.admin_set.first()
+            else:
+                batch_objects = Batch.objects.all()
+                admin_obj = Admin.objects.get(profile=request.user)
+            # If batch is not from current year deactivate 
             branch_obj = admin_obj.branch
             batches = branch_obj.batches.all()            
             if batches.exists():                            
@@ -351,9 +355,13 @@ def get_semesters(request):
     ```
     '''
     try:
-        if request.user.role == 'admin':
-            body = request.GET
-            admin_obj = Admin.objects.get(profile=request.user)
+        if request.user.role == 'admin' or request.user.role == 'teacher':
+            if request.user.role == 'teacher':
+                teacher_obj = Teacher.objects.get(profile=request.user)
+                admin_obj = teacher_obj.branch.admin_set.first()                    
+            else:            
+                admin_obj = Admin.objects.get(profile=request.user)
+            body = request.GET            
             if body.get('batch_slug') and len(body['batch_slug']) > 0:
                 batch_obj = admin_obj.branch.batches.get(slug=body['batch_slug'])        
                 if batch_obj:
@@ -777,10 +785,42 @@ def get_teachers(request):
     ```
     '''
     try:
-        if request.user.role == 'admin':
-            admin_obj = Admin.objects.get(profile=request.user)
+        if request.user.role == 'admin' or request.user.role == 'teacher':
+            if request.user.role == 'teacher':
+                teacher_obj = Teacher.objects.get(profile=request.user)
+                admin_obj = teacher_obj.branch.admin_set.first()
+            else:
+                batch_objects = Batch.objects.all()
+                admin_obj = Admin.objects.get(profile=request.user)
             branch_obj = admin_obj.branch
             teachers = Teacher.objects.filter(branch = branch_obj)            
+            if teachers.exists():
+                teachers_serialized = TeacherSerializer(teachers,many=True)
+                data = {'teachers':teachers_serialized.data}
+                return JsonResponse(data,status=200)
+            else:
+                data = {"data":"Currently there are no active teachers"}
+                return JsonResponse(data,status=500)
+        else:
+            data = {"data":"You're not allowed to perform this action"}
+            return JsonResponse(data,status=401)
+    except Exception as e:
+        data = {"data":str(e)}
+        return JsonResponse(data,status=500)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_teachers_proxy(request):
+    try:
+        if request.user.role == 'admin' or request.user.role == 'teacher':
+            if request.user.role == 'teacher':
+                teacher_obj = Teacher.objects.get(profile=request.user)
+                admin_obj = teacher_obj.branch.admin_set.first()
+            else:
+                batch_objects = Batch.objects.all()
+                admin_obj = Admin.objects.get(profile=request.user)
+            branch_obj = admin_obj.branch
+            teachers = Teacher.objects.filter(branch = branch_obj)
             if teachers.exists():
                 teachers_serialized = TeacherSerializer(teachers,many=True)
                 data = {'teachers':teachers_serialized.data}
@@ -992,6 +1032,7 @@ def add_subjects_to_teacher(request):
     except Exception as e:
         data = {"data":str(e)}
         return JsonResponse(data,status=500)
+    
     
 
 @api_view(['GET'])

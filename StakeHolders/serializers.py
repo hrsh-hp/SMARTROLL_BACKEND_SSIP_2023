@@ -1,4 +1,4 @@
-from .models import Admin,Teacher
+from .models import Admin,Teacher,Student
 from rest_framework import serializers
 from Manage.models import Branch,Subject
 from Profile.models import Profile
@@ -37,3 +37,11 @@ class TeacherProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
         fields = ['id','profile']
+
+class StudentSerializers(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+    subjects = SubjectSerializer(many=True)
+    branch = BranchOfTheAdmin()
+    class Meta:
+        model = Student
+        fields = ['slug','enrollment','profile','subjects','branch']

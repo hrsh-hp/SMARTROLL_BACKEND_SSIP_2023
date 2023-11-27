@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from StakeHolders.models import Student,Teacher
+from datetime import datetime, time
 from TimeTable.serializers import ScheduleSerializer,LectureSerializer
 
 # Create your views here.
@@ -193,7 +194,87 @@ def get_todays_timetable_for_student(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_todays_timetable_for_teacher(request):
+    '''
+    ### Get Today's Timetable for Teacher
+
+    Retrieve today's timetable for a teacher.
+
+    - **URL**
+
+    `/teacher/get_todays_timetable`
+
+    - **Method**
+
+    `GET`
+
+    - **URL Parameters**
+
+    | Parameter | Type   | Description                          |
+    | --------- | ------ | ------------------------------------ |
+    | `day`     | String | The day for which to retrieve the timetable (e.g., "monday"). |
+
+    - **Permissions**
+
+    - User must be authenticated as a teacher.
+
+    - **Response**
+
+    - **Success Response:**
+
+        - **Status Code:** 200 OK
+
+        - **Example:**
+
+        ```json
+        {
+            "lectures": [
+                null,
+                null,
+                null,
+                {
+                    "slug": "157743_1700771931",
+                    "teacher": {
+                        "id": 49,
+                        "profile": {
+                            "name": "Mr. Pragnesh Patel",
+                            "email": "Mr.PragneshPatel@gmail.com",
+                            "ph_no": "7889654123"
+                        }
+                    },
+                    "subject": {
+                        "slug": "259573_1700771001",
+                        "subject_name": "Python for Data Science",
+                        "code": 3150713,
+                        "credit": 3,
+                        "semester_number": 5
+                    },
+                    "classroom": {
+                        "slug": "752835_1700305558",
+                        "class_name": "CE_106"
+                    },
+                    "start_time": "14:00:00",
+                    "end_time": "15:00:00"
+                },
+                // ... (other lecture objects)
+            ]
+        }
+        ```
+
+    - **Error Response:**
+
+        - **Status Code:** 500 Internal Server Error
+
+        - **Example:**
+
+        ```json
+        {
+            "data": "An error occurred while processing the request."
+        }
+        ```
+
+    '''
     try:
+        print(request.user.role)
         if request.user.role == 'teacher':
             data = request.GET
             if 'day' not in data:
@@ -201,22 +282,43 @@ def get_todays_timetable_for_teacher(request):
             teacher = Teacher.objects.get(profile=request.user)
             teachers_subjects = teacher.subjects.all()
             batch = teacher.branch.batches.filter(active=True).first()
-            semesters = batch.semesters.filter(status=True)
+            semesters = batch.semesters.filter(status=True)            
             all_lectures = []
             for i in semesters:
-                lecture_temp = i.time_table.get().schedules.filter(day=data['day']).first().lectures.all()
-                for j in lecture_temp:
-                    all_lectures.append(j)            
-            lectures = [
-                LectureSerializer(lecture).data if lecture.subject in teacher.subjects.all() else None
-                for lecture in all_lectures
-            ]
-            print(lectures)
-            data = {"lectures": lectures}  
+                lecture_temp = i.time_table.get().schedules.filter(day=data['day']).first().lectures.all().order_by('start_time').filter(teacher=teacher)
+                # print(lecture_temp.query)
+                for i in lecture_temp:
+                    all_lectures.append(LectureSerializer(i).data)
+            all_lectures = sorted(all_lectures, key=lambda x: x['start_time'])
+            # time_deltas = [time(hour=10,minute=30,second=0),time(hour=11,minute=30,second=0),time(hour=13,minute=0,second=0),time(hour=14,minute=0,second=0),time(hour=15,minute=15,second=0),time(hour=16,minute=15,second=0)]
+            # lectures = []      
+            # for k in all_lectures:            
+            #     for i in k: 
+            #         if i.subject in teachers_subjects and i.teacher == teacher:
+            #             lectures.append(LectureSerializer(i).data)
+                        
+            # lectures_to_send = []            
+
+            # for i in time_deltas:
+            #     found_lecture = False
+                
+            #     for j in lectures:
+            #         if i == j.start_time:
+            #             lectures_to_send.append(LectureSerializer(j).data)
+            #             found_lecture = True
+            #             break  # exit the inner loop since a lecture is found for the current time interval
+                
+            #     if not found_lecture:
+            #         lectures_to_send.append(None)
+                    
+
+                                        
+            data = {"lectures": all_lectures}  
             # Now get today's schedule from all the lectures            
             return JsonResponse(data,status=200)
         else:
             raise Exception("You're not allowed to view this")
-    except Exception as e:        
+    except Exception as e:  
+        print(e)      
         data = {"data":str(e)}
         return JsonResponse(data,status=500)

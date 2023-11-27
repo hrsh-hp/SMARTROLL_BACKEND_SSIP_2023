@@ -10,6 +10,8 @@ from django.db import transaction
 from StakeHolders.models import Admin,Teacher
 from StakeHolders.serializers import TeacherProfileSerializer
 from Manage.serializers import SubjectSerializer
+import pandas as pd
+import random
 from datetime import time
 
 # Create your views here.
@@ -17,358 +19,12 @@ from datetime import time
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_timetable(request):
-    '''
-    # Get Timetable
-
-    Retrieve the timetable for a specific semester.
-
-    - **URL:** `/api/get_timetable/`
-    - **Method:** `GET`
-    - **Permissions:** `IsAuthenticated`
-
-    ### Request Parameters
-
-    | Parameter      | Type   | Description                                      |
-    | -------------- | ------ | ------------------------------------------------ |
-    | `semester_slug` | String | (Required) Slug of the semester for the timetable |
-
-    ### Response
-
-    - **Status Code:** 200 OK
-
-    ```json
-    {
-        "timetable": {
-            "slug": "323955_1700482202",
-            "schedules": [
-                {
-                    "slug": "190565_1700482202",
-                    "day": "Monday",
-                    "lecutres": [
-                        {
-                            "slug": "230045_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "10:30 A.M.",
-                            "end_time": "11:30 A.M."
-                        },
-                        {
-                            "slug": "134159_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "11:30 A.M.",
-                            "end_time": "12:30 P.M."
-                        },
-                        {
-                            "slug": "679348_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "01:00 P.M.",
-                            "end_time": "02:00 P.M."
-                        },
-                        {
-                            "slug": "171654_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "02:00 P.M.",
-                            "end_time": "03:00 P.M."
-                        },
-                        {
-                            "slug": "181601_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "03:15 P.M.",
-                            "end_time": "04:15 P.M."
-                        },
-                        {
-                            "slug": "129123_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "04:15 P.M.",
-                            "end_time": "05:15 P.M."
-                        }
-                    ]
-                },
-                {
-                    "slug": "332120_1700482202",
-                    "day": "Tuesday",
-                    "lecutres": [
-                        {
-                            "slug": "474441_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "10:30 A.M.",
-                            "end_time": "11:30 A.M."
-                        },
-                        {
-                            "slug": "725625_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "11:30 A.M.",
-                            "end_time": "12:30 P.M."
-                        },
-                        {
-                            "slug": "308887_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "01:00 P.M.",
-                            "end_time": "02:00 P.M."
-                        },
-                        {
-                            "slug": "240919_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "02:00 P.M.",
-                            "end_time": "03:00 P.M."
-                        },
-                        {
-                            "slug": "186226_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "03:15 P.M.",
-                            "end_time": "04:15 P.M."
-                        },
-                        {
-                            "slug": "160952_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "04:15 P.M.",
-                            "end_time": "05:15 P.M."
-                        }
-                    ]
-                },
-                {
-                    "slug": "187096_1700482202",
-                    "day": "Wednesday",
-                    "lecutres": [
-                        {
-                            "slug": "690264_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "10:30 A.M.",
-                            "end_time": "11:30 A.M."
-                        },
-                        {
-                            "slug": "224291_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "11:30 A.M.",
-                            "end_time": "12:30 P.M."
-                        },
-                        {
-                            "slug": "229898_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "01:00 P.M.",
-                            "end_time": "02:00 P.M."
-                        },
-                        {
-                            "slug": "215100_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "02:00 P.M.",
-                            "end_time": "03:00 P.M."
-                        },
-                        {
-                            "slug": "309610_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "03:15 P.M.",
-                            "end_time": "04:15 P.M."
-                        },
-                        {
-                            "slug": "288937_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "04:15 P.M.",
-                            "end_time": "05:15 P.M."
-                        }
-                    ]
-                },
-                {
-                    "slug": "244532_1700482202",
-                    "day": "Thursday",
-                    "lecutres": [
-                        {
-                            "slug": "200718_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "10:30 A.M.",
-                            "end_time": "11:30 A.M."
-                        },
-                        {
-                            "slug": "335506_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "11:30 A.M.",
-                            "end_time": "12:30 P.M."
-                        },
-                        {
-                            "slug": "185962_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "01:00 P.M.",
-                            "end_time": "02:00 P.M."
-                        },
-                        {
-                            "slug": "199223_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "02:00 P.M.",
-                            "end_time": "03:00 P.M."
-                        },
-                        {
-                            "slug": "653790_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "03:15 P.M.",
-                            "end_time": "04:15 P.M."
-                        },
-                        {
-                            "slug": "231254_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "04:15 P.M.",
-                            "end_time": "05:15 P.M."
-                        }
-                    ]
-                },
-                {
-                    "slug": "163264_1700482202",
-                    "day": "Friday",
-                    "lecutres": [
-                        {
-                            "slug": "304335_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "10:30 A.M.",
-                            "end_time": "11:30 A.M."
-                        },
-                        {
-                            "slug": "126432_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "11:30 A.M.",
-                            "end_time": "12:30 P.M."
-                        },
-                        {
-                            "slug": "257254_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "01:00 P.M.",
-                            "end_time": "02:00 P.M."
-                        },
-                        {
-                            "slug": "211586_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "02:00 P.M.",
-                            "end_time": "03:00 P.M."
-                        },
-                        {
-                            "slug": "125316_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "03:15 P.M.",
-                            "end_time": "04:15 P.M."
-                        },
-                        {
-                            "slug": "124419_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "04:15 P.M.",
-                            "end_time": "05:15 P.M."
-                        }
-                    ]
-                },
-                {
-                    "slug": "764860_1700482202",
-                    "day": "Saturday",
-                    "lecutres": [
-                        {
-                            "slug": "141595_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "10:30 A.M.",
-                            "end_time": "11:30 A.M."
-                        },
-                        {
-                            "slug": "217835_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "11:30 A.M.",
-                            "end_time": "12:30 P.M."
-                        },
-                        {
-                            "slug": "224635_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "01:00 P.M.",
-                            "end_time": "02:00 P.M."
-                        },
-                        {
-                            "slug": "280809_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "02:00 P.M.",
-                            "end_time": "03:00 P.M."
-                        },
-                        {
-                            "slug": "522751_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "03:15 P.M.",
-                            "end_time": "04:15 P.M."
-                        },
-                        {
-                            "slug": "183651_1700482202",
-                            "subject": null,
-                            "classroom": null,
-                            "start_time": "04:15 P.M.",
-                            "end_time": "05:15 P.M."
-                        }
-                    ]
-                }
-            ]
-        }
-    }
-    ```
-
-    ### Errors
-
-    - **Status Code:** 400 Bad Request
-
-    ```json
-    {
-    "data": "Please provide a valid semester slug"
-    }
-    ```
-
-    - **Status Code:** 401 Unauthorized
-
-    ```json
-    {
-    "data": "You're not allowed to perform this action"
-    }
-    ```
-
-    - **Status Code:** 500 Internal Server Error
-
-    ```json
-    {
-    "data": "An error occurred while processing the request"
-    }
-    ```
-
-    ```
-    Note: Replace `/api/get_timetable/` with the actual URL endpoint.
-    '''
     try:
-        if request.user.role == 'admin':
+        if request.user.role == 'admin' or request.user.role == 'teacher':
             body = request.GET
             if 'semester_slug' not in body:
                 raise Exception('Please provide a valid semester slug')
-            semester_obj = Semester.objects.get(slug=body.get('semester_slug'))
+            semester_obj = Semester.objects.get(slug=body.get('semester_slug'))            
             if semester_obj:
                 # Make the time table
                 time_table = semester_obj.time_table.all().first()
@@ -401,7 +57,27 @@ def get_timetable(request):
     except Exception as e:
         print(e)
         data = {"data":str(e)}
-        return JsonResponse(data,status=500)    
+        return JsonResponse(data,status=500)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def handle_excel_upload(request):
+    if request.method == 'POST' and request.FILES['excel_data']:
+        try:
+            excel_file = request.FILES['excel_data']
+            df = pd.read_excel(excel_file)            
+
+            # Now you have the DataFrame 'df', and you can perform further processing.
+
+            response_data = {'message': 'Excel file uploaded and processed successfully.'}
+            return JsonResponse(response_data, status=200)
+        except Exception as e:
+            response_data = {'error': str(e)}
+            return JsonResponse(response_data, status=500)
+
+    else:
+        response_data = {'error': 'Invalid request method or no file provided.'}
+        return JsonResponse(response_data, status=400)
     
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -579,8 +255,12 @@ def get_objects_for_lecture(request):
     - 500 Internal Server Error: An error occurred on the server.
     '''
     try:
-        if request.user.role == 'admin':
-            admin_obj = Admin.objects.get(profile=request.user)
+        if request.user.role == 'admin' or request.user.role == 'teacher':
+            if request.user.role == 'teacher':
+                teacher_obj = Teacher.objects.get(profile=request.user)
+                admin_obj = teacher_obj.branch.admin_set.first()
+            else:                
+                admin_obj = Admin.objects.get(profile=request.user)
             branch_obj = admin_obj.branch
             body = request.GET
             if 'semester_slug' not in body:
@@ -664,7 +344,7 @@ def set_lecture_attributes(request):
     - 500 Internal Server Error: An error occurred on the server.
     '''
     try:
-        if request.user.role == 'admin':
+        if request.user.role == 'admin' or request.user.role == 'teacher':
             body = request.data
             if 'lecture_slug' not in body:
                 raise Exception('parameters Missing!')
@@ -677,10 +357,16 @@ def set_lecture_attributes(request):
 
             with transaction.atomic():
                 lecture_obj = Lecture.objects.get(slug=body['lecture_slug'])
-                teacher_obj = Teacher.objects.get(id=body['teacher_id'])
                 subject_obj = Subject.objects.get(slug = body['subject_slug'])
                 classroom_obj = Classroom.objects.get(slug=body['classroom_slug'])
-                lecture_obj.teacher = teacher_obj
+                if 'proxy_id' in body:
+                    proxy_obj = Teacher.objects.get(id=body['proxy_id'])
+                    teacher_obj = Teacher.objects.get(id=body['teacher_id'])
+                    lecture_obj.teacher = proxy_obj
+                    lecture_obj.teacher_proxy = teacher_obj
+                else:
+                    teacher_obj = Teacher.objects.get(id=body['teacher_id'])
+                    lecture_obj.teacher = teacher_obj
                 lecture_obj.subject = subject_obj
                 lecture_obj.classroom = classroom_obj
                 lecture_obj.save()
