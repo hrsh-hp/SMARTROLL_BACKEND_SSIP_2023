@@ -118,7 +118,7 @@ def get_object_counts(request):
             data = {"data":"You're not allowed to perform this action"}
             return JsonResponse(data,status=401)
     except Exception as e:
-        data = {"data":str(e)}
+        data = {"data":str(e)}        
         return JsonResponse(data,status=500)
 
 

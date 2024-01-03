@@ -1,5 +1,9 @@
 from django.urls import path,include
 from .views import get_batches,add_batches,get_semesters,add_semester,get_subjects,add_subjects,get_teachers,add_teacher,add_subjects_to_teacher,get_object_counts,get_subjects_of_current_batch
+from graphene_django.views import GraphQLView
+from .schema import schema
+from django.views.decorators.csrf import csrf_exempt
+
 urlpatterns = [
     path('get_batches',get_batches,name='get_batches'),
     path('add_batch',add_batches,name='add_batch'),
@@ -12,5 +16,6 @@ urlpatterns = [
     path('add_subjects_to_teacher',add_subjects_to_teacher,name='add_subjects_to_teacher'),
     path('get_object_counts',get_object_counts,name='get_object_counts'),
     path('get_subjects_of_current_batch',get_subjects_of_current_batch,name='get_subjects_of_current_batch'),
-    path('timetable/',include('TimeTable.urls'),name='manage/timetable')
+    path('timetable/',include('TimeTable.urls'),name='manage/timetable'),
+    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
 ]

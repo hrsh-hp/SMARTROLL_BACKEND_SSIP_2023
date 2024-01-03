@@ -3,8 +3,6 @@ from django.contrib.auth.models import User,AbstractUser
 from .managers import CustomUserManager
 from django.utils.translation import gettext_lazy as _
 
-
-
 # Create your models here.
 # In settings.py AUTH_USER_MODEL = 'yourapp.CustomUserModel'
 

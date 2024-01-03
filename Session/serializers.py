@@ -13,4 +13,3 @@ class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
         fields = ['session_id','total_students','attendance','present_student_count','absent_student_count','status','created_at']
-    

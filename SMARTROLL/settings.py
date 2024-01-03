@@ -36,7 +36,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CSRF_COOKIE_SECURE = False
 CSRF_USE_SESSIONS = False
-CSRF_TRUSTED_ORIGINS = ["https://submit.jotform.com","https://1a25-2405-201-2024-b862-23a4-a2ed-46a3-ad69.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://submit.jotform.com","https://dfdd-2405-201-2024-b862-ff1c-86fb-a10e-6aeb.ngrok-free.app","https://smartroll.ssip.in"]
 
 
 # Application definition
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    "graphene_django",
     'django_extensions',
     'debug_toolbar',
     'corsheaders',
@@ -136,25 +137,25 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-import dj_database_url
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'smartroll',
-        'USER': 'postgres',
-        'PASSWORD': 'Manav@1011',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-DATABASES['default'] = dj_database_url.parse(os.environ['POSTGRES_INTERNAL_URL'])
+
+# import dj_database_url
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'smartroll',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Manav@1011',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+# DATABASES['default'] = dj_database_url.parse(os.environ['POSTGRES_INTERNAL_URL'])
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
