@@ -28,8 +28,8 @@ class Teacher(models.Model):
     
 class Student(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    enrollment  = models.CharField(max_length=12,unique=True)    
-    device_id = models.CharField(max_length=12,unique=True)    
+    enrollment  = models.CharField(max_length=12,unique=True,null=True,blank=True)    
+    device_id = models.CharField(max_length=12,unique=True,null=True,blank=True)    
     slug = models.SlugField(unique=True, null=True, blank=True)
 
     def save(self, *args, **kwargs):
