@@ -19,10 +19,11 @@ from django.urls import path,include,re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-from .views import check_server_avaibility,check_token_authenticity,student_registration
+from .views import check_server_avaibility,check_token_authenticity,studet_registration_response
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 from django.views.static import serve
 
 schema_view = get_schema_view(
@@ -42,8 +43,8 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     # path('__debug__/', include('debug_toolbar.urls')),
     path('admin/', admin.site.urls),
-    path('student_registration/', student_registration,name='student_registration'),
-    # path('student_registration_response/', studet_registration_response,name='student_registration_response'),
+    path('student_registration/', TemplateView.as_view(template_name='studentregistration.html'),name='student_registration'),
+    path('registered/',studet_registration_response,name='studet_registration_response'),
     path('check_server_avaibility/', check_server_avaibility,name='check_server_avaibility'),
     path('check_token_authenticity/', check_token_authenticity,name='check_token_authenticity'),
     path('auth/',include('StakeHolders.urls')),

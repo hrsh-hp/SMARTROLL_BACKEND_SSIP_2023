@@ -28,13 +28,8 @@ class Teacher(models.Model):
     
 class Student(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    enrollment  = models.CharField(max_length=12,unique=True)
-    signature_link = models.TextField(null=True,blank=True)
-    subjects = models.ManyToManyField(Subject,blank=True)
-    branch = models.ForeignKey(Branch,on_delete=models.DO_NOTHING,null=True,blank=True)
-    semester = models.ForeignKey(Semester,on_delete=models.DO_NOTHING,null=True,blank=True)
-    thank_you_response = models.TextField(null=True,blank=True)
-    steps = models.IntegerField(null=True,blank=True,default=1)
+    enrollment  = models.CharField(max_length=12,unique=True)    
+    device_id = models.CharField(max_length=12,unique=True)    
     slug = models.SlugField(unique=True, null=True, blank=True)
 
     def save(self, *args, **kwargs):

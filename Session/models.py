@@ -30,7 +30,7 @@ class Attendance(models.Model):
 class Session(models.Model):
     session_id = models.TextField()
     total_students = models.ManyToManyField('StakeHolders.Student',blank=True)
-    attendance = models.ManyToManyField(Attendance,blank=True,null=True)
+    attendance = models.ManyToManyField(Attendance)
     present_student_count = models.IntegerField(blank=True,null=True)
     absent_student_count = models.IntegerField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)

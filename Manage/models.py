@@ -57,8 +57,8 @@ class Semester(models.Model):
 
 class Batch(models.Model):
     batch_name = models.CharField(max_length=255)
-    start_year = models.CharField(max_length=4,blank=True,null=True)
-    end_year = models.CharField(max_length=4,blank=True,null=True)
+    start_year = models.CharField(max_length=4)
+    end_year = models.CharField(max_length=4)
     semesters = models.ManyToManyField(Semester,blank=True) 
     active = models.BooleanField(default=True)
     slug = models.SlugField(unique=True,null=True,blank=True)

@@ -33,7 +33,7 @@ class CreateBranchMutation(graphene.Mutation):
     branch = graphene.Field(BranchType)
 
     def mutate(self,info,branch_name,branch_code):
-        branch = Branch(branch_name=branch_name,branch_code=branch_code)
+        branch = Branch(branch_name=branch_name,branch_code=branch_code)        
         branch.save()
         return CreateBranchMutation(branch=branch)
 

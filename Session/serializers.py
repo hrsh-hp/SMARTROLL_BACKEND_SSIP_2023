@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from .models import Session,Attendance
-from StakeHolders.serializers import StudentSerializers
+from StakeHolders.serializers import StudentSerializer
 
 class AttendanceSerializer(serializers.ModelSerializer):
-    student = StudentSerializers() 
+    student = StudentSerializer() 
     class Meta:
         model = Session
         fields = ['student','is_verified','physically_present']
