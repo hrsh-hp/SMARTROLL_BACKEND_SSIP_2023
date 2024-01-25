@@ -18,6 +18,10 @@ from django.contrib.auth import authenticate
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(self, user):        
         token = super().get_token(user)        
+        token['role'] = user.role
+        token['email'] = user.email
+        token['username'] = user.name
+        token['is_actvie'] = user.name
         return token
 
 @api_view(['POST'])   
