@@ -17,6 +17,7 @@ def generate_unique_hash():
 class College(models.Model):
     college_name = models.CharField(max_length=255)    
     slug = models.SlugField(unique=True,null=True,blank=True)
+    code = models.CharField(max_length=3)
     super_admins = models.ManyToManyField(SuperAdmin,blank=True)
 
     def save(self, *args, **kwargs):
@@ -45,17 +46,10 @@ class Branch(models.Model):
     def __str__(self) -> str:
         return self.branch_name
 
-TERM_TYPE = [
-    ('even','Even'),
-    ('odd','Odd'),    
-]
-
-
 class Term(models.Model):
     start_year = models.PositiveIntegerField(validators = [MinValueValidator(1900),MaxValueValidator(2100)],null=True,blank=True)
     end_year = models.PositiveIntegerField(validators = [MinValueValidator(1900),MaxValueValidator(2100)],null=True,blank=True)
-    slug = models.SlugField(unique=True,null=True,blank=True)
-    type = models.CharField(max_length=4,choices = TERM_TYPE,null=True,blank=True)
+    slug = models.SlugField(unique=True,null=True,blank=True)    
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE,blank=True,null=True)
     status = models.BooleanField(default=False)
 
@@ -71,6 +65,8 @@ class Semester(models.Model):
     no = models.IntegerField()    
     status = models.BooleanField(default=True)
     slug = models.SlugField(unique=True,null=True,blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
     term = models.ForeignKey(Term,on_delete=models.CASCADE,null=True,blank=True)
 
     def save(self, *args, **kwargs):

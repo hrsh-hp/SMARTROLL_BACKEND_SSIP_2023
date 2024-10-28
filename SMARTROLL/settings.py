@@ -75,10 +75,7 @@ INSTALLED_APPS = [
     'Profile',
     'StakeHolders',    
     'Manage',    
-    'Session',    
-    'AdditionalFeatures',
-    'Notifications',
-    'Chatbot',
+    'Session',            
 ]
 SSL_CERTIFICATE = SSL_CERTIFICATE_PATH
 SSL_KEY = SSL_KEY_PATH

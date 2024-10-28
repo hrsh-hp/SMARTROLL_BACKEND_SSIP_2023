@@ -37,9 +37,6 @@ urlpatterns = [
     path('get_batches_from_divison/<str:divison_slug>',get_batches_from_divison,name='get_batches_from_divison'),
     path('get_batches_from_semester/<str:semester_slug>',get_batches_from_semester,name='get_batches_from_semester'),
     path('get_batches_from_subject/<str:subject_slug>',get_batches_from_subject,name='get_batches_from_subject'),
-    path('session/',include('Session.urls'),name='session_management'),    
-    path('additional_features/',include('AdditionalFeatures.urls'),name='AdditionalFeatures'),    
-    path('notifications/',include('Notifications.urls'),name='Notifications'),    
-    path('chatbot/',include('Chatbot.urls'),name='Chatbot'),    
+    path('session/',include('Session.urls'),name='session_management'),            
     
 ]

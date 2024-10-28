@@ -12,8 +12,6 @@ from Profile.models import Profile
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render,redirect
-from Notifications.models import Event,Result
-from Notifications.serializers import EventSerializer,ResultSerializer
 
 @api_view(['GET'])
 def check_server_avaibility(request):
@@ -26,23 +24,14 @@ def check_token_authenticity(request):
     if request.user:        
         if request.user.role == 'admin':                
             # Search For Events
-            admin_obj = Admin.objects.filter(profile=request.user).first()
-            events = Event.objects.filter(branches__admins=admin_obj,status=True).distinct()
-            events_serialized = EventSerializer(events,many=True)
-            return JsonResponse(data={'data':{'Notifications':{'events':events_serialized.data}},'isAuthenticated':True},status=200)
+            admin_obj = Admin.objects.filter(profile=request.user).first()            
+            return JsonResponse(data={'data':{'isAuthenticated':True}},status=200)
         if request.user.role == 'teacher':                
-            teacher_obj = Teacher.objects.filter(profile=request.user).first()
-            events = Event.objects.filter(branches__teachers=teacher_obj,status=True).distinct()
-            events_serialized = EventSerializer(events,many=True)
-            return JsonResponse(data={'data':{'Notifications':{'events':events_serialized.data}},'isAuthenticated':True},status=200)
+            teacher_obj = Teacher.objects.filter(profile=request.user).first()            
+            return JsonResponse(data={'data':{'isAuthenticated':True}},status=200)
         if request.user.role == 'student':
-            student_obj = Student.objects.filter(profile=request.user).first()
-            events = Event.objects.filter(branches__students=student_obj,status=True).distinct()
-            events_serialized = EventSerializer(events,many=True)
-            # get the results
-            results_of_student = Result.objects.filter(student=student_obj).order_by('-created_at')
-            results_of_student_serialized = ResultSerializer(results_of_student,many=True)
-            return JsonResponse(data={'data':{'Notifications':{'events':events_serialized.data,'results':results_of_student_serialized.data}},'isAuthenticated':True},status=200)
+            student_obj = Student.objects.filter(profile=request.user).first()            
+            return JsonResponse(data={'data':{'isAuthenticated':True}},status=200)
 
 def handle404(request,exception):
     return render(request,template_name='404.html')
