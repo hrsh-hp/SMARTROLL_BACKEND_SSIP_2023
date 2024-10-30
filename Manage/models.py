@@ -27,30 +27,12 @@ class College(models.Model):
 
     def __str__(self) -> str:
         return self.college_name
-    
-class Branch(models.Model):
-    branch_name = models.CharField(max_length=255)    
-    branch_code = models.CharField(unique=True,null=True,blank=True,max_length=3)
-    slug = models.SlugField(unique=True,null=True,blank=True)
-    college = models.ForeignKey(College,on_delete=models.CASCADE)
-    admins = models.ManyToManyField(Admin,blank=True)
-    teachers = models.ManyToManyField(Teacher,blank=True)
-    students = models.ManyToManyField(Student,blank=True)    
-
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = generate_unique_hash()            
-        super(Branch, self).save(*args, **kwargs)
-
-    def __str__(self) -> str:
-        return self.branch_name
 
 class Term(models.Model):
     start_year = models.PositiveIntegerField(validators = [MinValueValidator(1900),MaxValueValidator(2100)],null=True,blank=True)
     end_year = models.PositiveIntegerField(validators = [MinValueValidator(1900),MaxValueValidator(2100)],null=True,blank=True)
-    slug = models.SlugField(unique=True,null=True,blank=True)    
-    branch = models.ForeignKey(Branch,on_delete=models.CASCADE,blank=True,null=True)
+    slug = models.SlugField(unique=True,null=True,blank=True)  
+    college = models.ForeignKey(College,on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
@@ -61,13 +43,33 @@ class Term(models.Model):
     def __str__(self) -> str:
         return f"Term - {self.start_year} | {self.end_year}"
 
+
+class Branch(models.Model):
+    branch_name = models.CharField(max_length=255)    
+    branch_code = models.CharField(unique=True,null=True,blank=True,max_length=3)
+    slug = models.SlugField(unique=True,null=True,blank=True)
+    admins = models.ManyToManyField(Admin,blank=True)
+    teachers = models.ManyToManyField(Teacher,blank=True)
+    students = models.ManyToManyField(Student,blank=True)   
+    term = models.ForeignKey(Term,on_delete=models.CASCADE,null=True,blank=True) 
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_hash()            
+        super(Branch, self).save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return self.branch_name
+
+
 class Semester(models.Model):
     no = models.IntegerField()    
     status = models.BooleanField(default=True)
     slug = models.SlugField(unique=True,null=True,blank=True)
     start_date = models.DateField()
     end_date = models.DateField()
-    term = models.ForeignKey(Term,on_delete=models.CASCADE,null=True,blank=True)
+    branch = models.ForeignKey(Branch,on_delete=models.CASCADE,null=True,blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -75,7 +77,7 @@ class Semester(models.Model):
         super(Semester, self).save(*args, **kwargs)
         
     def __str__(self) -> str:
-        return f"Semester - {self.no}"
+        return f"Semester - {self.no} | {self.branch.branch_name}"
     
 class Division(models.Model):
     division_name = models.CharField(max_length=2)
@@ -88,7 +90,7 @@ class Division(models.Model):
         super(Division, self).save(*args, **kwargs)
         
     def __str__(self) -> str:
-        return f"Division - {self.division_name}"
+        return f"Division - {self.division_name} | Semester - {self.semester.no} | {self.semester.branch.branch_name}"
     
 
 class Batch(models.Model):
@@ -103,10 +105,11 @@ class Batch(models.Model):
         super(Batch, self).save(*args, **kwargs)
         
     def __str__(self) -> str:
-        return f"Branch - {self.division.semester.term.branch.branch_name} | Semester - {self.division.semester.no} | Division - {self.division.division_name} | {self.batch_name}"
+        return f"Branch - {self.division.semester.branch.branch_name} | Semester - {self.division.semester.no} | Division - {self.division.division_name} | {self.batch_name}"
     
 class Subject(models.Model):
     subject_name = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=20)
     code = models.CharField(unique=True,max_length=20,null=True,blank=True)
     credit = models.IntegerField()
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)    
@@ -147,7 +150,7 @@ class GPSCoordinates(models.Model):
 class Classroom(models.Model):
     class_name = models.CharField(max_length = 20)    
     slug = models.SlugField(unique=True,null=True,blank=True)
-    branch = models.ForeignKey(Branch,null=True,blank=True,on_delete=models.CASCADE)
+    branch = models.ManyToManyField(Branch,null=True,blank=True)
     gps_coordinates = models.ForeignKey(GPSCoordinates,blank=True,null=True,on_delete=models.DO_NOTHING)
 
 
