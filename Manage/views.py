@@ -230,12 +230,12 @@ def add_division(request):
             admin_obj = Admin.objects.get(profile=request.user)            
             if 'division_name' in body and 'semester_slug' in body and len(body['division_name']) > 0:
                 semester_obj = Semester.objects.filter(slug=body['semester_slug']).first()                
-                if semester_obj and semester_obj.term.branch.admins.contains(admin_obj):
+                if semester_obj and semester_obj.stream.branch.admins.contains(admin_obj):
                     division_obj,created = Division.objects.get_or_create(division_name = body['division_name'],semester=semester_obj)
                     if created:
                         division_serialized = DivisionSerializer(division_obj)
                         timetable_obj = TimeTable.objects.create(division=division_obj)
-                        days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+                        days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']
                         for day in days:
                             Schedule.objects.create(day=day, timetable=timetable_obj)
                         data['data'] = division_serialized.data

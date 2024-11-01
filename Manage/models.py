@@ -141,7 +141,7 @@ class Subject(models.Model):
     
 
     def __str__(self) -> str:
-        return self.subject_name
+        return f"{self.subject_name} | {self.semester}"
     
 class TimeTable(models.Model):
     division = models.ForeignKey(Division,on_delete=models.CASCADE)
@@ -153,7 +153,7 @@ class TimeTable(models.Model):
         super(TimeTable, self).save(*args, **kwargs)
         
     def __str__(self) -> str:
-        return f"Division - {self.slug}"
+        return f"Division - {self.division}"
     
 class GPSCoordinates(models.Model):
     title = models.CharField(max_length=255,null=True,blank=True)
@@ -218,7 +218,7 @@ class Lecture(models.Model):
         super(Lecture, self).save(*args, **kwargs)
     
     def __str__(self) -> str:
-        return f"{self.type} - {self.subject.subject_name}"
+        return f"{self.type} - {self.subject} - {self.schedule}"
     
 class Link(models.Model):
     from_lecture = models.ForeignKey(Lecture, null=True, blank=True, on_delete=models.CASCADE, related_name='from_links')
