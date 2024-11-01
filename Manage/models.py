@@ -47,11 +47,10 @@ class Term(models.Model):
 class Branch(models.Model):
     branch_name = models.CharField(max_length=255)    
     branch_code = models.CharField(unique=True,null=True,blank=True,max_length=3)
-    slug = models.SlugField(unique=True,null=True,blank=True)
     admins = models.ManyToManyField(Admin,blank=True)
     teachers = models.ManyToManyField(Teacher,blank=True)
-    students = models.ManyToManyField(Student,blank=True)   
     term = models.ForeignKey(Term,on_delete=models.CASCADE,null=True,blank=True) 
+    slug = models.SlugField(unique=True,null=True,blank=True)
 
 
     def save(self, *args, **kwargs):
@@ -60,7 +59,26 @@ class Branch(models.Model):
         super(Branch, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return self.branch_name
+        return f"{self.branch_name} | {self.term}"
+
+stream_choices = [
+    ('BE',"Bachelor's"),
+    ('ME',"Master's")
+]
+
+class Stream(models.Model):
+    title = models.CharField(max_length=2,choices=stream_choices)
+    branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
+    students = models.ManyToManyField(Student,blank=True)   
+    slug = models.SlugField(unique=True,null=True,blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_hash()            
+        super(Stream, self).save(*args, **kwargs)
+        
+    def __str__(self) -> str:
+        return f"Stream - {self.title} | {self.branch}"
 
 
 class Semester(models.Model):
@@ -69,7 +87,7 @@ class Semester(models.Model):
     slug = models.SlugField(unique=True,null=True,blank=True)
     start_date = models.DateField()
     end_date = models.DateField()
-    branch = models.ForeignKey(Branch,on_delete=models.CASCADE,null=True,blank=True)
+    stream = models.ForeignKey(Stream,on_delete=models.CASCADE,null=True,blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -77,7 +95,7 @@ class Semester(models.Model):
         super(Semester, self).save(*args, **kwargs)
         
     def __str__(self) -> str:
-        return f"Semester - {self.no} | {self.branch.branch_name}"
+        return f"Semester - {self.no} | {self.stream}"
     
 class Division(models.Model):
     division_name = models.CharField(max_length=2)
@@ -90,7 +108,7 @@ class Division(models.Model):
         super(Division, self).save(*args, **kwargs)
         
     def __str__(self) -> str:
-        return f"Division - {self.division_name} | Semester - {self.semester.no} | {self.semester.branch.branch_name}"
+        return f"Division - {self.division_name} | {self.semester}"
     
 
 class Batch(models.Model):
@@ -105,7 +123,7 @@ class Batch(models.Model):
         super(Batch, self).save(*args, **kwargs)
         
     def __str__(self) -> str:
-        return f"Branch - {self.division.semester.branch.branch_name} | Semester - {self.division.semester.no} | Division - {self.division.division_name} | {self.batch_name}"
+        return f"Batch - {self.batch_name} | {self.division}"
     
 class Subject(models.Model):
     subject_name = models.CharField(max_length=255)
