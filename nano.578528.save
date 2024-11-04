@@ -1,0 +1,10 @@
+API refactored
+
+All Session APis
+get_timetable
+get_lecture_configs
+add_lecture_to_schedule
+add_lecture_as_proxy
+upload_students_data - students should be added in the stream instead of batches
+get_timetable_for_teacher
+get_timetable_for_student
