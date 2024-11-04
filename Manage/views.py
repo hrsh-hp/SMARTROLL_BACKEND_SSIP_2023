@@ -6,7 +6,7 @@ from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,
 from StakeHolders.models import Admin,Teacher,Student,NotificationSubscriptions,SuperAdmin
 from Profile.models import Profile
 from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer
-from Manage.models import Semester,Subject,Branch,College
+from Manage.models import Semester,Subject,Branch,College,Term
 from Session.models import Session,Attendance
 import pandas as pd
 from django.contrib.auth import get_user_model
@@ -34,16 +34,16 @@ def send_activation_email(receiver,teacher_slug,host):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_active_branches_for_superadmin(request):
+def get_active_terms_for_superadmin(request):
     try:        
         if request.user.role == 'superadmin':
             data = {'data':None,'error':False,'message':None}
             superadmin_obj = SuperAdmin.objects.filter(profile=request.user).first()
             if superadmin_obj:
                 # Get the branches controlled by superadmin                
-                branches = Branch.objects.filter(college__super_admins=superadmin_obj)
-                branches_serialized = BranchSerializer(branches,many=True)
-                data['data'] = branches_serialized.data                
+                terms = Term.objects.filter(college__super_admins=superadmin_obj)
+                terms_serialized = TermSerializer(terms,many=True)
+                data['data'] = terms_serialized.data                
                 return JsonResponse(data,status=200)
             else:
                 raise Exception("Superadmin does not exists!!")

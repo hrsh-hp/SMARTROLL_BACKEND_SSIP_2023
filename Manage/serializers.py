@@ -47,9 +47,15 @@ class DivisionSerializerForTeacher(serializers.ModelSerializer):
         fields = ['division_name','slug','semester']
 
 class TermSerializer(serializers.ModelSerializer):    
+    branches = serializers.SerializerMethodField()
     class Meta:
         model = Term
         fields = ['slug','start_year','end_year','type','status']
+
+    def get_branches(self,obj):
+        branches = obj.branch_set.all()
+        branches_serialized = LectureSerializer(branches,many=True)
+        return branches_serialized.data
 
 class SemesterSerializerStudentCred(serializers.ModelSerializer):
     subjects = SubjectSerializer(many=True)
