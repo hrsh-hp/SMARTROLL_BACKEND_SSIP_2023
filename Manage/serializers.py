@@ -41,10 +41,13 @@ class SemesterSerializer(serializers.ModelSerializer):
 class SubjectSerializer(serializers.ModelSerializer):
     semester = SemesterSerializer()
     included_batches = BatchSerializer(many=True)
+    stream = serializers.SerializerMethodField()
     class Meta:
         model = Subject
-        fields = ['slug', 'subject_name', 'code', 'credit','semester','included_batches']
-    
+        fields = ['slug', 'subject_name', 'code', 'credit','stream','semester','included_batches']
+
+    def get_stream(self,obj):
+        return obj.semester.stream.title
 
 class DivisionSerializerForTeacher(serializers.ModelSerializer):
     semester = SemesterSerializer()

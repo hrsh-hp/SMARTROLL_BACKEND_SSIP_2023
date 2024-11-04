@@ -47,11 +47,11 @@ VAPID_CLAIMS = {
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['smartroll.ldce.mnv-dev.live','localhost',"7884-2405-201-2024-b0a8-83e8-2c82-2058-3df3.ngrok-free.app","192.168.29.18"]
+ALLOWED_HOSTS = ['smartroll.ldce.mnv-dev.live','localhost',"8cd3-2405-201-2024-b91e-7bbc-2edc-7d07-2a01.ngrok-free.app","192.168.29.18"]
 
 CSRF_COOKIE_SECURE = False
 CSRF_USE_SESSIONS = False
-CSRF_TRUSTED_ORIGINS = ["http://192.168.157.106:8000",'http://192.168.157.106:8000','http://localhost:3000','https://7884-2405-201-2024-b0a8-83e8-2c82-2058-3df3.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ["http://192.168.157.106:8000",'http://192.168.157.106:8000','http://localhost:3000','https://8cd3-2405-201-2024-b91e-7bbc-2edc-7d07-2a01.ngrok-free.app']
 
 
 # Application definition

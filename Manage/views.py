@@ -2,7 +2,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
-from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link
+from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream
 from StakeHolders.models import Admin,Teacher,Student,NotificationSubscriptions,SuperAdmin
 from Profile.models import Profile
 from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer
@@ -47,7 +47,8 @@ def get_active_terms_for_superadmin(request):
                 return JsonResponse(data,status=200)
             else:
                 raise Exception("Superadmin does not exists!!")
-
+        else: 
+            raise Exception("You're not allowed to perform this action")
             
     except Exception as e:
         print(e)
@@ -59,16 +60,18 @@ def get_active_terms_for_superadmin(request):
 def get_object_counts(request):    
     try:        
         if request.user.role == 'admin':
-            data = {'terms':0,'semesters':0,'divisons':0,'batches':0}
+            data = {'streams':0,'semesters':0,'divisons':0,'batches':0}
             admin_obj = Admin.objects.get(profile=request.user)
             # We'll have to get the counts of semester, divisions, batches
-            branch = admin_obj.branch_set.first()
-            terms = branch.term_set.all()
-            term_count = len(terms)
+            # branch = admin_obj.branch_set.first()
+            # term_count = len(term)
+            streams = Stream.objects.filter(branch__admins=admin_obj)
+            stream_count = len(streams)
+            print(streams)
             semesters = []
-            for i in terms:
-                term_sems = i.semester_set.all()
-                semesters.extend(term_sems)
+            for i in streams:
+                stream_sems = i.semester_set.all()
+                semesters.extend(stream_sems)
             semester_count = len(semesters)
             divisions = []
             for i in semesters:
@@ -80,7 +83,7 @@ def get_object_counts(request):
                 div_batches = i.batch_set.all()
                 batches.extend(div_batches)
             batch_count = len(batches)    
-            data['terms'] = term_count
+            data['streams'] = stream_count
             data['semesters'] = semester_count
             data['divisons'] = division_count
             data['batches'] = batch_count
@@ -98,17 +101,17 @@ def get_object_counts(request):
 def add_term(request):
     try:        
         data = {'data':None,'error':False,'message':None}
-        if request.user.role == 'admin':  
+        if request.user.role == 'superadmin':  
             body = request.data
-            if 'start_year' in body and 'end_year' in body and 'type' in body:
-                admin_obj = Admin.objects.get(profile=request.user)
+            if 'start_year' in body and 'end_year' in body :
+                superadmin_obj = SuperAdmin.objects.get(profile=request.user)
                 # We'll have to get the counts of semester, divisions, batches
-                branch_obj = admin_obj.branch_set.first()
-                if branch_obj:
-                    term_obj,created = Term.objects.get_or_create(start_year=body['start_year'],end_year=body['end_year'],branch=branch_obj,type=body['type'])
+                college_obj = superadmin_obj.college_set.first()
+                if college_obj:
+                    term_obj,created = Term.objects.get_or_create(start_year=body['start_year'],end_year=body['end_year'],college=college_obj)
                     if created:
                         # Deactivate all the previous terms
-                        old_terms = branch_obj.term_set.all().exclude(id=term_obj.id)
+                        old_terms = college_obj.term_set.all().exclude(id=term_obj.id)
                         for term in old_terms:
                             term.status = False
                             term.save()
@@ -138,11 +141,11 @@ def get_terms(request):
     try:        
         data = {'data':None,'error':False,'message':None}
         body = request.query_params
-        if request.user.role == 'admin':              
-            admin_obj = Admin.objects.get(profile=request.user)
+        if request.user.role == 'superadmin':              
+            superadmin_obj = SuperAdmin.objects.get(profile=request.user)
             # We'll have to get the counts of semester, divisions, batches
-            branch_obj = admin_obj.branch_set.first()
-            terms = branch_obj.term_set.all()
+            college_obj = superadmin_obj.college_set.first()
+            terms = college_obj.term_set.all()
             if terms.exists():
                 terms_serialized = TermSerializer(terms,many=True)
                 data['data'] = terms_serialized.data
@@ -197,11 +200,11 @@ def get_semesters(request):
         body = request.query_params
         if request.user.role == 'admin':
             admin_obj = Admin.objects.get(profile=request.user)
-            if 'term_slug' in body:
+            if 'stream_slug' in body:
                 # We'll have to get the counts of semester, divisions, batches
-                term_obj = Term.objects.filter(slug=body['term_slug']).first()
-                if term_obj:
-                    semesters = term_obj.semester_set.all().filter(status=True)
+                stream_obj = Stream.objects.filter(slug=body['stream_slug']).first()
+                if stream_obj:
+                    semesters = stream_obj.semester_set.all().filter(status=True)
                     if semesters.exists():
                         semesters_serialized = SemesterSerializer(semesters,many=True)
                         data['data'] = semesters_serialized.data
@@ -209,7 +212,7 @@ def get_semesters(request):
                     else:
                         raise Exception('Semester Does Not Exists')
                 else:
-                        raise Exception('Term Does Not Exists')
+                        raise Exception('Stream Does Not Exists')
             else:
                 raise Exception('Parameters missing')
         else:
@@ -265,7 +268,7 @@ def add_batch(request):
             admin_obj = Admin.objects.get(profile=request.user)            
             if 'batch_name' in body and 'division_slug' in body and len(body['batch_name']) > 0:
                 division_obj = Division.objects.filter(slug=body['division_slug']).first()                
-                if division_obj and division_obj.semester.term.branch.admins.contains(admin_obj):
+                if division_obj and division_obj.semester.stream.branch.admins.contains(admin_obj):
                     batch_obj,created = Batch.objects.get_or_create(batch_name = body['batch_name'],division=division_obj)
                     if created:
                         batch_serialized = BatchSerializer(batch_obj)
@@ -296,7 +299,7 @@ def get_batches(request):
             admin_obj = Admin.objects.get(profile=request.user)
             if 'division_slug' in body :
                 division_obj = Division.objects.filter(slug=body['division_slug']).first()
-                if division_obj and division_obj.semester.term.branch.admins.contains(admin_obj):
+                if division_obj and division_obj.semester.stream.branch.admins.contains(admin_obj):
                    batches = division_obj.batch_set.all()
                    batches_serialized = BatchSerializer(batches,many=True)
                    data['data'] = batches_serialized.data
@@ -324,7 +327,7 @@ def get_divisions(request):
             # We'll have to get the counts of semester, divisions, batches
             if 'semester_slug' in body:
                 semester_obj = Semester.objects.filter(slug=body.get('semester_slug')).first()
-                if semester_obj and semester_obj.term.branch.admins.contains(admin_obj):
+                if semester_obj and semester_obj.stream.branch.admins.contains(admin_obj):
                     divisions = semester_obj.division_set.all()
                     division_serialized = DivisionSerializer(divisions, many=True)
                     data['data'] = division_serialized.data
@@ -350,10 +353,10 @@ def add_subject(request):
         if request.user.role == 'admin':  
             body = request.data
             admin_obj = Admin.objects.get(profile=request.user)       
-            if 'code' in body and 'subject_name' in body and 'credit' in body and 'semester_slug' in body and 'batches' in body:
+            if 'code' in body and 'subject_name' in body and 'short_name' in body and 'credit' in body and 'semester_slug' in body and 'batches' in body:
                 semester_obj = Semester.objects.filter(slug= body['semester_slug']).first()
-                if semester_obj and semester_obj.term.branch.admins.contains(admin_obj):
-                    subject_obj,created = Subject.objects.get_or_create(code=body['code'],subject_name = body['subject_name'], credit = body['credit'],semester = semester_obj)
+                if semester_obj and semester_obj.stream.branch.admins.contains(admin_obj):
+                    subject_obj,created = Subject.objects.get_or_create(code=body['code'],subject_name = body['subject_name'], short_name=body['short_name'],credit = body['credit'],semester = semester_obj)
                     if created:                        
                         batches = Batch.objects.filter(slug__in=body['batches'])
                         subject_obj.included_batches.add(*batches)
@@ -383,7 +386,7 @@ def get_subjects(request):
         if request.user.role == 'admin':            
             admin_obj = Admin.objects.get(profile=request.user)                                    
             branch_obj = admin_obj.branch_set.first()            
-            subjects = Subject.objects.filter(semester__term__branch=branch_obj)
+            subjects = Subject.objects.filter(semester__stream__branch=branch_obj)
             subject_serialized = SubjectSerializer(subjects, many=True)
             data['data'] = subject_serialized.data
             return JsonResponse(data,status=200)
