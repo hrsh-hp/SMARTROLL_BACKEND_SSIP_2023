@@ -26,18 +26,13 @@ def create_lecture_session(request):
                 if 'lecture_slug' in body:
                     lecture_obj = Lecture.objects.filter(slug=body['lecture_slug']).first()
                     if lecture_obj:
+                        if not lecture_obj.teacher == teacher_obj: raise Exception("You're not allowed to perform this action")
                         batches = lecture_obj.batches.all()                        
                         current_time = datetime.datetime.now().time()
                         if current_time >= lecture_obj.start_time and current_time <= lecture_obj.end_time:
                             # For failsafe if the session wasn't created when adding the lecture
                             lecture_session,created = Session.objects.get_or_create(lecture=lecture_obj,day=datetime.datetime.today().date())
-                            # if created:           
-                            #     students = Student.objects.filter(batch__in=batches)
-                            #     for student in students:
-                            #         attendance_obj = Attendance.objects.create(student=student)
-                            #         lecture_session.attendances.add(attendance_obj)
-                            #         lecture_session_serialized = SessionSerializer(lecture_session)
-                            #         data['data'] = lecture_session_serialized.data                        
+                            # if created:                                       
                             # if created:
                             #     print('newely creted')
                             #     pass
@@ -157,6 +152,7 @@ def mark_attendance_for_student(request):
                                             async_to_sync(channel_layer.group_send)(channel_name, {"type": "attendance.marked",'message':attendance_serialized.data})
                                             data['data'] = True
                                             data['code'] = 100
+                                            # Here we need to hit the node js endpoint
                                             return Response(data,status=200)
                                         else:
                                             data['code'] = 100                                                                            
@@ -208,3 +204,33 @@ def get_session_data_for_export(request,session_id):
         data['message'] = str(e)
         data['error'] = True     
         return Response(data,status=500)   
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def authenticate_teacher(request):
+    data = {'data':None,'error':False,'message':None}
+    try:
+        if request.user.role == 'teacher':
+            teacher_obj = Teacher.objects.filter(profile=request.user).first()
+            if teacher_obj:
+                body = request.data
+                if 'session_id' in body:
+                    session_obj = Session.objects.filter(session_id=body['session_id']).first()
+                    if not session_obj: raise Exception('Session does not exist')                    
+                    if session_obj.active and session_obj.lecture.teacher == teacher_obj:
+                        data['data'] = True
+                        data['message'] = 'Authenticated'
+                        return Response(data,status=200)
+                    else:
+                        raise Exception('Not Authenticated')    
+                else:
+                    raise Exception('Parameters missing')
+            else:
+                raise Exception('Teacher does not exists')            
+        else:
+            raise Exception("You're not allowed to perform this action")
+    except Exception as e:
+         print(e)
+         data['error'] = True
+         data['message'] = str(e)
+         return Response(data,status=500)

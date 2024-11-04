@@ -197,7 +197,7 @@ class Schedule(models.Model):
         super(Schedule, self).save(*args, **kwargs)
     
     def __str__(self) -> str:
-        return self.day
+        return f"{self.day} | {self.timetable}"
 
 class Lecture(models.Model):
     start_time = models.TimeField()

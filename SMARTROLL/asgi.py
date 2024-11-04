@@ -16,7 +16,7 @@ from channels.routing import ProtocolTypeRouter,URLRouter
 from Session.routing import attendance_session_urlpatterns
 application = get_asgi_application()
 
-application = ProtocolTypeRouter({
-    "http": application,
-    "websocket": URLRouter(attendance_session_urlpatterns)
-})
+# application = ProtocolTypeRouter({
+#     "http": application,
+#     # "websocket": URLRouter(attendance_session_urlpatterns)
+# })

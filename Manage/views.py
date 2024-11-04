@@ -476,7 +476,7 @@ def set_new_password_for_student(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_teachers(request):
-    try:    
+    try: 
         data = {'data':None,'error':False,'message':None}    
         if request.user.role == 'admin':            
             admin_obj = Admin.objects.get(profile=request.user)            
@@ -670,9 +670,9 @@ def upload_students_data(request):
         data = {'data':{'logs':{},'register_count':0,'error_count':0},'error':False,'message':None}
         if request.user.role == 'admin':
             body = request.data
-            admin_obj = Admin.objects.get(profile=request.user)
-            branch_obj = admin_obj.branch_set.first()                 
-            if 'sheet_name' in body and 'division_slug' in body and 'students.xlsc' in body:
+            admin_obj = Admin.objects.get(profile=request.user)              
+            if 'sheet_name' in body and 'division_slug' in body and 'students.xlsc' in body and 'stream_slug' in body:
+                stream_obj = admin_obj.branch_set.first().stream_set.filter(slug=body['stream_slug']).first()
                 divison_obj = Division.objects.filter(slug=body['division_slug']).first()
                 if divison_obj:
                     df = pd.read_excel(body['students.xlsc'],sheet_name=body['sheet_name'])
@@ -696,7 +696,7 @@ def upload_students_data(request):
                                         student_obj.profile = profile_obj
                                         student_obj.save()
                                     if not batch_obj.students.contains(student_obj) : batch_obj.students.add(student_obj)
-                                    if not branch_obj.students.contains(student_obj) : branch_obj.students.add(student_obj)
+                                    if not stream_obj.students.contains(student_obj) : stream_obj.students.add(student_obj)
                                     data['data']['register_count'] += 1
                                     data['data']['logs'][serial_no] = f"Student Created - {serial_no} - {batch[1:]} - {enrollment} - {name} - {gender}"
                                 else:
@@ -756,7 +756,8 @@ def get_timetable_for_student(request):
         if request.user.role == 'student':
             student_obj = Student.objects.filter(profile=request.user).first()
             if student_obj:
-                branches = student_obj.branch_set.all()
+                streams = student_obj.stream_set.all()
+                branches = [stream.branch for stream in streams]
                 timetable_serialized = BranchWiseTimeTableSerializerStudent(instance = branches,many=True,student=student_obj)
                 data['data'] = timetable_serialized.data
                 return JsonResponse(data,status=200)
@@ -976,8 +977,8 @@ def get_semesters_from_branch(request,branch_slug):
             if teacher_obj:
                 branch_obj = Branch.objects.filter(slug=branch_slug).first()
                 if branch_obj:
-                    active_term = branch_obj.term_set.filter(status=True).first()
-                    semesters = active_term.semester_set.all()
+                    streams = branch_obj.stream_set.all()
+                    semesters = Semester.objects.filter(stream__in=streams)
                     semesters_serialized = SemesterSerializer(semesters,many=True)
                     data['data'] = semesters_serialized.data
                     return JsonResponse(data,status=200)

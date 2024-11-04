@@ -1,4 +1,4 @@
-from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link
+from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream
 from datetime import datetime
 from rest_framework import serializers
 from Session.models import Session,Attendance
@@ -9,11 +9,16 @@ class CollegeSerializer(serializers.ModelSerializer):
         fields = ['college_name','slug']
 
 class BranchSerializer(serializers.ModelSerializer):
-    college = CollegeSerializer()
     class Meta:
         model = Branch
-        fields = ['branch_name','branch_code','slug','college']
+        fields = ['branch_name','branch_code','slug']
 
+class StreamSerializer(serializers.ModelSerializer):
+    branch = BranchSerializer()
+    class Meta:
+        model = Stream
+        fields = ['title','slug','branch']    
+        
 
 class DivisionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,9 +33,10 @@ class BatchSerializer(serializers.ModelSerializer):
         fields = ['slug','batch_name','division']
 
 class SemesterSerializer(serializers.ModelSerializer):    
+    stream = StreamSerializer()
     class Meta:
         model = Semester
-        fields = ['slug','no','status']
+        fields = ['slug','no','status','stream']
 
 class SubjectSerializer(serializers.ModelSerializer):
     semester = SemesterSerializer()
@@ -96,8 +102,8 @@ class ScheduleSerializerForStudent(serializers.ModelSerializer):
         self.batches = batches
         self.student = student
     
-    def get_lectures(self,obj):
-        lectures = obj.lecture_set.filter(batches__in=self.batches,is_active=True)
+    def get_lectures(self,obj):  
+        lectures = obj.lecture_set.filter(batches__in=self.batches,is_active=True)        
         lectures_serialized = LectureSerializerForStudent(instance=lectures,student=self.student,many=True)
         return lectures_serialized.data        
 
@@ -118,7 +124,7 @@ class TimeTableSerializerForStudent(serializers.ModelSerializer):
     def get_schedule(self,obj):        
         current_datetime = datetime.now()
         current_day_name = current_datetime.strftime('%A')
-        schedule = obj.schedule_set.filter(day=current_day_name.lower()).first()
+        schedule = obj.schedule_set.filter(day=current_day_name.upper()).first()        
         if schedule:
             schedules_serialized = ScheduleSerializerForStudent(instance=schedule,student=self.student,batches=self.batches)
             return schedules_serialized.data    
@@ -139,7 +145,7 @@ class TimeTableSerializerForTeacher(serializers.ModelSerializer):
     def get_schedule(self,obj):        
         current_datetime = datetime.now()
         current_day_name = current_datetime.strftime('%A')
-        schedule = obj.schedule_set.filter(day=current_day_name.lower()).first()
+        schedule = obj.schedule_set.filter(day=current_day_name.upper()).first()
         # schedule = obj.schedule_set.filter(day='sunday')
         if schedule:
             schedules_serialized = ScheduleSerializerForTeacher(instance=schedule,teacher=self.teacher)
@@ -200,7 +206,7 @@ class DivisionWiseTimeTableSerializer(serializers.ModelSerializer):
         self.teacher = teacher
     
     def get_timetable(self,obj):
-        timetable = TimeTable.objects.filter(division=obj).first()
+        timetable = TimeTable.objects.filter(division=obj).first()        
         timetable_serialized = TimeTableSerializerForTeacher(instance=timetable,teacher=self.teacher)
         return timetable_serialized.data
 
@@ -220,38 +226,58 @@ class SemesterWiseTimeTableSerializer(serializers.ModelSerializer):
         divisions_serialized = DivisionWiseTimeTableSerializer(instance=divisions,many=True,teacher=self.teacher)
         return divisions_serialized.data
 
-
-class BranchWiseTimeTableSerializer(serializers.ModelSerializer):
+class StreamWiseTimeTableSerializer(serializers.ModelSerializer):
     semesters = serializers.SerializerMethodField()
     class Meta:
+        model = Stream
+        fields = ['title','slug','semesters']
+    
+    def __init__(self, teacher, *args, **kwargs):
+        super(StreamWiseTimeTableSerializer, self).__init__(*args, **kwargs)
+        self.teacher = teacher
+    
+    def get_semesters(self,obj):
+        semesters = obj.semester_set.filter(status=True)
+        semesters_serialized = SemesterWiseTimeTableSerializer(instance=semesters,many=True,teacher=self.teacher)
+        return semesters_serialized.data
+
+class BranchWiseTimeTableSerializer(serializers.ModelSerializer):
+    streams = serializers.SerializerMethodField()
+    class Meta:
         model = Branch
-        fields = ['branch_name','branch_code','slug','semesters']
+        fields = ['branch_name','branch_code','slug','streams']
     
     def __init__(self, teacher, *args, **kwargs):
         super(BranchWiseTimeTableSerializer, self).__init__(*args, **kwargs)
         self.teacher = teacher
     
-    def get_semesters(self,obj):
-        semesters = obj.term_set.filter(status=True).first().semester_set.filter(status=True)
-        semesters_serialized = SemesterWiseTimeTableSerializer(instance=semesters,many=True,teacher=self.teacher)
-        return semesters_serialized.data
+    def get_streams(self,obj):
+        streams = obj.stream_set.all()
+        streams_serialized = StreamWiseTimeTableSerializer(instance=streams,many=True,teacher=self.teacher)
+        return streams_serialized.data
 
 class BranchWiseTimeTableSerializerStudent(serializers.ModelSerializer):
     timetables = serializers.SerializerMethodField()
+    stream = serializers.SerializerMethodField()
     class Meta:
         model = Branch
-        fields = ['branch_name','branch_code','slug','timetables']
+        fields = ['stream','timetables']
     
     def __init__(self, student, *args, **kwargs):
         super(BranchWiseTimeTableSerializerStudent, self).__init__(*args, **kwargs)
         self.student = student
 
     def get_timetables(self,obj):
-        batches = Batch.objects.filter(students=self.student,division__semester__term__branch=obj)    
-        division = Division.objects.filter(batch__students=self.student, batch__in=batches).first()        
-        timetables = TimeTable.objects.filter(division=division)    
+        batches = Batch.objects.filter(students=self.student,division__semester__stream__branch=obj)        
+        division = Division.objects.filter(batch__students=self.student, batch__in=batches).first()
+        timetables = TimeTable.objects.filter(division=division)        
         timetable_serialized = TimeTableSerializerForStudent(instance=timetables,student=self.student,batches=batches,many=True)
         return timetable_serialized.data
+
+    def get_stream(self,obj):
+        stream = obj.stream_set.first()
+        stream_serialized = StreamSerializer(stream)
+        return stream_serialized.data
     
 class LectureSerializerForLink(serializers.ModelSerializer):
     subject = SubjectSerializer()

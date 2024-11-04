@@ -1,6 +1,6 @@
 from .models import Admin,Teacher,Student,SuperAdmin
 from rest_framework import serializers
-from Manage.serializers import BranchSerializer
+from Manage.serializers import BranchSerializer,StreamSerializer
 from Profile.models import Profile
 
 
@@ -43,13 +43,13 @@ class TeacherSerializer(serializers.ModelSerializer):
     
 class StudentSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()    
-    branch = serializers.SerializerMethodField()
+    stream = serializers.SerializerMethodField()
 
     class Meta:
         model = Student
-        fields = ['slug','profile','branch','sr_no','enrollment']
+        fields = ['slug','profile','stream','sr_no','enrollment']
     
-    def get_branch(self,obj):
-        branch = obj.branch_set.first()
-        branches_serialized = BranchSerializer(branch)
-        return branches_serialized.data
+    def get_stream(self,obj):
+        stream = obj.stream_set.first()        
+        stream_serialized = StreamSerializer(stream)
+        return stream_serialized.data

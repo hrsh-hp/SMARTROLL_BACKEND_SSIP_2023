@@ -59,7 +59,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             if user.role == 'student':                
                 student_obj = Student.objects.get(profile=user)
                 student_serialized = StudentSerializer(student_obj,many=False)
-                token['obj'] = student_serialized.data  
+                token['obj'] = student_serialized.data                  
         return token
 
 
