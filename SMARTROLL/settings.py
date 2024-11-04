@@ -47,7 +47,7 @@ VAPID_CLAIMS = {
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['smartroll.ldce.mnv-dev.live','localhost',"8cd3-2405-201-2024-b91e-7bbc-2edc-7d07-2a01.ngrok-free.app","192.168.29.18"]
+ALLOWED_HOSTS = ['smartroll.ldce.mnv-dev.live','localhost',"8cd3-2405-201-2024-b91e-7bbc-2edc-7d07-2a01.ngrok-free.app","192.168.29.18",'127.0.0.1']
 
 CSRF_COOKIE_SECURE = False
 CSRF_USE_SESSIONS = False

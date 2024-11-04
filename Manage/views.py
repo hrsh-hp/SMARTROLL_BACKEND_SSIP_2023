@@ -15,6 +15,7 @@ import datetime
 from django.conf import settings as django_settings
 from django.core.mail import send_mail
 from threading import Thread
+from .utils import parse_be_me_string,parse_time_string,hash_string,check_for_batch_includance
 import json
 # Create your views here.
 
@@ -1124,6 +1125,187 @@ def get_subjects_of_student(request):
         else:
             raise Exception("You're not allowed to perform this action")
 
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True        
+        return JsonResponse(data,status=500)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def upload_master_timetable(request):
+    try:
+        data = {'logs':[],'register_count':0,'error_count':0,'error':False,'message':None}
+        if request.user.role == 'admin':
+            body = request.data
+            admin_obj = Admin.objects.get(profile=request.user)
+            branch_obj = admin_obj.branch_set.first()               
+            if 'master_tt.csv' in body:
+                df = pd.read_csv(body['master_tt.csv'])
+                header_rows = df.iloc[:3].reset_index(drop=True)
+                df.columns = df.iloc[3]
+                df = df[4:].reset_index(drop=True) 
+                faculties = list(df.columns[2:])
+                # Check the format of the faculties row                
+                for day, day_data in df.groupby('DAY'):                    
+                    data['logs'].append(f"Schedule for {day}:")
+                    rows = list(day_data.iterrows())
+                    i = 0
+                    while i < len(rows):
+                        index, row = rows[i]        
+                        for faculty in faculties:   
+                            lecture_type = 'theory'
+                            time_info = parse_time_string(row['TIME'])
+                            if time_info:
+                                info = parse_be_me_string(row[faculty]) if pd.notna(row[faculty]) else None                
+                                if pd.notna(row[faculty]):
+                                    current_lecture_hash = hash_string(row[faculty])
+                                    # Also check if next consecutive lecture is not the same as current
+                                    if i < len(rows) - 1: 
+                                        next_row = rows[i+1][1]
+                                        next_time_info = parse_time_string(next_row['TIME'])
+                                        next_info = parse_be_me_string(next_row[faculty]) if pd.notna(next_row[faculty]) else None
+                                        if pd.notna(next_row[faculty]):
+                                            next_lecture_hash = hash_string(next_row[faculty])
+                                            if next_lecture_hash == current_lecture_hash:
+                                                time_info['end_time'] = next_time_info['end_time']
+                                                rows[i+1][1][faculty] = None          
+                                                lecture_type = 'lab'
+                                if info:                    
+                                    # Initialize the requirements dictionary object
+                                    teacher_obj = Teacher.objects.filter(teacher_code=faculty).first()
+                                    if not teacher_obj:
+                                        data['logs'].append(f"Faculty not found at {row}")
+                                        raise Exception('Faculty not found')
+                                
+                                    classroom_obj = branch_obj.classroom_set.filter(class_name=info['classroom']).first()
+                                    if not classroom_obj:
+                                        data['logs'].append(f"Classroom not found at {row}")
+                                        raise Exception('Classroom not found')
+                                    
+                                    requirements = {
+                                        'stream':info['stream'],
+                                        'teacher':teacher_obj,
+                                        'classroom':classroom_obj,
+                                        'schedule':None,
+                                        'time_info':time_info,
+                                        'type':lecture_type,
+                                        'subject':None,
+                                        'batches':None
+                                    }                                                                                
+                                    # Get the stream object
+                                    stream_obj = branch_obj.stream_set.filter(title=info['stream']).first()
+                                    if not stream_obj:
+                                        data['logs'].append(f"Stream not found at {row}")
+                                        raise Exception('Stream not found')
+                                    # Get the semester                        
+                                    semester_obj = stream_obj.semester_set.filter(no=info['sem']).first()
+                                    if not semester_obj:
+                                        data['logs'].append(f"Semester not found at {row}")
+                                        raise Exception('Semester not found')
+                                    # Get the subject
+                                    requirements['subject'] = semester_obj.subject_set.filter(short_name=info['sub']).first()
+                                    # get the division
+                                    # For ME there will be only 1 division per semester
+                                    if info['stream'] == 'ME':
+                                        division_obj = semester_obj.division_set.first()
+                                        if not division_obj:
+                                            data['logs'].append(f"Division not found at {row}")
+                                            raise Exception('Division not found')
+                                        # Now get the timetable object of this division
+                                        timetable_object = division_obj.timetable_set.first()
+                                        if not timetable_object:
+                                            data['logs'].append(f"Timetable not found at {row}")
+                                            raise Exception('Timetable not found')
+                                        # Get the schedule Object of current day
+                                        requirements['schedule'] = timetable_object.schedule_set.filter(day=day).first()
+                                        if not requirements['schedule']:
+                                            data['logs'].append(f"Schedule not found for day {day} at {row}")
+                                            raise Exception(f"Schedule not found for day {day} at {row}")
+                                        #  Get the first batch object of the division
+                                        division_batches = division_obj.batch_set.all()
+                                        if not division_batches:
+                                            data['logs'].append(f"No batch found in the division at {row}")
+                                            raise Exception(f"No batch found in the division at {row}")
+                                        #  check if the batch is included in the subject list or not                                
+                                        allowed_batches = check_for_batch_includance(requirements['subject'],division_batches)
+                                        if not allowed_batches:
+                                            data['logs'].append(f"No batches are allowed in the subject at {row}")
+                                            raise Exception(f"No batches are allowed in the subject at {row}")
+                                        requirements['batches'] = allowed_batches
+                                    elif info['stream'] == 'BE':
+                                        division_obj = semester_obj.division_set.filter(division_name=info['div']).first()
+                                        if not division_obj:
+                                            data['logs'].append(f"Division not found for at {row}")
+                                            raise Exception(f'Division not found for at {row}')
+                                        
+                                        # Now get the timetable object of this division
+                                        timetable_object = division_obj.timetable_set.first()
+                                        if not timetable_object:
+                                            data['logs'].append(f"Timetable not found for division at {row}")
+                                            raise Exception(f'Timetable not found for division at {row}')
+
+                                        # Get the schedule Object of current day
+                                        requirements['schedule'] = timetable_object.schedule_set.filter(day=day).first()
+                                        if not requirements['schedule']:
+                                            data['logs'].append(f"Schedule not found for day {day} at {row}")
+                                            raise Exception(f"Schedule not found for day {day} at {row}")
+
+                                        # Get the batch
+                                        if info['batch']:
+                                            # Now we can get the batch
+                                            requirements['batches'] = division_obj.batch_set.filter(batch_name=info['batch'])
+                                            if not requirements['batches']:
+                                                data['logs'].append(f"Batch not found with name at {row}")
+                                                raise Exception(f"Batch not found with name at {row}")
+                                        else:
+                                            division_batches = division_obj.batch_set.all()
+                                            if not division_batches:
+                                                data['logs'].append(f"No batches found in the division at {row}")
+                                                raise Exception(f"No batches found in the division at {row}")
+
+                                            # Check if the batches are included in the subject list or not
+                                            allowed_batches = check_for_batch_includance(requirements['subject'], division_batches)
+                                            if not allowed_batches:
+                                                data['logs'].append(f"No batches are allowed in the subject at {row}")
+                                                raise Exception(f"No batches are allowed in the subject at {row}")
+                                            
+                                            requirements['batches'] = allowed_batches
+
+                                    else:
+                                        data['logs'].append(f"Unidentified stream found at {row}")
+                                        raise Exception('Unidentified stream found')
+                                    # Now we can add the lectures
+                                    lecture_obj,created = Lecture.objects.get_or_create(start_time=requirements['time_info']['start_time'],end_time=requirements['time_info']['end_time'],schedule=requirements['schedule'],subject=requirements['subject'])
+                                    if created:
+                                        lecture_obj.type=requirements['type']                                
+                                        lecture_obj.teacher=requirements['teacher']
+                                        lecture_obj.classroom=requirements['classroom']
+                                        lecture_obj.save()                                
+                                        lecture_obj.batches.add(*requirements['batches'])
+                                        # Need to create lecture sessions for this particular lecture...after that the cronjob will take care of it
+                                        today = datetime.datetime.now().date()                    
+                                        if lecture_obj:
+                                            batches = lecture_obj.batches.all()
+                                            lecture_session,created = Session.objects.get_or_create(lecture=lecture_obj,day=today,active='pre')
+                                            if created:             
+                                                students = Student.objects.filter(batch__in=batches)
+                                                for student in students:
+                                                    attendance_obj = Attendance.objects.create(student=student)
+                                                    lecture_session.attendances.add(attendance_obj)
+                                            data['logs'].append(f'Lecture added at {row[faculty]}')
+                                        else:
+                                            data['logs'].append(f"Lecture does not exists at {row}")
+                                            raise Exception('Lecture does not exists')                                
+                                    else:
+                                        data['logs'].append(f"Lecture already exists for this timeslot {row}")                                        
+                        i += 1                                
+                            
+                return JsonResponse(data,status=200)
+            else:
+                raise Exception('Parameters missing')
+        else:
+            raise Exception("You're not allowed to perform this action")
     except Exception as e:
         print(e)
         data['message'] = str(e)
