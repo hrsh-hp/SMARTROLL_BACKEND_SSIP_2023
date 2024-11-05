@@ -21,9 +21,13 @@ class StreamSerializer(serializers.ModelSerializer):
         
 
 class DivisionSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
     class Meta:
         model = Division
-        fields = ['division_name','slug']
+        fields = ['division_name','slug','full_name']
+    
+    def get_full_name(self,obj):
+        return obj.__str__()
 
 
 class BatchSerializer(serializers.ModelSerializer):

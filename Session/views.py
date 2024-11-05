@@ -10,6 +10,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.db import transaction
 from django.core.cache import cache
+from .utils import notify_teacher_about_marking
 
 
 channel_layer = get_channel_layer()
@@ -119,7 +120,7 @@ def haversine_distance_in_meters(lat1, lon1, lat2, lon2):
 def mark_attendance_for_student(request):
     data = {'data':None,'error':False,'message':None,"code":None}
     try:
-        if request.user.role == 'student':
+        if request.user.role == 'student':            
             student_obj = Student.objects.filter(profile=request.user).first()
             if cache.get(f"attendance_{student_obj.slug}"):
                 raise Exception("You've recently tried to mark your attendace....try again after a few seconds!!")
@@ -152,13 +153,15 @@ def mark_attendance_for_student(request):
                                             async_to_sync(channel_layer.group_send)(channel_name, {"type": "attendance.marked",'message':attendance_serialized.data})
                                             data['data'] = True
                                             data['code'] = 100
-                                            # Here we need to hit the node js endpoint
+                                            # Here we need to hit the node js endpoint                                            
+                                            response = notify_teacher_about_marking(session_id=session_obj.session_id,student_obj=student_obj)
+                                            print(response)
                                             return Response(data,status=200)
                                         else:
                                             data['code'] = 100                                                                            
                                             raise Exception("Your attendance has already been marked")
                                 else:
-                                        raise Exception("You're not part of this attendance session :\\")
+                                    raise Exception("You're not part of this attendance session :\\")
                             elif session_obj.active == 'post':
                                 data['code'] = 100
                                 raise Exception('Attendance session has been ended!!')

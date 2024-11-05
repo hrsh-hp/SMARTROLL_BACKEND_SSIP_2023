@@ -5,8 +5,8 @@ from django.http import JsonResponse
 from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream
 from StakeHolders.models import Admin,Teacher,Student,NotificationSubscriptions,SuperAdmin
 from Profile.models import Profile
-from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer
-from Manage.models import Semester,Subject,Branch,College,Term
+from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer
+from Manage.models import Semester,Subject,Branch,College,Term,Stream
 from Session.models import Session,Attendance
 import pandas as pd
 from django.contrib.auth import get_user_model
@@ -1306,6 +1306,53 @@ def upload_master_timetable(request):
                 raise Exception('Parameters missing')
         else:
             raise Exception("You're not allowed to perform this action")
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True        
+        return JsonResponse(data,status=500)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_streams(request):
+    try:
+        data = {'data':None,'error':False,'message':None}        
+        if request.user.role == 'admin':
+            admin_obj = Admin.objects.filter(profile=request.user).first()
+            if not admin_obj:raise Exception("Admin does not exists")
+            branch_obj = admin_obj.branch_set.first()
+            if not branch_obj:raise Exception("Branch does not exists")
+            streams = branch_obj.stream_set.all()
+            if not streams:raise Exception("No streams found")
+            streams_serialized = StreamSerializer(streams,many=True)
+            data['data'] = streams_serialized.data
+            return JsonResponse(data,status=200)
+        else:
+            raise Exception("You're not allowed to perform this action")
+
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True        
+        return JsonResponse(data,status=500)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_divisions_from_stream(request,stream_slug):
+    try:
+        data = {'data':None,'error':False,'message':None}        
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")
+        admin_obj = Admin.objects.filter(profile=request.user).first()
+        if not admin_obj:raise Exception("Admin does not exists")
+        stream_obj = Stream.objects.filter(slug=stream_slug).first()
+        if not stream_obj: raise Exception("Stream does not exists")
+        semesters = Semester.objects.filter(stream=stream_obj)
+        if not semesters:raise Exception("No semester found")
+        divisions = Division.objects.filter(semester__in=semesters)
+        if not divisions:raise Exception("No division found")
+        divisions_serialized = DivisionSerializer(divisions,many=True)
+        data['data'] = divisions_serialized.data
+        return JsonResponse(data,status=200)        
     except Exception as e:
         print(e)
         data['message'] = str(e)
