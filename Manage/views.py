@@ -499,22 +499,18 @@ def get_teachers(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_timetable(request):
+def get_timetable(request,division_slug):
     try:    
         data = {'data':None,'error':False,'message':None}    
-        if request.user.role == 'admin':            
-            body = request.query_params
-            if 'division_slug' in body:
-                division_obj = Division.objects.filter(slug=body['division_slug']).first()
-                timetable_obj = TimeTable.objects.filter(division=division_obj).first()
-                if timetable_obj:
-                    timetable_serialized = TimeTableSerializer(timetable_obj)
-                    data['data'] = timetable_serialized.data
-                    return JsonResponse(data,status=200)
-                else:
-                    raise Exception('No timetable exists for this division')
+        if request.user.role == 'admin':                        
+            division_obj = Division.objects.filter(slug=division_slug).first()
+            timetable_obj = TimeTable.objects.filter(division=division_obj).first()
+            if timetable_obj:
+                timetable_serialized = TimeTableSerializer(timetable_obj)
+                data['data'] = timetable_serialized.data
+                return JsonResponse(data,status=200)
             else:
-                raise Exception('Credentials not provided')
+                raise Exception('No timetable exists for this division')
         else:
             raise Exception("You're not allowed to perform this action")
     except Exception as e:

@@ -34,7 +34,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = ['slug','profile','branch']
+        fields = ['slug','profile','branch','teacher_code']
     
     def get_branch(self,obj):
         branch = obj.branch_set.first()

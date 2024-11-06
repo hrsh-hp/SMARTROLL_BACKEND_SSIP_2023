@@ -27,7 +27,7 @@ class DivisionSerializer(serializers.ModelSerializer):
         fields = ['division_name','slug','full_name']
     
     def get_full_name(self,obj):
-        return obj.__str__()
+        return f"Division - {obj.division_name} | Sem - {obj.semester.no}"
 
 
 class BatchSerializer(serializers.ModelSerializer):
@@ -321,7 +321,9 @@ class LectureSerializer(serializers.ModelSerializer):
             return None
         
     def get_teacher(self,obj):
-        return obj.teacher.profile.name
+        from StakeHolders.serializers import TeacherSerializer
+        teacher_serialized = TeacherSerializer(obj.teacher)
+        return teacher_serialized.data
 
     def get_session(self,obj):
         today= datetime.now().date()
