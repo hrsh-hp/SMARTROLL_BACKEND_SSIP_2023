@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='stream',
             name='title',
-            field=models.CharField(choices=[('BE', "Bachelor's"), ('ME', "Master's")], default='blank_title', max_length=2),
+            field=models.CharField(choices=[('BE', "Bachelor's"), ('ME', "Master's")], default='blank_title', max_length=20),
             preserve_default=False,
         ),
     ]

@@ -67,7 +67,7 @@ stream_choices = [
 ]
 
 class Stream(models.Model):
-    title = models.CharField(max_length=2,choices=stream_choices)
+    title = models.CharField(max_length=20,choices=stream_choices)
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
     students = models.ManyToManyField(Student,blank=True)   
     slug = models.SlugField(unique=True,null=True,blank=True)
@@ -126,14 +126,33 @@ class Batch(models.Model):
         return f"Batch - {self.batch_name} | {self.division}"
     
 class Subject(models.Model):
-    subject_name = models.CharField(max_length=255)
-    short_name = models.CharField(max_length=20)
     code = models.CharField(unique=True,max_length=20,null=True,blank=True)
-    credit = models.IntegerField()
+    eff_from=models.CharField(max_length=20,null=True,blank=True)
+    subject_name = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=20,null=True,blank=True)
+    category = models.CharField(max_length=255,null=True,blank=True)
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)    
+    L=models.PositiveIntegerField(null=True,blank=True)    
+    P=models.PositiveIntegerField(null=True,blank=True)
+    T=models.PositiveIntegerField(null=True,blank=True)
+    credit = models.IntegerField(null=True,blank=True)
+    E=models.PositiveIntegerField(null=True,blank=True)
+    M=models.PositiveIntegerField(null=True,blank=True)
+    I=models.PositiveIntegerField(null=True,blank=True)
+    V=models.PositiveIntegerField(null=True,blank=True)
+    total_marks = models.PositiveIntegerField(null=True,blank=True)
+    is_elective=models.BooleanField(default=False)
+    is_practical=models.BooleanField(default=False)
+    is_theory=models.BooleanField(default=False)
+    is_semipractical=models.BooleanField(default=False)
+    is_functional=models.BooleanField(default=False)
+    practical_exam_duration = models.FloatField(null=True,blank=True)
+    theory_exam_duration = models.FloatField(null=True,blank=True)
+    remark=models.TextField(null=True,blank=True)
     included_batches = models.ManyToManyField(Batch,blank=True)
+    finalized = models.BooleanField(default=False)
     slug = models.SlugField(unique=True,null=True,blank=True)
-
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = generate_unique_hash()                                

@@ -167,17 +167,17 @@ if DEBUG:
             'NAME': DATABASE_DIR,
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': os.environ.get('DB_USER'),
-            'PASSWORD': os.environ.get('DB_PASS'),
-            'HOST': os.environ.get('DB_HOST'),
-            'PORT': os.environ.get('DB_PORT')
-        }
-    }
+# else:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'smartroll',            # The database name you created
+#         'USER': 'manav1011',            # The user you set in pg_hba.conf
+#         'PASSWORD': 'Manav@1011',       # The password you set in pg_hba.conf
+#         'HOST': '50.17.207.10',  # Public IP of your EC2 instance
+#         'PORT': '5432',                 # Default PostgreSQL port
+#     }
+# }
 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
