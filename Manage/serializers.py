@@ -1,4 +1,4 @@
-from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream
+from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream,PermanentSubject
 from datetime import datetime
 from rest_framework import serializers
 from Session.models import Session,Attendance
@@ -42,13 +42,20 @@ class SemesterSerializer(serializers.ModelSerializer):
         model = Semester
         fields = ['slug','no','status','stream']
 
+
+class PermanentSubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PermanentSubject
+        fields = ['code','eff_from','subject_name','short_name','category','L','P','T','credit','E','M','I','V','total_marks','is_elective','is_practical','is_theory','is_semipractical','is_functional','practical_exam_duration','theory_exam_duration','remark','finalized','slug']
+
 class SubjectSerializer(serializers.ModelSerializer):
     semester = SemesterSerializer()
     included_batches = BatchSerializer(many=True)
     stream = serializers.SerializerMethodField()
+    subject_map = PermanentSubjectSerializer()
     class Meta:
         model = Subject
-        fields = ['slug', 'subject_name', 'code', 'credit','stream','semester','included_batches']
+        fields = ['subject_map','stream','semester','included_batches','slug']
 
     def get_stream(self,obj):
         return obj.semester.stream.title

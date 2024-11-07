@@ -125,13 +125,12 @@ class Batch(models.Model):
     def __str__(self) -> str:
         return f"Batch - {self.batch_name} | {self.division}"
     
-class Subject(models.Model):
+class PermanentSubject(models.Model):
     code = models.CharField(unique=True,max_length=20,null=True,blank=True)
     eff_from=models.CharField(max_length=20,null=True,blank=True)
     subject_name = models.CharField(max_length=255)
     short_name = models.CharField(max_length=20,null=True,blank=True)
-    category = models.CharField(max_length=255,null=True,blank=True)
-    semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)    
+    category = models.CharField(max_length=255,null=True,blank=True)    
     L=models.PositiveIntegerField(null=True,blank=True)    
     P=models.PositiveIntegerField(null=True,blank=True)
     T=models.PositiveIntegerField(null=True,blank=True)
@@ -148,9 +147,23 @@ class Subject(models.Model):
     is_functional=models.BooleanField(default=False)
     practical_exam_duration = models.FloatField(null=True,blank=True)
     theory_exam_duration = models.FloatField(null=True,blank=True)
-    remark=models.TextField(null=True,blank=True)
-    included_batches = models.ManyToManyField(Batch,blank=True)
+    remark=models.TextField(null=True,blank=True)    
     finalized = models.BooleanField(default=False)
+    slug = models.SlugField(unique=True,null=True,blank=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_hash()                                
+        super(PermanentSubject, self).save(*args, **kwargs)
+    
+
+    def __str__(self) -> str:
+        return f"{self.subject_name}"
+    
+class Subject(models.Model):
+    semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)
+    included_batches = models.ManyToManyField(Batch,blank=True)    
+    subject_map = models.ForeignKey(PermanentSubject,on_delete=models.CASCADE,blank=True,null=True)
     slug = models.SlugField(unique=True,null=True,blank=True)
     
     def save(self, *args, **kwargs):
@@ -160,7 +173,7 @@ class Subject(models.Model):
     
 
     def __str__(self) -> str:
-        return f"{self.subject_name} | {self.semester}"
+        return f"{self.subject_map.subject_name} | {self.semester}"
     
 class TimeTable(models.Model):
     division = models.ForeignKey(Division,on_delete=models.CASCADE)
@@ -187,7 +200,7 @@ class GPSCoordinates(models.Model):
 class Classroom(models.Model):
     class_name = models.CharField(max_length = 20)    
     slug = models.SlugField(unique=True,null=True,blank=True)
-    branch = models.ManyToManyField(Branch,null=True,blank=True)
+    branch = models.ManyToManyField(Branch)
     gps_coordinates = models.ForeignKey(GPSCoordinates,blank=True,null=True,on_delete=models.DO_NOTHING)
 
 
