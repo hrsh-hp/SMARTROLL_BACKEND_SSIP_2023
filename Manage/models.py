@@ -46,7 +46,6 @@ class Term(models.Model):
 
 class Branch(models.Model):
     branch_name = models.CharField(max_length=255)    
-    branch_code = models.CharField(unique=True,null=True,blank=True,max_length=3)
     admins = models.ManyToManyField(Admin,blank=True)
     teachers = models.ManyToManyField(Teacher,blank=True)
     term = models.ForeignKey(Term,on_delete=models.CASCADE,null=True,blank=True) 
@@ -68,9 +67,16 @@ stream_choices = [
 
 class Stream(models.Model):
     title = models.CharField(max_length=20,choices=stream_choices)
+    stream_code = models.CharField(null=True,blank=True,max_length=3)
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
     students = models.ManyToManyField(Student,blank=True)   
     slug = models.SlugField(unique=True,null=True,blank=True)
+
+    class Meta:
+        # Ensuring that stream_code is unique within a term, not globally.
+        constraints = [
+            models.UniqueConstraint(fields=['stream_code', 'branch'], name='unique_stream_code_in_term')
+        ]
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -126,7 +132,10 @@ class Batch(models.Model):
         return f"Batch - {self.batch_name} | {self.division}"
     
 class PermanentSubject(models.Model):
-    code = models.CharField(unique=True,max_length=20,null=True,blank=True)
+    degree = models.CharField(max_length=20,null=True,blank=True)
+    stream_code = models.CharField(max_length=20,null=True,blank=True)
+    sem_year=models.PositiveIntegerField(null=True,blank=True)
+    subject_code = models.CharField(max_length=20,null=True,blank=True)
     eff_from=models.CharField(max_length=20,null=True,blank=True)
     subject_name = models.CharField(max_length=255)
     short_name = models.CharField(max_length=20,null=True,blank=True)
@@ -134,7 +143,7 @@ class PermanentSubject(models.Model):
     L=models.PositiveIntegerField(null=True,blank=True)    
     P=models.PositiveIntegerField(null=True,blank=True)
     T=models.PositiveIntegerField(null=True,blank=True)
-    credit = models.IntegerField(null=True,blank=True)
+    credit = models.FloatField(null=True,blank=True)
     E=models.PositiveIntegerField(null=True,blank=True)
     M=models.PositiveIntegerField(null=True,blank=True)
     I=models.PositiveIntegerField(null=True,blank=True)
@@ -145,10 +154,9 @@ class PermanentSubject(models.Model):
     is_theory=models.BooleanField(default=False)
     is_semipractical=models.BooleanField(default=False)
     is_functional=models.BooleanField(default=False)
-    practical_exam_duration = models.FloatField(null=True,blank=True)
-    theory_exam_duration = models.FloatField(null=True,blank=True)
-    remark=models.TextField(null=True,blank=True)    
-    finalized = models.BooleanField(default=False)
+    practical_exam_duration = models.CharField(max_length=20,null=True,blank=True)
+    theory_exam_duration = models.CharField(max_length=20,null=True,blank=True)
+    remark=models.TextField(null=True,blank=True)        
     slug = models.SlugField(unique=True,null=True,blank=True)
     
     def save(self, *args, **kwargs):

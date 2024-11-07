@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Subject,College,Branch,Stream,Semester,Division,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,GPSCoordinates
+from .models import Subject,College,Branch,Stream,Semester,Division,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,GPSCoordinates,PermanentSubject
 
 # Register your models here.
 
+admin.site.register(PermanentSubject)
 admin.site.register(Subject)
 admin.site.register(College)
 admin.site.register(Branch)

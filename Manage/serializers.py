@@ -11,13 +11,13 @@ class CollegeSerializer(serializers.ModelSerializer):
 class BranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
-        fields = ['branch_name','branch_code','slug']
+        fields = ['branch_name','slug']
 
 class StreamSerializer(serializers.ModelSerializer):
     branch = BranchSerializer()
     class Meta:
         model = Stream
-        fields = ['title','slug','branch']    
+        fields = ['title','stream_code','slug','branch']    
         
 
 class DivisionSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class SemesterSerializer(serializers.ModelSerializer):
 class PermanentSubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = PermanentSubject
-        fields = ['code','eff_from','subject_name','short_name','category','L','P','T','credit','E','M','I','V','total_marks','is_elective','is_practical','is_theory','is_semipractical','is_functional','practical_exam_duration','theory_exam_duration','remark','finalized','slug']
+        fields = ['stream_code','sem_year','subject_code','eff_from','subject_name','short_name','category','L','P','T','credit','E','M','I','V','total_marks','is_elective','is_practical','is_theory','is_semipractical','is_functional','practical_exam_duration','theory_exam_duration','remark','finalized','slug']
 
 class SubjectSerializer(serializers.ModelSerializer):
     semester = SemesterSerializer()

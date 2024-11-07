@@ -49,7 +49,9 @@ for course in courses:
             
             # Execute JavaScript to retrieve 'data' variable from the page if the element exists
             script = """
-                var table = $('#GridViewToCategory');
+                            // Select the table by ID
+            var table = $('#GridViewToCategory');
+
             // Find the first <tr> inside the <tbody>
             var firstRow = table.find('tbody').first().find('tr').first();
             var headers = []
@@ -71,7 +73,11 @@ for course in courses:
                     var textContent = $(this).text().replace(/\s+/g, ' ').trim(); // Clean the text (remove excessive spaces)
                     if(textContent.length > 0){
                         if(count<16){
-                            single_obj[headers[count]] = textContent
+                            if(single_obj[headers[count]] == undefined){
+                                single_obj[headers[count]] = textContent   
+                            }else{
+                            single_obj[`${headers[count]}2`] =textContent
+                            }
                         }else{
                             var parts = textContent.split(':');
                             var key = parts[0].trim(); // Key before the colon
