@@ -2,11 +2,10 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
-from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream
+from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream,PermanentSubject,Semester,Subject,Branch,College,Term,Stream
 from StakeHolders.models import Admin,Teacher,Student,NotificationSubscriptions,SuperAdmin
 from Profile.models import Profile
 from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer
-from Manage.models import Semester,Subject,Branch,College,Term,Stream
 from Session.models import Session,Attendance
 import pandas as pd
 from django.contrib.auth import get_user_model
@@ -1371,6 +1370,25 @@ def get_semsters_from_stream(request,stream_slug):
         semesters_serialized = SemesterSerializer(semesters,many=True)
         data['data'] = semesters_serialized.data
         return JsonResponse(data,status=200)        
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True        
+        return JsonResponse(data,status=500)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_subjects_to_semester(request):
+    try:
+        data = {'data':None,'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
+        body = request.data
+        if 'subject_slugs' not in body or 'semester_slug' not in body:raise Exception("Parameters missing")
+        semester_obj = Semester.objects.get(slug=body['semester_slug'])
+        permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])
+        subjects = [Subject.objects.create(semester=semester_obj,subject_map=permanent_subject) for permanent_subject in permanent_subjects]    
+        subjects_serialized = SubjectSerializer(subjects,many=True)
+        data['data'] = subjects_serialized.data
     except Exception as e:
         print(e)
         data['message'] = str(e)

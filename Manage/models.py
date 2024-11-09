@@ -135,6 +135,7 @@ class PermanentSubject(models.Model):
     stream_code = models.CharField(max_length=20,null=True,blank=True)
     sem_year=models.PositiveIntegerField(null=True,blank=True)
     subject_code = models.CharField(max_length=20,null=True,blank=True)
+    acedemic_year = models.CharField(max_length=20,null=True,blank=True)
     eff_from=models.CharField(max_length=20,null=True,blank=True)
     subject_name = models.CharField(max_length=255)
     short_name = models.CharField(max_length=20,null=True,blank=True)
