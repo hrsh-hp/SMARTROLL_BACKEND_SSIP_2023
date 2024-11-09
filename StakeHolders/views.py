@@ -1,6 +1,10 @@
 from asyncio import exceptions
 from django.shortcuts import render
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
+from typing import Any, Dict, Optional, Type, TypeVar
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.settings import api_settings
+from django.contrib.auth.models import update_last_login
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,    
     TokenRefreshView,
@@ -36,31 +40,47 @@ def send_forgot_password_mail(receiver,student_slug,host):
         sent = False
     return sent
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):        
-        token = super().get_token(user)
-        if user:                        
-            if user.role == 'superadmin':                   
-                admin_obj = SuperAdmin.objects.get(profile=user)
-                admin_serializer = SuperAdminSerializer(admin_obj,many=False)
-                token['obj'] = admin_serializer.data  
+class CustomTokenObtainPairSerializer(TokenObtainSerializer):
+    token_class = RefreshToken
+    def validate(self, attrs: Dict[str, Any]) -> Dict[str, str]:
+        data = super().validate(attrs)
+        if self.user.role == 'superadmin':                   
+            admin_obj = SuperAdmin.objects.get(profile=self.user)
+            admin_serializer = SuperAdminSerializer(admin_obj,many=False)
+            token = self.get_token(self.user)
+            token['obj'] = admin_serializer.data  
+            data["refresh"] = str(token)
+            data["access"] = str(token.access_token)
+        if self.user.role == 'admin':                
+            admin_obj = Admin.objects.get(profile=self.user)
+            admin_serializer = AdminSerializer(admin_obj,many=False)
+            token = self.get_token(self.user)
+            token['obj'] = admin_serializer.data  
+            data["refresh"] = str(token)
+            data["access"] = str(token.access_token)
 
-            if user.role == 'admin':                
-                admin_obj = Admin.objects.get(profile=user)
-                admin_serializer = AdminSerializer(admin_obj,many=False)
-                token['obj'] = admin_serializer.data  
+        if self.user.role == 'teacher':     
+            teacher_obj = Teacher.objects.get(profile=self.user)
+            teacher_serialized = TeacherSerializer(teacher_obj,many=False)
+            token = self.get_token(self.user)
+            token['obj'] = teacher_serialized.data
+            data["refresh"] = str(token)
+            data["access"] = str(token.access_token)
 
-            if user.role == 'teacher':                
-                teacher_obj = Teacher.objects.get(profile=user)
-                teacher_serialized = TeacherSerializer(teacher_obj,many=False)
-                token['obj'] = teacher_serialized.data  
-
-            if user.role == 'student':                
-                student_obj = Student.objects.get(profile=user)
+        if self.user.role == 'student':                  
+            student_obj = Student.objects.get(profile=self.user)
+            if student_obj.is_active:
                 student_serialized = StudentSerializer(student_obj,many=False)
-                token['obj'] = student_serialized.data                  
-        return token
+                token = self.get_token(self.user)
+                token['obj'] = student_serialized.data
+                data["refresh"] = str(token)
+                data["access"] = str(token.access_token)
+            else:
+                data = {'error':True,'code':112500,'message':'Please set new password','student_slug':student_obj.slug}
+        if api_settings.UPDATE_LAST_LOGIN:
+            update_last_login(None, self.user)
+
+        return data
 
 
 @api_view(['GET'])
@@ -121,7 +141,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     `if user does not exists`
     - Response status code will be another than 200.
     """    
-    serializer_class = CustomTokenObtainPairSerializer    
+    serializer_class = CustomTokenObtainPairSerializer
 
 class CustomTokenRefreshView(TokenRefreshView):
     """    
@@ -134,6 +154,32 @@ class CustomTokenRefreshView(TokenRefreshView):
     - `If refresh token is not valid`: Response status code will be another than 200.
     """        
 
+@api_view(['POST'])
+def set_new_password_for_student(request):
+    try:
+        data = {'data':None,'error':False,'message':None}
+        body = request.data
+        if 'student_slug' not in body or 'password' not in body:
+            raise Exception('Parameters missing')        
+        student_obj = Student.objects.get(slug=body['student_slug'])
+        student_obj.profile.set_password(body['password'])
+        student_obj.profile.save()
+        student_obj.is_active = True
+        student_obj.save()
+        TokenObtainSerializer.token_class = RefreshToken
+        token = TokenObtainSerializer.get_token(student_obj.profile)
+        student_serialized = StudentSerializer(student_obj,many=False)        
+        token['obj'] = student_serialized.data
+        data = {}
+        data["refresh"] = str(token)
+        data["access"] = str(token.access_token)        
+        return JsonResponse(data, status=200)
+
+    except Exception as e:
+        print(e)
+        data['error'] = True
+        data['message'] = str(e)
+        return JsonResponse(data, status=500)
 @api_view(['POST'])
 def forgot_password(request):
     try:

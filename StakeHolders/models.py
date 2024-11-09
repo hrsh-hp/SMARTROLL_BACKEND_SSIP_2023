@@ -66,6 +66,8 @@ class Student(models.Model):
     slug = models.SlugField(unique=True, null=True, blank=True)
     sr_no = models.PositiveIntegerField(null=True,blank=True)
     web_push_subscription = models.ManyToManyField(NotificationSubscriptions,blank=True)
+    is_active = models.BooleanField(default=False)
+
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -74,7 +76,7 @@ class Student(models.Model):
     
     
     def __str__(self) -> str:
-        return self.profile.email if self.profile.email else self.profile.name
+        return f"{self.enrollment} | {self.profile.email if self.profile.email else self.profile.name}"
 
 @receiver(post_delete, sender=Student)
 def delete_related_profile(sender, instance, **kwargs):
