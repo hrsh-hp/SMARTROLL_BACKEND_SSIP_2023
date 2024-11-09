@@ -51,7 +51,6 @@ class Branch(models.Model):
     term = models.ForeignKey(Term,on_delete=models.CASCADE,null=True,blank=True) 
     slug = models.SlugField(unique=True,null=True,blank=True)
 
-
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = generate_unique_hash()            
@@ -86,14 +85,14 @@ class Stream(models.Model):
     def __str__(self) -> str:
         return f"Stream - {self.title} | {self.branch}"
 
-
 class Semester(models.Model):
     no = models.IntegerField()    
     status = models.BooleanField(default=True)
-    slug = models.SlugField(unique=True,null=True,blank=True)
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField()    
     stream = models.ForeignKey(Stream,on_delete=models.CASCADE,null=True,blank=True)
+    subjects_finalized = models.BooleanField(default=False)
+    slug = models.SlugField(unique=True,null=True,blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -1,0 +1,1805 @@
+{
+  "applied mechanics": {
+    "faculties": [
+      {
+        "name": "Dr. Major Chaitanya Sanghvi",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Major Chaitanya-Sanghvi-chaitanya.sanghvi.98-vfAdx6Y63O.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/chaitanya.sanghvi.98",
+        "phone": "9428350436"
+      },
+      {
+        "name": "Dr. Gopal Tank",
+        "jobTitle": "Professor",
+        "imageUrl": "/images/profile/user/photo/Gopal-Tank-goapl.tank.772-QTErQQNefx.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/goapl.tank.772",
+        "phone": "9429569599"
+      },
+      {
+        "name": "Mr. Mayur Vanza",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Mayur-Vanza-mayur.vanza.674-AneDNQ7sqM.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mayur.vanza.674",
+        "phone": "9825187523"
+      },
+      {
+        "name": "Mr. Deepak Tarachandani",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Deepak-Tarachandani-deepak.tarachandani.252-unIK6cbYoJ.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/deepak.tarachandani.252",
+        "phone": "7878987888"
+      },
+      {
+        "name": "Mrs. Priti Mehta",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Priti-Mehta-priti.mehta.302-faQUe6dYAa.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/priti.mehta.302",
+        "phone": "8238028439"
+      },
+      {
+        "name": "Mrs. ALPA SHAH",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/ALPA-SHAH-alpa.shah.803-5r4fu8BMgi.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/alpa.shah.803",
+        "phone": "9824091081"
+      },
+      {
+        "name": "Mr. Ashwinkumar Hansora",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Ashwin-Hansora-ashwin.hansora.50-1hj7n4QGx9.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/ashwin.hansora.50",
+        "phone": "9978508837"
+      },
+      {
+        "name": "Mrs. Payal Andharia",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Payal-Andharia-payal.andharia.644-XDLle84e81.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/payal.andharia.644",
+        "phone": "9879538139"
+      },
+      {
+        "name": "Dr. Poonam Modi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Poonam-Modi-poonam.modi.682-Ey5YC8Mbpp.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/poonam.modi.682",
+        "phone": "9825890731"
+      },
+      {
+        "name": "Mr. Chintan Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Chintan-Patel-chintan.patel.215-5ZD65pFWls.png",
+        "profileLink": "https://ldce.ac.in/faculty/chintan.patel.215",
+        "phone": "9974100460"
+      },
+      {
+        "name": "Mr. BANSAL PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/BANSAL-PATEL-bansal.patel.744-k6vUtgC5qX.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/bansal.patel.744",
+        "phone": "9408208918"
+      },
+      {
+        "name": "Mrs. Kamini Parmar",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Kamini-Parmar-kamini.parmar.748-REYYN3yclI.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/kamini.parmar.748",
+        "phone": "9925371402"
+      },
+      {
+        "name": "Mrs. patel usha",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/patel-usha-patel.usha.219-ASBYXHr5eX.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/patel.usha.219",
+        "phone": "9879592422"
+      },
+      {
+        "name": "Miss. Shalini Singh",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Shalini-Singh-shalini.singh.735-AeDHgPXFeQ.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/shalini.singh.735",
+        "phone": "8218851501"
+      },
+      {
+        "name": "Dr. Manish Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Manish-Shah-manish.shah.867-2HAL2UhRdJ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/manish.shah.867",
+        "phone": "9426724617"
+      },
+      {
+        "name": "Mrs. Deepa Raval",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Deepa-Raval-deepa.raval.394-oDtPFmxCnj.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/deepa.raval.394",
+        "phone": "9029377297"
+      },
+      {
+        "name": "Dr. Yogesh Chauhan",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Yogesh-Chauhan-yogesh.chauhan.240-SVmSKbFZJD.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/yogesh.chauhan.240",
+        "phone": "9712845427"
+      }
+    ]
+  },
+  "biomedical engineering": {
+    "faculties": [
+      {
+        "name": "Dr. Manish Thakker",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Manish-Thakker-kunal.bhoyania.874-Uq40qAOPye.png",
+        "profileLink": "https://ldce.ac.in/faculty/kunal.bhoyania.874",
+        "phone": "0"
+      },
+      {
+        "name": "Miss. POOJA GOHEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/POOJA-GOHEL-poojabiomedical-vzHO3UQD9K.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/poojabiomedical",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Bhavesh Parmar",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Bhavesh-Parmar-bhparmar-URJOXWk5zA.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bhparmar",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Bhavin Mehta",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Bhavin-Mehta-bhavin.mehta.240-RvnxmZ7kls.png",
+        "profileLink": "https://ldce.ac.in/faculty/bhavin.mehta.240",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. UTKARSH PANCHOLI",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/UTKARSH-PANCHOLI-utkarsh.pancholi.726-zMxrch3wOt.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/utkarsh.pancholi.726",
+        "phone": "9099757203"
+      },
+      {
+        "name": "Miss. parikh yogita",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/parikh-yogita-parikh.yogita.609-VqfhIvG50w.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/parikh.yogita.609",
+        "phone": "9998380099"
+      },
+      {
+        "name": "Mr. Harshal Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Harshal-Patel-harshal.patel.643-U6QQnR5kf4.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/harshal.patel.643",
+        "phone": "0"
+      }
+    ]
+  },
+  "chemical engineering": {
+    "faculties": [
+      {
+        "name": "Dr. Paresh Rana",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Paresh-Rana-paresh.rana.851-zBpycVBxxk.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/paresh.rana.851",
+        "phone": "9426387928"
+      },
+      {
+        "name": "Dr. Dharmendra Mandaliya",
+        "jobTitle": "Professor",
+        "imageUrl": "/images/profile/user/photo/Dharmendra-Mandaliya-dharmendra.mandaliya.975-ThGtcju8zZ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dharmendra.mandaliya.975",
+        "phone": "9723200041"
+      },
+      {
+        "name": "Mr. Supritam Dutta",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Supritam-Dutta-supritam.dutta.586-1oFsb3eBJI.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/supritam.dutta.586",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Anjali Bishnoi",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/KANISHK-SINGH-anjali.bishnoi.470-hSytFhagjA.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/anjali.bishnoi.470",
+        "phone": "9638362368"
+      },
+      {
+        "name": "Dr. T S RAJARAMAN",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/RAJARAMAN-TS-rajaraman.ts.163-hQng1guS9e.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rajaraman.ts.163",
+        "phone": "9904267127"
+      },
+      {
+        "name": "Ronak Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Ronak-Patel-ronak.patel.487-VaFuid977h.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/ronak.patel.487",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Satish Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Satish-Shah-satish.shah.705-S4684lxWoq.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/satish.shah.705",
+        "phone": "9426322715"
+      },
+      {
+        "name": "Dr. HIRAL PANDYA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/HIRAL-PANDYA-hiral.pandya.604-6PjlyDQD1t.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hiral.pandya.604",
+        "phone": "9898131137"
+      },
+      {
+        "name": "Mr. Pratik Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Pratik-Patel-pratik.patel.502-iJZsM8Qd0R.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/pratik.patel.502",
+        "phone": "9998085728"
+      },
+      {
+        "name": "Dr. PURVI SHUKLA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/PURVI-SHUKLA-purvi.shukla.421-YNx4TqsSuH.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/purvi.shukla.421",
+        "phone": "9974276507"
+      },
+      {
+        "name": "Mrs. RAJUL BHATT",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/RAJUL-BHATT-rajul.bhatt.619-TzQ7M4aiZC.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rajul.bhatt.619",
+        "phone": "9879179722"
+      },
+      {
+        "name": "Miss. Nikita Ambegaonkar",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Nikita-Ambegaonkar-nikita.ambegaonkar.515-0CzXrsLVip.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/nikita.ambegaonkar.515",
+        "phone": "8511359981"
+      },
+      {
+        "name": "Sandip Bhatt",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Sandip-Bhatt-sandip.bhatt.698-LNs6An0Z4a.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sandip.bhatt.698",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Piyush Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Piyush-Patel-piyush.patel.64-0XRpfx69BH.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/piyush.patel.64",
+        "phone": "9924497653"
+      }
+    ]
+  },
+  "civil engineering": {
+    "faculties": [
+      {
+        "name": "Dr. Rajesh Jain",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Rajesh-Jain-drrajesh.jain.475-HGdmuLbpES.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/drrajesh.jain.475",
+        "phone": "9428465778"
+      },
+      {
+        "name": "Mr. Prof. Vijay Chitaria",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Vijay-Chitaria-vijay.chitaria.107-lj2j3kM7GN.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vijay.chitaria.107",
+        "phone": "9879234120"
+      },
+      {
+        "name": "Miss.  Prof.  Rena Shukla",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Rena-shukla-rena.shukla.929-vEy0Wec0N4.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rena.shukla.929",
+        "phone": "9723757050"
+      },
+      {
+        "name": "Mrs.  Prof. Rita Jadav",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/ Prof. Rita-Jadav-rita.jadav.581-hsPSgqpZ7N.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rita.jadav.581",
+        "phone": "9978407093"
+      },
+      {
+        "name": "Dr.  Prof.  Neelam Dalal",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/ Prof.  Neelam-Dalal-neelam.dalal.182-bBbCuXzEBP.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/neelam.dalal.182",
+        "phone": "9825975027"
+      },
+      {
+        "name": "Mrs. Toral Vyas",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Toral-Vyas-toral.vyas.913-JqpzZ6a1Eg.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/toral.vyas.913",
+        "phone": "9909913836"
+      },
+      {
+        "name": "Mr. PRASHANT LALWANI",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/PRASHANT-LALWANI-prashant.lalwani.147-Hm6iaqSrWy.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/prashant.lalwani.147",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. (Prof.) Pratima Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Pratima-Shah-pratima.shah.924-RXCFtnqtZI.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/pratima.shah.924",
+        "phone": "9426593219"
+      },
+      {
+        "name": "Dr. Shivendra Jha",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Shivendra-Jha-shivendra.jha.597-jB0eW1B0T7.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/shivendra.jha.597",
+        "phone": "9879945132"
+      },
+      {
+        "name": "Dr. Mahendrasinh Gadhavi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Mahendrasinh-Gadhavi-mahendrasinh.gadhavi.308-7MfpYwXz76.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mahendrasinh.gadhavi.308",
+        "phone": "9426272328"
+      },
+      {
+        "name": "Mrs. Prof. Jalpa Modi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/jalpa-modi-jalpa.modi.125-aJyufsPJlb.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/jalpa.modi.125",
+        "phone": "9824343207"
+      },
+      {
+        "name": "Mr.  Prof. Zalakkumar Chhaya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Zalakkumar-Chhaya-zalakkumar.chhaya.109-pIPr1pKblR.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/zalakkumar.chhaya.109",
+        "phone": "9998779457"
+      },
+      {
+        "name": "Mr. Sandip Rathod",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Sandip-Rathod-sandip.rathod.321-Vi4Ag2mC4H.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/sandip.rathod.321",
+        "phone": "9427445559"
+      },
+      {
+        "name": "Mrs.  Prof. Chaitali Bhavsar",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/CHAITALI-BHAVSAR-chaitali.bhavsar.826-ztBUfBtLLS.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/chaitali.bhavsar.826",
+        "phone": "8347122517"
+      },
+      {
+        "name": "Mrs. sahista kazi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/sahista-kazi-sahista.kazi.492-mhTVQWaZS7.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sahista.kazi.492",
+        "phone": "8140336221"
+      },
+      {
+        "name": "Dr. M. M. Shaikh",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/ Prof. MohdZuned-Shaikh-mohdzuned.shaikh.911-TcYZULRzbB.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/mohdzuned.shaikh.911",
+        "phone": "9726707447"
+      },
+      {
+        "name": "Mrs.  Prof. Zarna Chovatiya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Zarna-Chovatiya-zarna.chovatiya.583-UmONLtD3Bj.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/zarna.chovatiya.583",
+        "phone": "9428709278"
+      },
+      {
+        "name": "Miss. Anjum Mirza",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Anjum-Mirza-anjum.mirza.446-lRKQUuYw3i.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/anjum.mirza.446",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Utkarsh Nigam",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Utkarsh-Nigam-utakarsh.nigam.198-hKBibqVVxd.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/utakarsh.nigam.198",
+        "phone": "7359400134"
+      },
+      {
+        "name": "Mr. Sudhanshu Dixit",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Sudhanshu-Dixit-sudhanshu.dixit.914-9EWAAvXLaM.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/sudhanshu.dixit.914",
+        "phone": "7984835849"
+      }
+    ]
+  },
+  "computer engineering": {
+    "faculties": [
+      {
+        "name": "Dr. Chirag S. Thaker",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Chirag S.-Thaker-chirag.thakar.174-sR51fJaEEe.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/chirag.thakar.174",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Tushar Raval",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Tushar-Raval-hbjethva-uYfmF5hbp3.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hbjethva",
+        "phone": "9825395959"
+      },
+      {
+        "name": "Dr. Rajyalakshmi Jaiswal",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Rajyalakshmi-Jaiswal-rjaiswal-HJE99FEE3D.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rjaiswal",
+        "phone": "9825647145"
+      },
+      {
+        "name": "Dr. Hetal Joshiyara",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Hetal-Joshiyara-hetal.joshiyara.867-zXltZfdOsW.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/hetal.joshiyara.867",
+        "phone": "9825413374"
+      },
+      {
+        "name": "Miss. Hetal Pandya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Hetal-Pandya-hetal.pandya.4-nlFxZijmsY.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/hetal.pandya.4",
+        "phone": "0"
+      },
+      {
+        "name": "Mrs. Amita Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Amita-Shah-amita.shah.15-wLLgH0S0VK.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/amita.shah.15",
+        "phone": "9408140369"
+      },
+      {
+        "name": "Dr. Dhara Buch",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Dhara-Buch-dhara.buch.585-WWBmaOeQIL.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dhara.buch.585",
+        "phone": "0"
+      },
+      {
+        "name": "Miss. HETALBEN GEVARIYA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/HETALBEN-GEVARIYA-hetalben.gevariya.386-arGZwL2oHy.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hetalben.gevariya.386",
+        "phone": "8128496659"
+      },
+      {
+        "name": "Mr. BHAVESH OZA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/BHAVESH-OZA-bhavesh.oza.324-2eJMi2iNRD.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bhavesh.oza.324",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Kalpesh Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Kalpesh-Patel-kmpatel-AerlPyH72Y.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kmpatel",
+        "phone": "9898271270"
+      },
+      {
+        "name": "Dr. Sunil Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Sunil-Patel-sunil.patel.996-LDdapcRZs7.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sunil.patel.996",
+        "phone": "9898799417"
+      },
+      {
+        "name": "Dr. Vimalkumar Vaghela",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Vimalkumar-Vaghela-vimalkumar.vaghela.679-4yQIA3tL0t.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vimalkumar.vaghela.679",
+        "phone": "9979073404"
+      },
+      {
+        "name": "Miss. Reshma Dayma",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Reshma-Dayma-reshma.dayma.426-ZNbI2eAHVi.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/reshma.dayma.426",
+        "phone": "9898130510"
+      },
+      {
+        "name": "Mr. Maitrik Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Maitrik-Shah-maitrik.shah.246-lhMEqhFzau.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/maitrik.shah.246",
+        "phone": "9537906229"
+      },
+      {
+        "name": "Mr. ZishanHaider Noorani",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/ZishanHaider-Noorani-zishan.noorani.299-2ZAfgE3k3x.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/zishan.noorani.299",
+        "phone": "9998061964"
+      },
+      {
+        "name": "Mr. Pragnesh Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Pragnesh-Patel-pragnesh.patel.240-ZfNJffZrYk.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/pragnesh.patel.240",
+        "phone": "0"
+      },
+      {
+        "name": "Miss. Shraddha Modi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Shraddha-Modi-shraddha.modi.127-cIn3AaQsez.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/shraddha.modi.127",
+        "phone": "0"
+      },
+      {
+        "name": "Miss. Prachi Pancholi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Prachi-Pancholi-prachi.pancholi.232-AXn1zl3kBa.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/prachi.pancholi.232",
+        "phone": "9426758261"
+      },
+      {
+        "name": "Dr. Nikunj Domadiya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Nikunj-Domadiya-nikunjkumar.domadiya.100-Dq69OofHhm.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/nikunjkumar.domadiya.100",
+        "phone": "0"
+      },
+      {
+        "name": "Hitesh Rajput",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Hitesh-Rajput-hitesh.rajput.446-G4YqKk7Bq4.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hitesh.rajput.446",
+        "phone": "9824474595"
+      },
+      {
+        "name": "Mr. Parth Dave",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Parth-Dave-parth.dave.11-0Zt9WTrDIS.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/parth.dave.11",
+        "phone": "9558333928"
+      },
+      {
+        "name": "Mrs. Pinal Salot",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Pinal-Salot-pinal.salot.582-IKueUnLcge.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/pinal.salot.582",
+        "phone": "8200981089"
+      },
+      {
+        "name": "Miss. Archana Gondalia",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Archana-Gondalia-archana.gondaliya.37-W0LnAGdSO9.png",
+        "profileLink": "https://ldce.ac.in/faculty/archana.gondaliya.37",
+        "phone": "7405722259"
+      },
+      {
+        "name": "Miss. Payal Prajapati",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Payal-Prajapati-payal.prajapati.129-qQGIcmjpWC.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/payal.prajapati.129",
+        "phone": "0"
+      }
+    ]
+  },
+  "electrical engineering": {
+    "faculties": [
+      {
+        "name": "Dr. KETAN BADGUJAR",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/KETAN-BADGUJAR-ketan.badgujar.11-rTmukV5kq8.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/ketan.badgujar.11",
+        "phone": "8153941900"
+      },
+      {
+        "name": "Dr. MAHIPALSINH CHUDASAMA",
+        "jobTitle": "Professor",
+        "imageUrl": "/images/profile/user/photo/MAHIPALSINH-CHUDASAMA-mahipalsinh.chudasama.951-oMkVZi2Ite.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mahipalsinh.chudasama.951",
+        "phone": "9408967676"
+      },
+      {
+        "name": "Dr. Jyoti Iyer",
+        "jobTitle": "Professor",
+        "imageUrl": "/images/profile/user/photo/Jyoti-Iyer-jyoti.iyer.735-PrlHFDM8gb.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/jyoti.iyer.735",
+        "phone": "9924125510"
+      },
+      {
+        "name": "Mr. MAHESHWARI DHARMESH",
+        "jobTitle": "Professor",
+        "imageUrl": "/images/profile/user/photo/MAHESHWARI-DHARMESH-maheshwari.dharmesh.254-dvAJ0Li7gE.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/maheshwari.dharmesh.254",
+        "phone": "9825797155"
+      },
+      {
+        "name": "Mrs. Nupur Sinha",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Nupur-Sinha-nupur.sinha.902-HcNgptd97g.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/nupur.sinha.902",
+        "phone": "9824054471"
+      },
+      {
+        "name": "Dr. BHAVIN SHAH",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/BHAVIN-SHAH-bhavin.shah.102-gISX5nmGrA.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bhavin.shah.102",
+        "phone": "9426372198"
+      },
+      {
+        "name": "Dr.   Kalpesh  Kela",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Kalpesh -Kela-kalpeshb.kela.339-dAxgzXGLV0.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kalpeshb.kela.339",
+        "phone": "9426362906"
+      },
+      {
+        "name": "Dr. V.R.  PATEL",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/V.R. -PATEL-vrpatel.ranchhodbhai.103-OdK5q9ofAj.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vrpatel.ranchhodbhai.103",
+        "phone": "9428412525"
+      },
+      {
+        "name": "Mr. jatin modi",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/jatin-modi-jatin.modi.501-0JimXrx5QI.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/jatin.modi.501",
+        "phone": "9662301869"
+      },
+      {
+        "name": "Mr. Vipul modi",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Vipul-modi-vipul.modi.514-vuaGjr3S0J.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vipul.modi.514",
+        "phone": "9426391747"
+      },
+      {
+        "name": "Mr. Alpeshkumar Upadhyay",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Alpeshkumar-Upadhyay-alpesh.upadhyay.816-AMXW5TwkIc.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/alpesh.upadhyay.816",
+        "phone": "9328201870"
+      },
+      {
+        "name": "Mrs. Zenifar parekh",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Zenifar-parekh-zenifar.parekh.265-BPuVdQtPlL.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/zenifar.parekh.265",
+        "phone": "9879126838"
+      },
+      {
+        "name": "Mr. MIHIR VASAVADA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/MIHIR-VASAVADA-mihir.vasavada.696-vhVUK02pdd.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mihir.vasavada.696",
+        "phone": "9998968842"
+      },
+      {
+        "name": "Dr. jiten chavda",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/jiten-chavda-jiten.chavda.769-yomnhcX3wh.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/jiten.chavda.769",
+        "phone": "9925119719"
+      },
+      {
+        "name": "Mr. Nilesh Rabara",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Nilesh-Rabara-nilesh.rabara.824-GUoZlUK9wJ.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/nilesh.rabara.824",
+        "phone": "9426474245"
+      },
+      {
+        "name": "Mrs. Rachana Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Rachana-Patel-rachana.patel.322-dX7Prwqh4H.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rachana.patel.322",
+        "phone": "9925041305"
+      },
+      {
+        "name": "Mr. Lalji Katariya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Lalji-Katariya-lalji.katariya.940-YTxhJ2ifcb.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/lalji.katariya.940",
+        "phone": "9727576066"
+      },
+      {
+        "name": "Mr. GAURANG BUCH",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/GAURANG-BUCH-gaurang.buch.227-3A1p6nMots.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/gaurang.buch.227",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. HEMANTKUMAR RAVAL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/HEMANTKUMAR-RAVAL-hemantkumar.raval.623-6jnxqbGXuy.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hemantkumar.raval.623",
+        "phone": "9428042496"
+      },
+      {
+        "name": "Mr. Mitul patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Mitul-patel-mitul.patel.776-NMVj6ThoMz.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mitul.patel.776",
+        "phone": "7874627937"
+      },
+      {
+        "name": "Mr. Tejas Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Tejas-Patel-tejas.patel.634-Y7lz1oGTd8.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/tejas.patel.634",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Bhavik  Chaudhari",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/B. G-Chaudhari-bhavik.chaudhari.653-vXaVFFnsOx.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bhavik.chaudhari.653",
+        "phone": "8320584176"
+      },
+      {
+        "name": "Mr. S N Shivani",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/S N-Shivani-saraswat.shivani.902-6Ni4WlKSyD.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/saraswat.shivani.902",
+        "phone": "9512450020"
+      },
+      {
+        "name": "Mr. Miteshkumar Sathvara",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Miteshkumar-Sathvara-miteshkumar.sathvara.315-ni5XAe7tHm.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/miteshkumar.sathvara.315",
+        "phone": "9662542297"
+      },
+      {
+        "name": "Mr. VIHANG DHOLAKIYA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/VIHANG-DHOLAKIYA-vihang.dholakiya.3-dbWzcdwsTi.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/vihang.dholakiya.3",
+        "phone": "9925427070"
+      },
+      {
+        "name": "Sajid Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Sajid-Patel-sajid.patel.956-I4AIZYacP2.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/sajid.patel.956",
+        "phone": "9909267646"
+      },
+      {
+        "name": "Dr. Chetan Upadhyay",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Chetan-Upadhyay-chetan.upadhyay.305-TnnwO51UYC.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/chetan.upadhyay.305",
+        "phone": "9428218822"
+      },
+      {
+        "name": "Mr. FEDRIK MACWAN",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/FEDRIK-MACWAN-fedrik.macwan.278-JwBvV9WjYh.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/fedrik.macwan.278",
+        "phone": "9909023765"
+      },
+      {
+        "name": "Dhaval Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Dhaval-Patel-dhaval.patel.811-ceTzIQkWp5.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/dhaval.patel.811",
+        "phone": "7698444407"
+      },
+      {
+        "name": "Mr. Irfan Siddiqui",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Irfan-Siddiqui-mohammedirfan.siddiqui.708-CMUdjRpyfe.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mohammedirfan.siddiqui.708",
+        "phone": "9429631872"
+      },
+      {
+        "name": "Dr. KUNAL BHATT",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/KUNAL-BHATT-kunal.bhatt.465-a2sbNngSHm.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/kunal.bhatt.465",
+        "phone": "9898128759"
+      },
+      {
+        "name": "Mr. Priyadarshi Miteshkumar",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Priyadarshi-Miteshkumar-priyadarshi.miteshkumar.865-z46rZr0hDl.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/priyadarshi.miteshkumar.865",
+        "phone": "7600051665"
+      },
+      {
+        "name": "Dr. Vijay Prajapati",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Vijay-Prajapati-vijay.prajapati.337-Ak6qs1gqGa.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vijay.prajapati.337",
+        "phone": "9904057726"
+      }
+    ]
+  },
+  "electronics communication engineering": {
+    "faculties": [
+      {
+        "name": "Dr. CHANDULAL VITHALANI",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/CHANDULAL-VITHALANI-chandulal.vithalani.324-pqHdQIRtg4.png",
+        "profileLink": "https://ldce.ac.in/faculty/chandulal.vithalani.324",
+        "phone": "9374836390"
+      },
+      {
+        "name": "Mr. Kinnar Vaghela",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Kinnar-Vaghela-kinnar.vaghela.759-2u2m6oMKFH.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kinnar.vaghela.759",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Pinky Brahmbhatt",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Pinky-Brahmbhatt-pinky.brahmbhatt.585-it1IeohU9F.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/pinky.brahmbhatt.585",
+        "phone": "9427527227"
+      },
+      {
+        "name": "Mr. Sanjay Prajapati",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Sanjay-Prajapati-sanjay.prajapati.86-munBEyqEGA.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sanjay.prajapati.86",
+        "phone": "9725004130"
+      },
+      {
+        "name": "Mr. ABHAY UPADHYAY",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/ABHAY-UPADHYAY-ec_upadhyayab-pJmZNQlBDm.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/ec_upadhyayab",
+        "phone": "9824047727"
+      },
+      {
+        "name": "Miss. Sima Gonsai",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/JAYESH-GAUSWAMI-sima.gonsai.946-JmN23e9ouV.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sima.gonsai.946",
+        "phone": "7014025414"
+      },
+      {
+        "name": "Mrs. Priti Muliya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Priti-Muliya-priti.muliya.171-khr2UJgxBK.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/priti.muliya.171",
+        "phone": "9824694051"
+      },
+      {
+        "name": "Mrs. Kinjal Sheth",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Kinjal-Sheth-kinjal.sheth.502-DsH6mfT5Ty.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kinjal.sheth.502",
+        "phone": "9428131070"
+      },
+      {
+        "name": "Dr. Pankajkumar Prajapati",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Pankajkumar-Prajapati-pankaj.prajapati.732-JbUelFljFj.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/pankaj.prajapati.732",
+        "phone": "9898018534"
+      },
+      {
+        "name": "Dr. Nirali Kotak",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Nirali-Kotak-nirali.kotak.712-CdSfpM8n0T.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/nirali.kotak.712",
+        "phone": "9925200505"
+      },
+      {
+        "name": "Mr. Sureshbhai Bharvad",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Sureshbhai-Bharvad-suresh.bharvad.215-5IMfUdFzGX.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/suresh.bharvad.215",
+        "phone": "0"
+      },
+      {
+        "name": "Mrs. URMI UNAGAR",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/URMI-UNAGAR-urmi.unagar.963-6tk03lP35a.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/urmi.unagar.963",
+        "phone": "0"
+      },
+      {
+        "name": "Mrs. Madhusmita Sahoo",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Madhusmita-Sahoo-madhusmita.sahoo.851-pKxhMcPuj7.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/madhusmita.sahoo.851",
+        "phone": "9277309816"
+      },
+      {
+        "name": "Mr. Dhaval Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Dhaval-Patel-dhaval.patel.202-sQyq8zEEtb.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dhaval.patel.202",
+        "phone": "9426563870"
+      },
+      {
+        "name": "Mr. Kirit Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Kirit-Patel-kirit.patel.30-qad8ySJhWn.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kirit.patel.30",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Anilkumar Kshatriya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Anilkumar-Kshatriya-anilkumar.kshatriya.986-FAiU4BO2Mk.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/anilkumar.kshatriya.986",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Hardik Tank",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Hardik-Tank-hardik.tank.238-1BgVbpwbjx.png",
+        "profileLink": "https://ldce.ac.in/faculty/hardik.tank.238",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Hitesh L. Desai",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Hitesh -Desai-hitesh.desai.8-l3Vk6ER32L.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hitesh.desai.8",
+        "phone": "9979623630"
+      },
+      {
+        "name": "Ami Gandhi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Ami-Gandhi-ami.gandhi.642-3aTFNqF8JB.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/ami.gandhi.642",
+        "phone": "0"
+      },
+      {
+        "name": "Miss. REENA PANCHAL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/REENA-PANCHAL-reena.panchal.877-0mTqZt8QZs.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/reena.panchal.877",
+        "phone": "8866410483"
+      },
+      {
+        "name": "Mr. KETAN LAD",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/KETAN-LAD-ketan.lad.53-pQv1RypGUW.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/ketan.lad.53",
+        "phone": "8128319863"
+      }
+    ]
+  },
+  "environmental engineering": {
+    "faculties": [
+      {
+        "name": "Mr. Gaurang Ban",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Gaurang-Ban-gaurang.ban.175-wIVctl14Id.png",
+        "profileLink": "https://ldce.ac.in/faculty/gaurang.ban.175",
+        "phone": "9979605829"
+      },
+      {
+        "name": "Mrs. Minarva Pandya",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Minarva-Pandya-mjpandya-sLBWOFGILg.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mjpandya",
+        "phone": "9428362158"
+      },
+      {
+        "name": "Mrs. Huma Syed",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Huma-Syed-huma.syed.255-iNCWD7m7kw.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/huma.syed.255",
+        "phone": "0"
+      },
+      {
+        "name": "Mrs. Dimpi Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Dimpi-Shah-dimpi_pshah-cX6FZXaFx9.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dimpi_pshah",
+        "phone": "9924217996"
+      },
+      {
+        "name": "Mrs. Amruta Kuhikar",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Amruta-Kuhikar-amruta.kuhikar.889-WYOvdbELZq.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/amruta.kuhikar.889",
+        "phone": "8238225350"
+      },
+      {
+        "name": "Mr. Yogeshkumar Gajera",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Yogesh-Gajera-yogesh.gajera.931-v2kCcj83Ka.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/yogesh.gajera.931",
+        "phone": "9429838385"
+      },
+      {
+        "name": "Mrs. Bina Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Bina-Patel-bina.patel.107-npXLag2J8Q.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bina.patel.107",
+        "phone": "9427951099"
+      },
+      {
+        "name": "Miss. Vishwa Shukla",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Vishwa-Shukla-vishwa.shukla.654-HdTOAk8MER.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vishwa.shukla.654",
+        "phone": "9099022412"
+      },
+      {
+        "name": "Miss. Yagni Rami",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Yagni-Rami-yagni.rami.644-59yVOhNPX6.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/yagni.rami.644",
+        "phone": "7284983615"
+      },
+      {
+        "name": "Mrs. Chetna Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Yagni-Rami-chetna.patel.224-FdxhWx7Seo.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/chetna.patel.224",
+        "phone": "9924011874"
+      }
+    ]
+  },
+  "information technology": {
+    "faculties": [
+      {
+        "name": "Dr. Hiteishi Diwanji",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Hiteishi-Diwanji-head.it.161-8Zuqa7wbyu.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/head.it.161",
+        "phone": "9824076670"
+      },
+      {
+        "name": "Dr. Mehul Parikh",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Mehul-Parikh-mehul.parikh.369-4i7Acccyte.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mehul.parikh.369",
+        "phone": "0"
+      },
+      {
+        "name": "BAKULBHAI PANCHAL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/BAKULBHAI-PANCHAL-bakul-ey6d0JeEXw.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bakul",
+        "phone": "9426436891"
+      },
+      {
+        "name": "Miss. Nirjari Desai",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Nirjari-Desai-nirjaridesai@ldce.ac.in-Km9ia5ombz.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/nirjaridesai@ldce.ac.in",
+        "phone": "9879606051"
+      },
+      {
+        "name": "Miss. Mital Panchal",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Mital-Panchal-panchal.mital.145-WnNZEJ9jqz.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/panchal.mital.145",
+        "phone": "9427402300"
+      },
+      {
+        "name": "Dr. Pradip Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Pradip-Patel-patel.pradip.133-115fsc0BAi.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/patel.pradip.133",
+        "phone": "9925033054"
+      },
+      {
+        "name": "MANOJKUMAR PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/MANOJKUMAR-PATEL-manojkumar.patel.531-8ciXFXqznI.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/manojkumar.patel.531",
+        "phone": "9558154812"
+      },
+      {
+        "name": "Miss. ALKA PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/ALKA-PATEL-alka.patel.925-aQi3csb6cm.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/alka.patel.925",
+        "phone": "9427402494"
+      },
+      {
+        "name": "Mr. Ankit Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Ankit-Patel-ankit.patel.74-9oPs7PBpTA.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/ankit.patel.74",
+        "phone": "9824602964"
+      },
+      {
+        "name": "Mrs. Shital Solanki",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Shital-Solanki-shital.solanki.513-LKxYtCBwa8.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/shital.solanki.513",
+        "phone": "0"
+      },
+      {
+        "name": "Mrs. Madhuri Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Madhuri-Patel-madhuri.patel.750-HCNT4vqWkw.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/madhuri.patel.750",
+        "phone": "7405090239"
+      },
+      {
+        "name": "Miss. Vidisha Thakkar",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Vidisha-Thakkar-vidisha.thakkar.217-BAgofU5FhH.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vidisha.thakkar.217",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. JAIMINKUMAR CHAVDA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/JAIMINKUMAR-CHAVDA-jaimin.chavda.343-AJd3c0ylrQ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/jaimin.chavda.343",
+        "phone": "9825982074"
+      },
+      {
+        "name": "Dr. PURVI RAMANUJ",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/PURVI-RAMANUJ-purvi.ramanuj.369-6HEud0x3FZ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/purvi.ramanuj.369",
+        "phone": "9427007640"
+      },
+      {
+        "name": "Mrs. JAHNAVI TEJASKUMAR PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/img/user-image.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/jahnavi.patel.192",
+        "phone": "9974007174"
+      },
+      {
+        "name": "Mrs. SWATI PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/SWATI-PATEL-swati.patel.253-WYvucMl5Vy.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/swati.patel.253",
+        "phone": "9898234740"
+      },
+      {
+        "name": "Dr. Kuntesh Jani",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Kuntesh-Jani-kuntesh.jani.187-hFUF6kE93F.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kuntesh.jani.187",
+        "phone": "0"
+      }
+    ]
+  },
+  "instrumentation control engineering": {
+    "faculties": [
+      {
+        "name": "Dr. Nilay N Bhuptani",
+        "jobTitle": "Principal",
+        "imageUrl": "/images/profile/user/photo/Nilay N-Bhuptani-nilay.bhuptani.185-2ZMOHxa01I.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/nilay.bhuptani.185",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Manish Thakker",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Manish-Thakker-head.ic.887-WMVrNeAf1k.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/head.ic.887",
+        "phone": "91"
+      },
+      {
+        "name": "Dr. Tejas Shah",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Tejas-Shah-tejas.shah.600-51hGLBW7Y3.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/tejas.shah.600",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. VINODKUMAR PATEL",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/VINODKUMAR-PATEL-vinodkumar.patel.648-fE2xZKwewI.png",
+        "profileLink": "https://ldce.ac.in/faculty/vinodkumar.patel.648",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Dipesh Makwana",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Dipesh-Makwana-dipesh.makwana.297-ix1kG2vEPx.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dipesh.makwana.297",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Manisha Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Manisha-Patel-manisha.patel.401-jfl2zrKYw9.png",
+        "profileLink": "https://ldce.ac.in/faculty/manisha.patel.401",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Vandana Trivedi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Vandana-Patel-vandana.patel.8-OxAnkaVyva.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vandana.patel.8",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Ankit Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Ankit-Shah-ankit.shah.696-hEvb5vU6jJ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/ankit.shah.696",
+        "phone": "9408572742"
+      },
+      {
+        "name": "Harsh Shastri",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Harsh-Shastri-harsh.shastri.333-CrvhNVnH0b.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/harsh.shastri.333",
+        "phone": "9998347221"
+      },
+      {
+        "name": "Mr. LALITKUMAR PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/LALITKUMAR-PATEL-lalitkumar.patel.763-CYW9LWMI8M.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/lalitkumar.patel.763",
+        "phone": "9898407188"
+      },
+      {
+        "name": "Mr. Divyesh Raninga",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Divyesh-Raninga-divyesh.raninga.260-VISJmtR3QR.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/divyesh.raninga.260",
+        "phone": "9510488537"
+      },
+      {
+        "name": "Miss. CHANDNI SHAH",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/CHANDNI-SHAH-chandni.shah.945-K9FCXMwqs8.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/chandni.shah.945",
+        "phone": "9429032917"
+      },
+      {
+        "name": "Miss. Urmila Suhagiya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Urmila-Suhagiya-urmila.suhagiya.135-9xSuHp31FZ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/urmila.suhagiya.135",
+        "phone": "0"
+      },
+      {
+        "name": "Miss. Nidhi Kanani",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Nidhi-Kanani-nidhi.kanani.666-Zd9CyEZYG2.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/nidhi.kanani.666",
+        "phone": "0"
+      }
+    ]
+  },
+  "mechanical engineering": {
+    "faculties": [
+      {
+        "name": "Dr. V.B. Patel",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Vikramkumar-Patel-vikramkumar.patel.195-HvQtOhSF69.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vikramkumar.patel.195",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Komal Dave",
+        "jobTitle": "Professor",
+        "imageUrl": "/images/profile/user/photo/Komal-Dave-komal.dave.186-TV6n5BDSI9.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/komal.dave.186",
+        "phone": "9376768504"
+      },
+      {
+        "name": "Dr. Ragesh Kapadia",
+        "jobTitle": "Professor",
+        "imageUrl": "/images/profile/user/photo/Aditya-Kapadia-ragesh.kapadia.562-kaQN7eHlrM.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/ragesh.kapadia.562",
+        "phone": "9428887225"
+      },
+      {
+        "name": "Dr. Nisha Bora",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/NISHA-BORA-nisha.bora.255-K8pdW1Y73Q.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/nisha.bora.255",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Mahendra Patil",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Mahendra-Patil-mahendra.patil.17-ZzELuu4ACo.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mahendra.patil.17",
+        "phone": "9426395417"
+      },
+      {
+        "name": "Mr. M. A Lohia",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/M. A-Lohia-professor.lohia.283-TLvu6MEgra.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/professor.lohia.283",
+        "phone": "9427232424"
+      },
+      {
+        "name": "Dr. Pankaj Rathod",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Pankaj-Rathod-pankaj.rathod.958-KqT2COB4Sx.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/pankaj.rathod.958",
+        "phone": "9824366631"
+      },
+      {
+        "name": "Mrs. Swati Saraswat",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Swati-Saraswat-swati.saraswat.673-onXDP2gSQ1.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/swati.saraswat.673",
+        "phone": "9924951088"
+      },
+      {
+        "name": "Mr. Rajendrakumar Jani",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/rajendrakumar-Jani-rajendrakumar.jani.499-yQva4vvQQq.png",
+        "profileLink": "https://ldce.ac.in/faculty/rajendrakumar.jani.499",
+        "phone": "9427607779"
+      },
+      {
+        "name": "Mr. ASHWINKUMAR PATEL",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/ASHWINKUMAR-PATEL-ashwin.patel.632-kpVlnZNnYt.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/ashwin.patel.632",
+        "phone": "9428274155"
+      },
+      {
+        "name": "Mr. SHAHNAWAZKHAN PATHAN",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/SHAHNAWAZKHAN-PATHAN-shahnawazkhan.pathan.50-PvEfOa0CgQ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/shahnawazkhan.pathan.50",
+        "phone": "9428598736"
+      },
+      {
+        "name": "Mr. RAHUL PALIWAL",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/RAHUL-PALIWAL-rahul.paliwal.845-YaYeHdCarE.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rahul.paliwal.845",
+        "phone": "9898595522"
+      },
+      {
+        "name": "Mitul Makwana",
+        "jobTitle": "Associate Professor",
+        "imageUrl": "/images/profile/user/photo/Mitul-Makwana-mitul.makwana.359-nhft1KoOGJ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mitul.makwana.359",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Harishkumar Ravat",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Harishkumar-Ravat-harishkumar.ravat.960-vNBfXw5OVJ.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/harishkumar.ravat.960",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. KAMLESH PANSAL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/KAMLESH-PANSAL-kamlesh.pansal.482-8NWZ8yJrzN.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/kamlesh.pansal.482",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. SAMIR SHAH",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/SAMIR-SHAH-samir.shahmech-8WYKSenjka.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/samir.shahmech",
+        "phone": "9328093410"
+      },
+      {
+        "name": "Dr. BHAVESHKUMAR PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/BHAVESHKUMAR-PATEL-bkpatel-jlaf9yRazU.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bkpatel",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. ANKITKUMAR PAMBHAR",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/ANKITKUMAR-PAMBHAR-pambharankitldce@gmail.com-yoK4ZfZPoa.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/pambharankitldce@gmail.com",
+        "phone": "9601817706"
+      },
+      {
+        "name": "Mr. Hiren Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Hiren-Patel-hppatel-9OzwAOS5MR.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hppatel",
+        "phone": "9426562688"
+      },
+      {
+        "name": "Dr. Darshit Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Darshit-Shah-darshit-05kuFIdKNw.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/darshit",
+        "phone": "9925237030"
+      },
+      {
+        "name": "Dr. ALTAFHUSSAIN G. MOMIN",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/ALTAFHUSSAIN G.-MOMIN-altafhussain.momin-fUfyfTNKzh.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/altafhussain.momin",
+        "phone": "9924228876"
+      },
+      {
+        "name": "Mr. Dhruv Panchal",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Dhruv-Panchal-dhruvpanchal-Lpe8OyUJII.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dhruvpanchal",
+        "phone": "9879433564"
+      },
+      {
+        "name": "Mr. Saurabh Shah",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Saurabh-Shah-saurabh.shah-iB0FFQa84j.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/saurabh.shah",
+        "phone": "9825718177"
+      },
+      {
+        "name": "Mr. Sachin Bhatt",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Sachin-Bhatt-sachin.bhatt.121-RNv71jniE5.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sachin.bhatt.121",
+        "phone": "8511164968"
+      },
+      {
+        "name": "Mr. PUSHPAK SHETH",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/PUSHPAK-SHETH-pushpak.sheth.615-oqLYgXuiZf.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/pushpak.sheth.615",
+        "phone": "9898162472"
+      },
+      {
+        "name": "Miss. SWATI PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/SWATI-PATEL-swati.patel.354-Afe0rx4RTv.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/swati.patel.354",
+        "phone": "9998342573"
+      },
+      {
+        "name": "Mr. Dhaval Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Dhaval-Patel-dhaval.patel.823-OC6fuJqAob.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dhaval.patel.823",
+        "phone": "9428872903"
+      },
+      {
+        "name": "Mr. Dataniya Jayprakash",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Dataniya-Jayprakash-dataniya.jayprakash.38-j1TDXLpYvh.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/dataniya.jayprakash.38",
+        "phone": "9227325199"
+      },
+      {
+        "name": "Dr. KEYUR HIRPARA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/KEYUR-HIRPARA-keyur.hirpara.653-fHvXgsGP8Y.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/keyur.hirpara.653",
+        "phone": "9879519312"
+      },
+      {
+        "name": "Dr. HIREN GAJERA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/HIREN-GAJERA-hiren.gajera.383-nsSc3fa3VJ.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/hiren.gajera.383",
+        "phone": "9725698026"
+      },
+      {
+        "name": "Mr. DHEERAJ CHANDRA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/DHEERAJ-CHANDRA-dheeraj.chandra.604-TbAkF4M0X2.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dheeraj.chandra.604",
+        "phone": "8401476709"
+      },
+      {
+        "name": "Dr. Nilesh Pancholi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Nilesh-Pancholi-nilesh.pancholi.196-mnpBGK5I9s.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/nilesh.pancholi.196",
+        "phone": "9925011683"
+      },
+      {
+        "name": "Mr. Nitin Pranami",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Nitin-Pranami-nitin.pranami.451-cUJfcO567m.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/nitin.pranami.451",
+        "phone": "9558426773"
+      },
+      {
+        "name": "Mrs. Patel Mittal",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Patel-Mittal-patel.mittal.962-rb73Pojzds.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/patel.mittal.962",
+        "phone": "9978508374"
+      },
+      {
+        "name": "Mr. Krunal Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Krunal-Patel-krunal.patel.283-Zh7RrYYpza.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/krunal.patel.283",
+        "phone": "9898263084"
+      },
+      {
+        "name": "Dr. UTKARSH PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/UTKARSH-PATEL-utkarsh.patel.442-IJ08FnN9Um.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/utkarsh.patel.442",
+        "phone": "9228455518"
+      },
+      {
+        "name": "Mr. GAURAV SUTARIA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/GAURAV-SUTARIA-gaurav.sutaria.152-Q2mqSMZEAo.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/gaurav.sutaria.152",
+        "phone": "9909990995"
+      },
+      {
+        "name": "Mr. Mayur Makwana",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Mayurkumar-Makwana-mayurkumar.makwana.594-PNAhcHdlSN.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mayurkumar.makwana.594",
+        "phone": "9712089383"
+      },
+      {
+        "name": "Miss. Monika Vyas",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Monika-Vyas-monika.vyas.756-C6jG97nV0K.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/monika.vyas.756",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Vimal Sonara",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Vimal-Sonara-vimalkumar.sonara.571-Z9IOdffWBe.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vimalkumar.sonara.571",
+        "phone": "0"
+      },
+      {
+        "name": "SHEETAL PANDYA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/SHEETAL-PANDYA-sheetal.pandya.66-ZvdgocOiCZ.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sheetal.pandya.66",
+        "phone": "0"
+      },
+      {
+        "name": "HARSH PATEL",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/HARSH-PATEL-harsh.patel.272-ru8Gsbit8O.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/harsh.patel.272",
+        "phone": "0"
+      },
+      {
+        "name": "Dr. Mrunalkumar Chaudhari",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Mrunalkumar-Chaudhari-mrunal.chaudhri.340-O6sbUQeciy.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mrunal.chaudhri.340",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Praful Jotaniya",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Praful-Jotaniya-praful.jotaniya.164-IRjvgsiV3F.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/praful.jotaniya.164",
+        "phone": "9729637807"
+      },
+      {
+        "name": "Mrs. Niketa Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Niketa-Patel-niketa.patel.588-gqRTdaj07A.png",
+        "profileLink": "https://ldce.ac.in/faculty/niketa.patel.588",
+        "phone": "9427318323"
+      }
+    ]
+  },
+  "plastic technology": {
+    "faculties": [
+      {
+        "name": "Miss. Bharati Basantani",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Bharati-Basantani-bharati.basantani.710-blODL5YOBG.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bharati.basantani.710",
+        "phone": "9824064053"
+      },
+      {
+        "name": "Mrs. STUTI SHAH",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/STUTI-SHAH-stuti.shah.662-QoLwxbdjUp.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/stuti.shah.662",
+        "phone": "9978927256"
+      },
+      {
+        "name": "Mr. Kintu Jain",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Kintu-Jain-kintu.jain.964-pvMhnvDGC2.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kintu.jain.964",
+        "phone": "7878520568"
+      },
+      {
+        "name": "Mrs. HETAL SHAH",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/HETAL-SHAH-hetal.shah.840-kCX31OzYBl.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hetal.shah.840",
+        "phone": "8000175848"
+      }
+    ]
+  },
+  "rubber technology": {
+    "faculties": [
+      {
+        "name": "Miss. Rupande Desai",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Rupande-Desai-rupande.desai.797-c1Wf8GVNh0.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rupande.desai.797",
+        "phone": "9426033067"
+      },
+      {
+        "name": "SUNIL PADHIYAR",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/SUNIL-PADHIYAR-sunil.padhiyar.346-LA1U8OvPQP.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sunil.padhiyar.346",
+        "phone": "9428124166"
+      },
+      {
+        "name": "Miss. Anal Bhatt",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Anal-Bhatt-anal.bhatt.89-ALfAdkUu87.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/anal.bhatt.89",
+        "phone": "9727172289"
+      },
+      {
+        "name": "Mr. GNANU BHATT",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/GNANU-BHATT-gnanu.bhatt.805-wFIKamcYHv.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/gnanu.bhatt.805",
+        "phone": "9722721824"
+      },
+      {
+        "name": "Mrs. Bhakti Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Bhakti-Patel-bhakti.patel.81-Px4DCIefJX.JPG",
+        "profileLink": "https://ldce.ac.in/faculty/bhakti.patel.81",
+        "phone": "9016553433"
+      },
+      {
+        "name": "Mr. Riyaz Modan",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Riyaz-Modan-riyaz.modan.406-MISchY8cbI.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/riyaz.modan.406",
+        "phone": "9662490913"
+      }
+    ]
+  },
+  "textile technology": {
+    "faculties": [
+      {
+        "name": "Dr. Dharmendrasinh Bihola",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Dharmendrasinh-Bihola-dharmendrasinh.bihola.340-ZLF7TuA6AA.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/dharmendrasinh.bihola.340",
+        "phone": "9979861530"
+      },
+      {
+        "name": "Miss. PURVI MISTRY",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/PURVI-MISTRY-purvi.mistry.936-6H9I8SkFH8.jpeg",
+        "profileLink": "https://ldce.ac.in/faculty/purvi.mistry.936",
+        "phone": "9033971370"
+      },
+      {
+        "name": "Mrs. Khushbu Ponda",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Khushbu-Ponda-khushbu.ponda.506-B36PjJqtMw.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/khushbu.ponda.506",
+        "phone": "0"
+      },
+      {
+        "name": "Mrs. Selin Joseph",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Selin-Parapuram-selin.parapuram.494-4YO02ghr71.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/selin.parapuram.494",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Hiren Jaiswal",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Hiren-Jaiswal-hiren.jaiswal.353-fq0UU4FKkq.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/hiren.jaiswal.353",
+        "phone": "9909009308"
+      },
+      {
+        "name": "Mr. SANJAY PARMAR",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/SANJAY-PARMAR-sanjay.parmar.235-XnzhV6GuWX.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sanjay.parmar.235",
+        "phone": "7383117171"
+      }
+    ]
+  },
+  "automobile engineering": {
+    "faculties": [
+      {
+        "name": "Dr. Rajendrakumar Jani",
+        "jobTitle": "Head of Department",
+        "imageUrl": "/images/profile/user/photo/Rajendrakumar-Jani-rajendrakumar.jani.267-yLFVzKUtSo.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rajendrakumar.jani.267",
+        "phone": "9427607779"
+      },
+      {
+        "name": "Mr. RITURAJ CHOUBE",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/RITURAJ-CHOUBE-rituraj.choube.407-NK8AoIoGQy.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/rituraj.choube.407",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Sulay Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Sulay-Patel-sulay.patel.395-iyqLXcQBhg.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/sulay.patel.395",
+        "phone": "9913348960"
+      },
+      {
+        "name": "Dr. Vimal Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Vimal-Patel-vimal.patel.862-lIhdiyjdTv.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/vimal.patel.862",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. MAZAR SHAIKH",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/MAZAR-SHAIKH-mazar.shaikh.756-vQMxiaMnEu.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/mazar.shaikh.756",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. BHAVIKKUMAR KADIYA",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/BHAVIKKUMAR-KADIYA-bhavik.kadiya.559-aBcskdZJ5Q.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/bhavik.kadiya.559",
+        "phone": "9924275150"
+      },
+      {
+        "name": "Mr. Jayendra Vasani",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Jayendra-Vasani-jayendra.vasani.494-iHsEXb2NYH.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/jayendra.vasani.494",
+        "phone": "9824457441"
+      },
+      {
+        "name": "Dr. P D  Patel",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Patel-Pareshkumar-patel.pareshkumar.327-IItsqPOs1g.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/patel.pareshkumar.327",
+        "phone": "9898148633"
+      },
+      {
+        "name": "Mr. Vivek Trivedi",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Vivek-Trivedi-vivek.trivedi.288-ToI3Wz0dCM.png",
+        "profileLink": "https://ldce.ac.in/faculty/vivek.trivedi.288",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Kalpesh Vaghela",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Kalpesh-Vaghela-kalpesh.vaghela.883-nxdTNyClAR.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kalpesh.vaghela.883",
+        "phone": "0"
+      },
+      {
+        "name": "Mr. Kartikkumar Chaudhari",
+        "jobTitle": "Assistant Professor",
+        "imageUrl": "/images/profile/user/photo/Kartikkumar-Chaudhari-kartikkumar.chaudhari.252-TLdUrA9xT6.jpg",
+        "profileLink": "https://ldce.ac.in/faculty/kartikkumar.chaudhari.252",
+        "phone": "0"
+      }
+    ]
+  }
+}

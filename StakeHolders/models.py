@@ -2,6 +2,8 @@ from django.db import models
 from Profile.models import Profile
 import uuid
 import time
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 def generate_unique_hash():    
     random_hash = str(uuid.uuid4().int)[:6]    
@@ -73,3 +75,8 @@ class Student(models.Model):
     
     def __str__(self) -> str:
         return self.profile.email if self.profile.email else self.profile.name
+
+@receiver(post_delete, sender=Student)
+def delete_related_profile(sender, instance, **kwargs):
+    if instance.profile:
+        instance.profile.delete()

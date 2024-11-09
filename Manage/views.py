@@ -1313,6 +1313,7 @@ def upload_master_timetable(request):
 def get_streams(request):
     try:
         data = {'data':None,'error':False,'message':None}        
+        print(request.user.role)
         if request.user.role == 'admin':
             admin_obj = Admin.objects.filter(profile=request.user).first()
             if not admin_obj:raise Exception("Admin does not exists")
@@ -1348,6 +1349,27 @@ def get_divisions_from_stream(request,stream_slug):
         if not divisions:raise Exception("No division found")
         divisions_serialized = DivisionSerializer(divisions,many=True)
         data['data'] = divisions_serialized.data
+        return JsonResponse(data,status=200)        
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True        
+        return JsonResponse(data,status=500)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_semsters_from_stream(request,stream_slug):
+    try:        
+        data = {'data':None,'error':False,'message':None}        
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")
+        admin_obj = Admin.objects.filter(profile=request.user).first()
+        if not admin_obj:raise Exception("Admin does not exists")
+        stream_obj = Stream.objects.filter(slug=stream_slug).first()
+        if not stream_obj: raise Exception("Stream does not exists")
+        semesters = Semester.objects.filter(stream=stream_obj)
+        if not semesters:raise Exception("No semester found")
+        semesters_serialized = SemesterSerializer(semesters,many=True)
+        data['data'] = semesters_serialized.data
         return JsonResponse(data,status=200)        
     except Exception as e:
         print(e)
