@@ -167,7 +167,7 @@ class PermanentSubject(models.Model):
 
     def __str__(self) -> str:
         return f"{self.subject_name}"
-    
+
 class Subject(models.Model):
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)
     included_batches = models.ManyToManyField(Batch,blank=True)    
@@ -182,7 +182,17 @@ class Subject(models.Model):
 
     def __str__(self) -> str:
         return f"{self.subject_map.subject_name} | {self.semester}"
-    
+
+class ComplementrySubjects(models.Model):
+    semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)
+    subjects = models.ManyToManyField(Subject)
+    slug = models.SlugField(unique=True,null=True,blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_hash()                                
+        super(ComplementrySubjects, self).save(*args, **kwargs)
+
 class TimeTable(models.Model):
     division = models.ForeignKey(Division,on_delete=models.CASCADE)
     slug = models.SlugField(unique=True,null=True,blank=True)

@@ -2,7 +2,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
-from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream,PermanentSubject,Semester,Subject,Branch,College,Term,Stream
+from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream,PermanentSubject,Semester,Subject,Branch,College,Term,Stream,ComplementrySubjects
 from StakeHolders.models import Admin,Teacher,Student,NotificationSubscriptions,SuperAdmin
 from Profile.models import Profile
 from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer
@@ -1386,8 +1386,22 @@ def add_subjects_to_semester(request):
         if 'subject_slugs' not in body or 'semester_slug' not in body:raise Exception("Parameters missing")
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
         permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])
-        subjects = [Subject.objects.create(semester=semester_obj,subject_map=permanent_subject) for permanent_subject in permanent_subjects]    
-        subjects_serialized = SubjectSerializer(subjects,many=True)
+        created_subjects = []
+        for permanent_subject in permanent_subjects:
+            # Check if the category matches with another subject in the list
+            if permanent_subject.is_elective:
+                # create complementry subjects here
+                complementries = permanent_subjects.filter(category=permanent_subject.category)
+                complementry_obj = ComplementrySubjects.objects.create(semester=semester_obj)
+                for complimentry_subj in complementries:
+                    subject_obj = Subject.objects.create(semester=semester_obj,subject_map=complimentry_subj)
+                    created_subjects.append(subject_obj)
+                    complementry_obj.subjects.add(subject_obj)
+                    permanent_subjects = permanent_subjects.exlcude(id=complimentry_subj.id)
+            else:
+                subject_obj = Subject.objects.create(semester=semester_obj,subject_map=permanent_subject)
+                created_subjects.append(subject_obj)
+        subjects_serialized = SubjectSerializer(created_subjects,many=True)
         data['data'] = subjects_serialized.data
     except Exception as e:
         print(e)
