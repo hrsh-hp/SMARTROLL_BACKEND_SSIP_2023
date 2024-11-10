@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subject,College,Branch,Stream,Semester,Division,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,GPSCoordinates,PermanentSubject
+from .models import Subject,College,Branch,Stream,Semester,Division,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,GPSCoordinates,PermanentSubject,ComplementrySubjects
 
 # Register your models here.
 
@@ -18,3 +18,4 @@ admin.site.register(Lecture)
 admin.site.register(Term)
 admin.site.register(Link)
 admin.site.register(GPSCoordinates)
+admin.site.register(ComplementrySubjects)

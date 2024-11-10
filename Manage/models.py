@@ -90,8 +90,7 @@ class Semester(models.Model):
     status = models.BooleanField(default=True)
     start_date = models.DateField()
     end_date = models.DateField()    
-    stream = models.ForeignKey(Stream,on_delete=models.CASCADE,null=True,blank=True)
-    subjects_finalized = models.BooleanField(default=False)
+    stream = models.ForeignKey(Stream,on_delete=models.CASCADE,null=True,blank=True)    
     slug = models.SlugField(unique=True,null=True,blank=True)
 
     def save(self, *args, **kwargs):
