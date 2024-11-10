@@ -1396,19 +1396,19 @@ def add_subjects_to_semester(request):
                 complementries = permanent_subjects.filter(category=permanent_subject.category)
                 if complementries.count() == 1 and complementries.first() == permanent_subject:                    
                     permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
-                    subject_obj = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
+                    subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
                     created_subjects.append(subject_obj.subject_map)
                     permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
                     continue
-                complementry_obj = ComplementrySubjects.objects.get_or_create(semester=semester_obj)
+                complementry_obj,complementry_created = ComplementrySubjects.objects.get_or_create(semester=semester_obj)
                 for complimentry_subj in complementries:
-                    subject_obj = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj)
-                    created_subjects.append(subject_obj)
-                    complementry_obj.subjects.add(subject_obj.subject_map)
+                    subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj)
+                    created_subjects.append(subject_obj.subject_map)
+                    complementry_obj.subjects.add(subject_obj)
                     permanent_subjects = permanent_subjects.exclude(id=complimentry_subj.id)
             else:                
                 permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
-                subject_obj = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
+                subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
                 created_subjects.append(subject_obj.subject_map)
         subjects_serialized = PermanentSubjectSerializer(created_subjects,many=True)
         data['data'] = subjects_serialized.data
