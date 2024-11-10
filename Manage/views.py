@@ -1396,21 +1396,21 @@ def add_subjects_to_semester(request):
                 complementries = permanent_subjects.filter(category=permanent_subject.category)
                 if complementries.count() == 1 and complementries.first() == permanent_subject:                    
                     permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
-                    subject_obj = Subject.objects.create(semester=semester_obj,subject_map=permanent_subject)
-                    created_subjects.append(subject_obj)
+                    subject_obj = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
+                    created_subjects.append(subject_obj.subject_map)
                     permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
                     continue
-                complementry_obj = ComplementrySubjects.objects.create(semester=semester_obj)
+                complementry_obj = ComplementrySubjects.objects.get_or_create(semester=semester_obj)
                 for complimentry_subj in complementries:
-                    subject_obj = Subject.objects.create(semester=semester_obj,subject_map=complimentry_subj)
+                    subject_obj = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj)
                     created_subjects.append(subject_obj)
-                    complementry_obj.subjects.add(subject_obj)
+                    complementry_obj.subjects.add(subject_obj.subject_map)
                     permanent_subjects = permanent_subjects.exclude(id=complimentry_subj.id)
             else:                
                 permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
-                subject_obj = Subject.objects.create(semester=semester_obj,subject_map=permanent_subject)
-                created_subjects.append(subject_obj)
-        subjects_serialized = SubjectSerializer(created_subjects,many=True)
+                subject_obj = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
+                created_subjects.append(subject_obj.subject_map)
+        subjects_serialized = PermanentSubjectSerializer(created_subjects,many=True)
         data['data'] = subjects_serialized.data
         return JsonResponse(data,status=200)
     except Exception as e:
@@ -1444,6 +1444,7 @@ def get_semsters_from_stream(request,stream_slug):
         data['message'] = str(e)
         data['error'] = True
         return JsonResponse(data,status=500)
+    
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_subjects_from_acedemic_year(request,semester_slug,acedemic_year):
