@@ -42,14 +42,8 @@ class TeacherSerializer(serializers.ModelSerializer):
         return branches_serialized.data
     
 class StudentSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer()    
-    stream = serializers.SerializerMethodField()
+    profile = ProfileSerializer()        
 
     class Meta:
         model = Student
-        fields = ['slug','profile','stream','sr_no','enrollment']
-    
-    def get_stream(self,obj):
-        stream = obj.stream_set.first()        
-        stream_serialized = StreamSerializer(stream)
-        return stream_serialized.data
+        fields = ['slug','profile','sr_no','enrollment']

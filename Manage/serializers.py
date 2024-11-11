@@ -1,4 +1,4 @@
-from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream,PermanentSubject
+from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream,PermanentSubject,ComplementrySubjects
 from datetime import datetime
 from rest_framework import serializers
 from Session.models import Session,Attendance
@@ -47,6 +47,18 @@ class PermanentSubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = PermanentSubject
         fields = ['stream_code','sem_year','subject_code','eff_from','subject_name','short_name','category','L','P','T','credit','E','M','I','V','total_marks','is_elective','is_practical','is_theory','is_semipractical','is_functional','practical_exam_duration','theory_exam_duration','remark','acedemic_year','slug']
+    
+class ComplementrySubjectsSerializer(serializers.ModelSerializer):
+    subjects =  serializers.SerializerMethodField()
+    class Meta:
+        model = ComplementrySubjects
+        fields = ['subjects','slug']
+
+    def get_subjects(self,obj):
+        subjects =  obj.subjects.all()        
+        subject_maps = [subject.subject_map for subject in subjects]
+        subject_maps_serialized = PermanentSubjectSerializer(subject_maps,many=True)
+        return subject_maps_serialized.data
 
 class SemesterSerializerByStream(serializers.ModelSerializer):
     stream = StreamSerializer()
@@ -66,8 +78,7 @@ class SemesterSerializerByStream(serializers.ModelSerializer):
     
     def get_subjects(self,obj):
         subject_set =  obj.subject_set.all()
-        if not subject_set.exists():return None
-        self.years_arr=None
+        if not subject_set.exists():return None        
         subject_maps = [subject.subject_map for subject in subject_set]
         subject_maps_serialized = PermanentSubjectSerializer(subject_maps,many=True)
         return subject_maps_serialized.data

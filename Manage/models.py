@@ -1,17 +1,8 @@
 from django.db import models
-import time
-import uuid
-from datetime import datetime
 from django.core.validators import MinValueValidator, MaxValueValidator
-from StakeHolders.models import Teacher,Student,Admin,SuperAdmin
-
-# Create your models here.
-
-def generate_unique_hash():    
-    random_hash = str(uuid.uuid4().int)[:6]    
-    timestamp = str(int(time.time()))    
-    unique_hash = f"{random_hash}_{timestamp}"
-    return unique_hash
+from StakeHolders.models import Teacher,Student,Admin,SuperAdmin,Profile
+from django.core.exceptions import ValidationError
+from SMARTROLL.GlobalUtils import generate_unique_hash
 
 
 class College(models.Model):
@@ -68,7 +59,6 @@ class Stream(models.Model):
     title = models.CharField(max_length=20,choices=stream_choices)
     stream_code = models.CharField(null=True,blank=True,max_length=3)
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
-    students = models.ManyToManyField(Student,blank=True)   
     slug = models.SlugField(unique=True,null=True,blank=True)
 
     class Meta:
@@ -91,6 +81,7 @@ class Semester(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()    
     stream = models.ForeignKey(Stream,on_delete=models.CASCADE,null=True,blank=True)    
+    students = models.ManyToManyField(Student,blank=True)
     slug = models.SlugField(unique=True,null=True,blank=True)
 
     def save(self, *args, **kwargs):
@@ -171,6 +162,7 @@ class Subject(models.Model):
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)
     included_batches = models.ManyToManyField(Batch,blank=True)    
     subject_map = models.ForeignKey(PermanentSubject,on_delete=models.CASCADE,blank=True,null=True)
+    is_elective = models.BooleanField(default=False)
     slug = models.SlugField(unique=True,null=True,blank=True)
     
     def save(self, *args, **kwargs):
@@ -208,6 +200,12 @@ class GPSCoordinates(models.Model):
     title = models.CharField(max_length=255,null=True,blank=True)
     long = models.CharField(max_length=255,null=True,blank=True)
     latt = models.CharField(max_length=255,null=True,blank=True)
+    slug = models.SlugField(unique=True,null=True,blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_hash()            
+        super(GPSCoordinates, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title if self.title else 'None'
@@ -216,9 +214,9 @@ class GPSCoordinates(models.Model):
 
 class Classroom(models.Model):
     class_name = models.CharField(max_length = 20)    
-    slug = models.SlugField(unique=True,null=True,blank=True)
     branch = models.ManyToManyField(Branch)
     gps_coordinates = models.ForeignKey(GPSCoordinates,blank=True,null=True,on_delete=models.DO_NOTHING)
+    slug = models.SlugField(unique=True,null=True,blank=True)
 
 
     def save(self, *args, **kwargs):
@@ -278,3 +276,15 @@ class Link(models.Model):
         if not self.slug:
             self.slug = generate_unique_hash()
         super(Link, self).save(*args, **kwargs)
+
+class SubjectChoices(models.Model):
+    profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester,on_delete=models.CASCADE)
+    available_choices = models.ManyToManyField(Subject, related_name='available_subjects',blank=True)
+    finalized_choices = models.ManyToManyField(Subject, related_name='finalized_subjects',blank=True)
+    slug = models.SlugField(unique=True, null=True, blank=True)
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_hash()
+        super(SubjectChoices, self).save(*args, **kwargs)

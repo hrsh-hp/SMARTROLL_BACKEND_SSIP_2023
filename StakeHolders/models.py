@@ -4,12 +4,8 @@ import uuid
 import time
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from SMARTROLL.GlobalUtils import generate_unique_hash
 
-def generate_unique_hash():    
-    random_hash = str(uuid.uuid4().int)[:6]    
-    timestamp = str(int(time.time()))    
-    unique_hash = f"{random_hash}_{timestamp}"
-    return unique_hash
 # Create your models here.
 
 SUBSCRIPTION_TYPES = [
