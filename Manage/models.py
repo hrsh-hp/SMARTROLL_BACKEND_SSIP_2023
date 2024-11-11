@@ -282,6 +282,7 @@ class SubjectChoices(models.Model):
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE)
     available_choices = models.ManyToManyField(Subject, related_name='available_subjects',blank=True)
     finalized_choices = models.ManyToManyField(Subject, related_name='finalized_subjects',blank=True)
+    deadline_timestamp = models.DateTimeField()
     slug = models.SlugField(unique=True, null=True, blank=True)
         
     def save(self, *args, **kwargs):

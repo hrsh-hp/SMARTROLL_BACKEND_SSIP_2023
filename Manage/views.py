@@ -1314,7 +1314,6 @@ def upload_master_timetable(request):
 def get_streams(request):
     try:
         data = {'data':None,'error':False,'message':None}        
-        print(request.user.role)
         if request.user.role == 'admin':
             admin_obj = Admin.objects.filter(profile=request.user).first()
             if not admin_obj:raise Exception("Admin does not exists")
@@ -1364,7 +1363,8 @@ def add_subjects_to_semester(request):
         data = {'data':None,'error':False,'message':None}
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
         body = request.data
-        if 'subject_slugs' not in body or 'semester_slug' not in body:raise Exception("Parameters missing")
+        if 'subject_slugs' not in body or 'semester_slug' not in body or 'deadline_timestamp' not in body:raise Exception("Parameters missing")
+        deadline_timestamp_obj = datetime.datetime.fromtimestamp(int(body['deadline_timestamp']))
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
         permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])        
         created_subjects = []
@@ -1403,7 +1403,7 @@ def add_subjects_to_semester(request):
         # For teachers
         teacher_subject_choices_objects = []
         for teacher_profile in teacher_profiles:
-            subject_choices_object = SubjectChoices(profile=teacher_profile,semester=semester_obj,slug=generate_unique_hash())
+            subject_choices_object = SubjectChoices(profile=teacher_profile,semester=semester_obj,slug=generate_unique_hash(),deadline_timestamp=deadline_timestamp_obj)
             teacher_subject_choices_objects.append(subject_choices_object)
         # Now to bulk create the choices object and add the subjects it it
         SubjectChoices.objects.bulk_create(teacher_subject_choices_objects)
@@ -1413,7 +1413,7 @@ def add_subjects_to_semester(request):
         # For students
         students_subject_choices_objects = []
         for student_profile in student_profiles:
-            student_subject_choices_object = SubjectChoices(profile=student_profile,semester=semester_obj,slug=generate_unique_hash())
+            student_subject_choices_object = SubjectChoices(profile=student_profile,semester=semester_obj,slug=generate_unique_hash(),deadline_timestamp=deadline_timestamp_obj)
             students_subject_choices_objects.append(student_subject_choices_object)
         # Now to bulk create the choices object and add the subjects it it
         SubjectChoices.objects.bulk_create(students_subject_choices_objects)
