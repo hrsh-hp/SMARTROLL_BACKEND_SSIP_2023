@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream,PermanentSubject,Semester,Subject,Branch,College,Term,Stream,ComplementrySubjects
 from StakeHolders.models import Admin,Teacher,Student,NotificationSubscriptions,SuperAdmin
 from Profile.models import Profile
-from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer,PermanentSubjectSerializer
+from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer,PermanentSubjectSerializer,SemesterSerializerByStream
 from Session.models import Session,Attendance
 import pandas as pd
 from django.contrib.auth import get_user_model
@@ -1372,19 +1372,23 @@ def add_subjects_to_semester(request):
             # Check if the category matches with another subject in the list
             if permanent_subject.is_elective:   
                 # create complementry subjects here
-                complementries = permanent_subjects.filter(category=permanent_subject.category)
-                if complementries.count() == 1 and complementries.first() == permanent_subject:                    
-                    permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
+                complementries = permanent_subjects.filter(category=permanent_subject.category).exclude(id=permanent_subject.id)
+                if complementries.exists():
+                    current_subject_obj,current_subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
+                    complementry_obj = ComplementrySubjects.objects.filter(semester=semester_obj,subjects=current_subject_obj).first() or ComplementrySubjects.objects.create(semester=semester_obj)
+                    complementry_obj.subjects.add(current_subject_obj)
+                    for complimentry_subj in complementries:
+                        subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj)
+                        created_subjects.append(subject_obj.subject_map)
+                        complementry_obj.subjects.add(subject_obj)
+                        permanent_subjects = permanent_subjects.exclude(id=complimentry_subj.id)
+                else:
+                    # Elective with no complementry                    
+                    subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
                     subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
                     created_subjects.append(subject_obj.subject_map)
                     permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
-                    continue
-                complementry_obj,complementry_created = ComplementrySubjects.objects.get_or_create(semester=semester_obj)
-                for complimentry_subj in complementries:
-                    subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj)
-                    created_subjects.append(subject_obj.subject_map)
-                    complementry_obj.subjects.add(subject_obj)
-                    permanent_subjects = permanent_subjects.exclude(id=complimentry_subj.id)
+
             else:                
                 permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
                 subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
@@ -1410,13 +1414,12 @@ def get_semsters_from_stream(request,stream_slug):
         if not stream_obj: raise Exception("Stream does not exists")
         semesters = Semester.objects.filter(stream=stream_obj)
         if not semesters:raise Exception("No semester found")
-        semesters_serialized = SemesterSerializer(semesters,many=True)
         global_json_path = os.path.join(django_settings.BASE_DIR, 'globals.json')
         with open(global_json_path,'r') as global_json:
             globals_data = json.load(global_json)
             years = globals_data[f'{stream_obj.title}_YEARS']
-        data['data']['semesters'] = semesters_serialized.data
-        data['data']['years'] = years
+        semesters_serialized = SemesterSerializerByStream(instance=semesters,many=True,years_arr=years)
+        data['data']= semesters_serialized.data        
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
