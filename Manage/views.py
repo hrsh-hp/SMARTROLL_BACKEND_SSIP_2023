@@ -1324,6 +1324,16 @@ def get_streams(request):
             streams_serialized = StreamSerializer(streams,many=True)
             data['data'] = streams_serialized.data
             return JsonResponse(data,status=200)
+        elif request.user.role == 'teacher':
+            teacher_obj = Teacher.objects.filter(profile=request.user).first()
+            if not teacher_obj:raise Exception("Teacher does not exists")
+            branch_obj = teacher_obj.branch_set.first()
+            if not branch_obj:raise Exception("Branch does not exists")
+            streams = branch_obj.stream_set.all()
+            if not streams:raise Exception("No streams found")
+            streams_serialized = StreamSerializer(streams,many=True)
+            data['data'] = streams_serialized.data
+            return JsonResponse(data,status=200)
         else:
             raise Exception("You're not allowed to perform this action")
 
@@ -1435,20 +1445,31 @@ def add_subjects_to_semester(request):
 def get_semsters_from_stream(request,stream_slug):
     try:
         data = {'data':{},'error':False,'message':None}
-        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")
-        admin_obj = Admin.objects.filter(profile=request.user).first()
-        if not admin_obj:raise Exception("Admin does not exists")
-        stream_obj = Stream.objects.filter(slug=stream_slug).first()
-        if not stream_obj: raise Exception("Stream does not exists")
-        semesters = Semester.objects.filter(stream=stream_obj)
-        if not semesters:raise Exception("No semester found")
-        global_json_path = os.path.join(django_settings.BASE_DIR, 'globals.json')
-        with open(global_json_path,'r') as global_json:
-            globals_data = json.load(global_json)
-            years = globals_data[f'{stream_obj.title}_YEARS']
-        semesters_serialized = SemesterSerializerByStream(instance=semesters,many=True,years_arr=years)
-        data['data']= semesters_serialized.data        
-        return JsonResponse(data,status=200)
+        if request.user.role == 'admin':
+            admin_obj = Admin.objects.filter(profile=request.user).first()
+            if not admin_obj:raise Exception("Admin does not exists")
+            stream_obj = Stream.objects.filter(slug=stream_slug).first()
+            if not stream_obj: raise Exception("Stream does not exists")
+            semesters = Semester.objects.filter(stream=stream_obj)
+            if not semesters:raise Exception("No semester found")
+            global_json_path = os.path.join(django_settings.BASE_DIR, 'globals.json')
+            with open(global_json_path,'r') as global_json:
+                globals_data = json.load(global_json)
+                years = globals_data[f'{stream_obj.title}_YEARS']
+            semesters_serialized = SemesterSerializerByStream(instance=semesters,many=True,years_arr=years)
+            data['data']= semesters_serialized.data        
+            return JsonResponse(data,status=200)
+        if request.user.role == 'teacher':
+            teacher_obj = Teacher.objects.filter(profile=request.user).first()
+            if not teacher_obj:raise Exception("Teacher does not exists")
+            stream_obj = Stream.objects.filter(slug=stream_slug).first()
+            if not stream_obj: raise Exception("Stream does not exists")
+            semesters = Semester.objects.filter(stream=stream_obj)
+            if not semesters:raise Exception("No semester found")
+            semesters_serialized = SemesterSerializer(semesters,many=True)
+            data['data']= semesters_serialized.data        
+            return JsonResponse(data,status=200)
+
     except Exception as e:
         print(e)
         data['message'] = str(e)
@@ -1480,13 +1501,22 @@ def get_subjects_from_acedemic_year(request,semester_slug,acedemic_year):
 @permission_classes([IsAuthenticated])
 def get_teachers_subject_choices(request,semester_slug):
     try:
-        data = {'data':None,'error':False,'message':None}
+        data = {'data':{},'error':False,'message':None}
         if request.user.role != 'teacher':raise Exception("You're not allowed to perform this action")
         semester= Semester.objects.get(slug=semester_slug)
         subject_choices_object = SubjectChoices.objects.filter(profile=request.user,semester=semester).first()
-        available_subjects_set = subject_choices_object.available_choices.all()
-        subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in available_subjects_set],many=True)
-        data['data'] = subject_choices_object_serialized.data
+        # Check if the choices are locked or not        
+        if subject_choices_object.choices_locked:
+            finalized_subjects_set = subject_choices_object.finalized_choices.all()
+            subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
+            data['data']['finalized_choices'] = subject_choices_object_serialized.data
+        else:
+            available_subjects_set = subject_choices_object.available_choices.all()
+            subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in available_subjects_set],many=True)
+            data['data']['available_choices'] = subject_choices_object_serialized.data
+        data['data']['choices_locked'] = subject_choices_object.choices_locked
+        data['data']['deadline_timestamp']=subject_choices_object.deadline_timestamp
+        data['data']['slug']=subject_choices_object.slug    
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
@@ -1498,16 +1528,53 @@ def get_teachers_subject_choices(request,semester_slug):
 @permission_classes([IsAuthenticated])
 def get_students_subject_choices(request):
     try:
-        data = {'data':None,'error':False,'message':None}
+        data = {'data':{},'error':False,'message':None}
         if request.user.role != 'student':raise Exception("You're not allowed to perform this action")
         student_obj = Student.objects.get(profile=request.user)
         term_obj = Term.objects.filter(status=True).first()
         students_semester = Semester.objects.get(stream__branch__term=term_obj,students=student_obj)
         subject_choices_object = SubjectChoices.objects.filter(profile=request.user,semester=students_semester).first()
-        available_subjects_set = subject_choices_object.available_choices.all()        
-        complementry_subject_objs = set(ComplementrySubjects.objects.filter(subjects=subject).first() for subject in available_subjects_set)        
-        subject_choices_object_serialized = ComplementrySubjectsSerializer(instance = complementry_subject_objs,many=True)
-        data['data'] = subject_choices_object_serialized.data
+        if subject_choices_object.choices_locked:
+            finalized_subjects_set = subject_choices_object.finalized_choices.all()
+            finalized_complementry_subject_objs = set(ComplementrySubjects.objects.filter(subjects=subject).first() for subject in finalized_subjects_set)
+            finalized_subject_choices_object_serialized = ComplementrySubjectsSerializer(instance = finalized_complementry_subject_objs,many=True)
+            data['data']['finalized_choices'] = finalized_subject_choices_object_serialized.data        
+        else:
+            available_subjects_set = subject_choices_object.available_choices.all()
+            available_complementry_subject_objs = set(ComplementrySubjects.objects.filter(subjects=subject).first() for subject in available_subjects_set)
+            available_subject_choices_object_serialized = ComplementrySubjectsSerializer(instance = available_complementry_subject_objs,many=True)
+            data['data']['available_choices'] = available_subject_choices_object_serialized.data        
+        data['data']['choices_locked'] = subject_choices_object.choices_locked
+        data['data']['deadline_timestamp']=subject_choices_object.deadline_timestamp
+        data['data']['slug']=subject_choices_object.slug
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_subject_choices(request):
+    try:
+        data = {'data':{},'error':False,'message':None}        
+        if request.user.role != 'teacher' and request.user.role != 'student':raise Exception("You're not allowed to perform this action.")        
+        body = request.data
+        if 'subject_choices' not in body or 'subject_choices_slug' not in body:raise Exception("Parameters missing")
+        subject_choices_obj = SubjectChoices.objects.get(slug=body['subject_choices_slug'])
+        if subject_choices_obj.profile != request.user: raise Exception("You're not allowed to fill this choice")        
+        finalized_permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_choices']).prefetch_related('subject_set')        
+        finalized_subjects = [permanent_subject.subject_set.first() for permanent_subject in finalized_permanent_subjects]
+        subject_choices_obj.finalized_choices.add(*finalized_subjects)        
+        subject_choices_obj.choices_locked=True
+        subject_choices_obj.save()
+        finalized_subjects_set = subject_choices_obj.finalized_choices.all()        
+        subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
+        data['data']['finalized_choices'] = subject_choices_object_serialized.data
+        data['data']['choices_locked'] = subject_choices_obj.choices_locked
+        data['data']['deadline_timestamp']=subject_choices_obj.deadline_timestamp
+        data['data']['slug']=subject_choices_obj.slug
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
