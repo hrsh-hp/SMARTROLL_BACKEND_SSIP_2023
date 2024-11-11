@@ -44,5 +44,6 @@ urlpatterns = [
     path('get_divisions_from_stream/<str:stream_slug>',get_divisions_from_stream,name='get_divisions_from_stream'),
     path('get_teachers_subject_choices/<str:semester_slug>',get_teachers_subject_choices,name='get_teachers_subject_choices'),
     path('get_students_subject_choices',get_students_subject_choices,name='get_students_subject_choices'),
-    path('session/',include('Session.urls'),name='session_management'),    
+    path('session/',include('Session.urls'),name='session_management'),
+    path('alerts/',include('Alerts.urls'),name='alert_management'),
 ]

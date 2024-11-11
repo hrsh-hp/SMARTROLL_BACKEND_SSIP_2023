@@ -1364,7 +1364,7 @@ def add_subjects_to_semester(request):
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
         body = request.data
         if 'subject_slugs' not in body or 'semester_slug' not in body or 'deadline_timestamp' not in body:raise Exception("Parameters missing")
-        deadline_timestamp_obj = datetime.datetime.fromtimestamp(int(body['deadline_timestamp']))
+        deadline_timestamp_obj = datetime.datetime.fromtimestamp(int(body['deadline_timestamp'])).date()
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
         permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])        
         created_subjects = []

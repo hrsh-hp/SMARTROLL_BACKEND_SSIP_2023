@@ -22,4 +22,8 @@ admin.site.register(Term,ComonModelAdmin)
 admin.site.register(Link,ComonModelAdmin)
 admin.site.register(GPSCoordinates,ComonModelAdmin)
 admin.site.register(ComplementrySubjects,ComonModelAdmin)
-admin.site.register(SubjectChoices,ComonModelAdmin)
+class SubjectChoicesAdmin(admin.ModelAdmin):
+    readonly_fields = ['slug'] 
+    search_fields = ['profile__email']
+
+admin.site.register(SubjectChoices,SubjectChoicesAdmin)

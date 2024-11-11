@@ -44,7 +44,7 @@ class CustomTokenObtainPairSerializer(TokenObtainSerializer):
     token_class = RefreshToken
     def validate(self, attrs: Dict[str, Any]) -> Dict[str, str]:
         data = super().validate(attrs)
-        if self.user.role == 'superadmin':                   
+        if self.user.role == 'superadmin':                
             admin_obj = SuperAdmin.objects.get(profile=self.user)
             admin_serializer = SuperAdminSerializer(admin_obj,many=False)
             token = self.get_token(self.user)
