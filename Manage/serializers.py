@@ -67,6 +67,7 @@ class SemesterSerializerByStream(serializers.ModelSerializer):
     def get_subjects(self,obj):
         subject_set =  obj.subject_set.all()
         if not subject_set.exists():return None
+        self.years_arr=None
         subject_maps = [subject.subject_map for subject in subject_set]
         subject_maps_serialized = PermanentSubjectSerializer(subject_maps,many=True)
         return subject_maps_serialized.data
