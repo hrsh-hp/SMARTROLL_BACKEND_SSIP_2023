@@ -54,7 +54,7 @@ class FinalizedSubjectChoicesSerializer(serializers.ModelSerializer):
     finalized_choises = serializers.SerializerMethodField() 
     class Meta:
         model = SubjectChoices
-        fields = ['profile','priority','finalized_choises']
+        fields = ['profile','priority','finalized_choises','slug']
 
     def __init__(self,instance, subject=None, *args, **kwargs):
         super(FinalizedSubjectChoicesSerializer, self).__init__(*args, **kwargs)

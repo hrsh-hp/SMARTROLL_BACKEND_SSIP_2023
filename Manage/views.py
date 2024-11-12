@@ -1568,9 +1568,7 @@ def mark_subject_choices(request):
         subject_choices_obj.finalized_choices.add(*finalized_subjects)        
         subject_choices_obj.choices_locked=True
         subject_choices_obj.save()        
-        finalized_subjects_set = SubjectChoices.objects.prefetch_related(
-            'finalized_choices', 'profile'
-        )
+        finalized_subjects_set = subject_choices_obj.finalized_choices.all()                    
         subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
         data['data']['finalized_choices'] = subject_choices_object_serialized.data
         data['data']['choices_locked'] = subject_choices_obj.choices_locked
@@ -1589,11 +1587,12 @@ def get_teachers_for_the_subject(request,subject_slug):
     try:
         data = {'data':{},'error':False,'message':None}        
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")        
-        permanent_subject_obj = PermanentSubject.objects.filter(slug=subject_slug).prefetch_related('subject_set').first()
-        subject_obj = permanent_subject_obj.subject_set.first()
+        subject_obj = Subject.objects.filter(subject_map__slug=subject_slug).first()
         # get the subject choies objects
-        subject_choices_objs = SubjectChoices.objects.filter(profile__role='teacher',finalized_choices=subject_obj,choices_locked=True)
-        if not subject_choices_objs.exists(): raise Exception("No choises for this subject")
+        subject_choices_objs = SubjectChoices.objects.filter(profile__role='teacher',finalized_choices=subject_obj,choices_locked=True).prefetch_related(
+            'finalized_choices', 'profile'
+        )
+        if not subject_choices_objs.exists(): raise Exception("No choises for this subject")        
         subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)
         data['data'] = subject_choices_objs_serialized.data
         return JsonResponse(data,status=200)
