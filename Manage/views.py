@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream,PermanentSubject,Semester,Subject,Branch,College,Term,Stream,ComplementrySubjects,SubjectChoices
 from StakeHolders.models import Admin,Teacher,Student,NotificationSubscriptions,SuperAdmin
 from Profile.models import Profile
-from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer,PermanentSubjectSerializer,SemesterSerializerByStream,ComplementrySubjectsSerializer
+from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer,PermanentSubjectSerializer,SemesterSerializerByStream,ComplementrySubjectsSerializer,FinalizedSubjectChoicesSerializer
 from Session.models import Session,Attendance
 import pandas as pd
 from django.contrib.auth import get_user_model
@@ -1567,13 +1567,35 @@ def mark_subject_choices(request):
         finalized_subjects = [permanent_subject.subject_set.first() for permanent_subject in finalized_permanent_subjects]
         subject_choices_obj.finalized_choices.add(*finalized_subjects)        
         subject_choices_obj.choices_locked=True
-        subject_choices_obj.save()
-        finalized_subjects_set = subject_choices_obj.finalized_choices.all()        
+        subject_choices_obj.save()        
+        finalized_subjects_set = SubjectChoices.objects.prefetch_related(
+            'finalized_choices', 'profile'
+        )
         subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
         data['data']['finalized_choices'] = subject_choices_object_serialized.data
         data['data']['choices_locked'] = subject_choices_obj.choices_locked
         data['data']['deadline_timestamp']=subject_choices_obj.deadline_timestamp
         data['data']['slug']=subject_choices_obj.slug
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_teachers_for_the_subject(request,subject_slug):
+    try:
+        data = {'data':{},'error':False,'message':None}        
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")        
+        permanent_subject_obj = PermanentSubject.objects.filter(slug=subject_slug).prefetch_related('subject_set').first()
+        subject_obj = permanent_subject_obj.subject_set.first()
+        # get the subject choies objects
+        subject_choices_objs = SubjectChoices.objects.filter(profile__role='teacher',finalized_choices=subject_obj,choices_locked=True)
+        if not subject_choices_objs.exists(): raise Exception("No choises for this subject")
+        subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)
+        data['data'] = subject_choices_objs_serialized.data
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)

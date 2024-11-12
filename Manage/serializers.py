@@ -1,4 +1,4 @@
-from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream,PermanentSubject,ComplementrySubjects
+from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream,PermanentSubject,ComplementrySubjects,SubjectChoices
 from datetime import datetime
 from rest_framework import serializers
 from Session.models import Session,Attendance
@@ -48,10 +48,41 @@ class PermanentSubjectSerializer(serializers.ModelSerializer):
         model = PermanentSubject
         fields = ['stream_code','sem_year','subject_code','eff_from','subject_name','short_name','category','L','P','T','credit','E','M','I','V','total_marks','is_elective','is_practical','is_theory','is_semipractical','is_functional','practical_exam_duration','theory_exam_duration','remark','acedemic_year','slug']
     
-class SubjectChoicesSerializer(serializers.ModelSerializer):
+class FinalizedSubjectChoicesSerializer(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField()
+    priority = serializers.SerializerMethodField() 
+    finalized_choises = serializers.SerializerMethodField() 
     class Meta:
-        model = PermanentSubject
-        fields = ['available_choices','deadline_timestamp','choices_locked','slug']
+        model = SubjectChoices
+        fields = ['profile','priority','finalized_choises']
+
+    def __init__(self,instance, subject=None, *args, **kwargs):
+        super(FinalizedSubjectChoicesSerializer, self).__init__(*args, **kwargs)
+        self.subject = subject        
+
+    
+    def get_finalized_choises(self,obj):
+        finalized_choises = self.finalized_choises
+        finalized_choises_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_choises],many=True)
+        return finalized_choises_serialized.data
+    
+    def get_profile(self,obj):
+        from StakeHolders.serializers import ProfileSerializer
+        profile = ProfileSerializer(obj.profile)
+        return profile.data
+
+    def get_finalized_choises(self, obj):
+        # Since `finalized_choices` is pre-fetched, no additional query will be triggered here
+        finalized_choises = [subject.subject_map for subject in obj.finalized_choices.all()]
+        return PermanentSubjectSerializer(instance=finalized_choises, many=True).data
+
+    def get_priority(self, obj):
+        try:            
+            ids = list(obj.finalized_choices.values_list('id', flat=True))
+            return ids.index(self.subject.id) + 1
+        except ValueError:
+            return None
+
 
 class ComplementrySubjectsSerializer(serializers.ModelSerializer):
     subjects =  serializers.SerializerMethodField()
