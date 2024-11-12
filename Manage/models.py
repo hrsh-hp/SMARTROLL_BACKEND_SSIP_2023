@@ -176,6 +176,7 @@ class Subject(models.Model):
 
 class ComplementrySubjects(models.Model):
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)
+    category = models.CharField(max_length=255,null=True,blank=True)
     subjects = models.ManyToManyField(Subject)
     slug = models.SlugField(unique=True,null=True,blank=True)
 

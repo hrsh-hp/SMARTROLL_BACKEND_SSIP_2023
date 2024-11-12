@@ -89,10 +89,10 @@ class FinalizedSubjectChoicesSerializer(serializers.ModelSerializer):
 
 
 class ComplementrySubjectsSerializer(serializers.ModelSerializer):
-    subjects =  serializers.SerializerMethodField()
+    subjects =  serializers.SerializerMethodField()    
     class Meta:
         model = ComplementrySubjects
-        fields = ['subjects','slug']
+        fields = ['category','subjects','slug']
 
     def get_subjects(self,obj):
         subjects =  obj.subjects.all()        

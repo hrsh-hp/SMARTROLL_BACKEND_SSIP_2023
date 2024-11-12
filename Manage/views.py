@@ -1386,7 +1386,7 @@ def add_subjects_to_semester(request):
                 complementries = permanent_subjects.filter(category=permanent_subject.category).exclude(id=permanent_subject.id)
                 if complementries.exists():
                     current_subject_obj,current_subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject,is_elective=True)
-                    complementry_obj = ComplementrySubjects.objects.filter(semester=semester_obj,subjects=current_subject_obj).first() or ComplementrySubjects.objects.create(semester=semester_obj)
+                    complementry_obj,complementry_obj_created = ComplementrySubjects.objects.get_or_create(semester=semester_obj,category=permanent_subject.category)
                     complementry_obj.subjects.add(current_subject_obj)
                     for complimentry_subj in complementries:
                         subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj,is_elective=True)
@@ -1602,20 +1602,18 @@ def get_teachers_for_the_subject(request,subject_slug):
         data['error'] = True
         return JsonResponse(data,status=500)
 
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_complementry_subject_from_semester(request,semester_slug):
     try:
-        data = {'data':{},'error':False,'message':None}
-        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")
-        admin_obj = Admin.objects.filter(profile=request.user).first()
-        if not admin_obj:raise Exception("Admin does not exists")
+        data = {'data':[],'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")                
         semester_obj = Semester.objects.filter(slug=semester_slug).first()
         if not semester_obj: raise Exception("Semester does not exists")
         complementry_subjects = ComplementrySubjects.objects.filter(semester=semester_obj).prefetch_related('subjects')
-        if not complementry_subjects: raise Exception("No elective subject ofund for this semester")
-        for complementry_subject in complementry_subjects:
-            complementry_subjects_serialized = ComplementrySubjectsSerializer(instance = complementry_subject)
-            data['data'][complementry_subject.subjects.first().subject_map.category] = complementry_subjects_serialized.data
+        if not complementry_subjects: raise Exception("No elective subject ofund for this semester")        
+        complementry_subjects_serialized = ComplementrySubjectsSerializer(instance = complementry_subjects,many=True)        
+        data['data'] = complementry_subjects_serialized.data
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
