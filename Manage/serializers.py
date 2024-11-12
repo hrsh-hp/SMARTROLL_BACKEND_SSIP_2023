@@ -67,8 +67,12 @@ class FinalizedSubjectChoicesSerializer(serializers.ModelSerializer):
         return finalized_choises_serialized.data
     
     def get_profile(self,obj):
-        from StakeHolders.serializers import ProfileSerializer
+        from StakeHolders.serializers import ProfileSerializer,StudentSerializer
+        from StakeHolders.models import Student
         profile = ProfileSerializer(obj.profile)
+        if profile.data['role'] == 'student':
+            student = Student.objects.get(profile=obj.profile)
+            return StudentSerializer(student).data
         return profile.data
 
     def get_finalized_choises(self, obj):

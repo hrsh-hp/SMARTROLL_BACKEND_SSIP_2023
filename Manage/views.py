@@ -1485,7 +1485,7 @@ def get_subjects_from_acedemic_year(request,semester_slug,acedemic_year):
         admin_obj = Admin.objects.filter(profile=request.user).first()
         if not admin_obj:raise Exception("Admin does not exists")
         semester_obj = Semester.objects.filter(slug=semester_slug).first()
-        if not semester_slug: raise Exception("Semester does not exists")
+        if not semester_obj: raise Exception("Semester does not exists")
         permanent_subject_objs = PermanentSubject.objects.filter(degree=semester_obj.stream.title,stream_code=semester_obj.stream.stream_code,sem_year=semester_obj.no,acedemic_year=acedemic_year)
         if not permanent_subject_objs:raise Exception("No Subject found!!")
         permanent_subject_serialized = PermanentSubjectSerializer(permanent_subject_objs,many=True)
@@ -1596,6 +1596,50 @@ def get_teachers_for_the_subject(request,subject_slug):
         subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)
         data['data'] = subject_choices_objs_serialized.data
         return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+
+
+def get_complementry_subject_from_semester(request,semester_slug):
+    try:
+        data = {'data':{},'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")
+        admin_obj = Admin.objects.filter(profile=request.user).first()
+        if not admin_obj:raise Exception("Admin does not exists")
+        semester_obj = Semester.objects.filter(slug=semester_slug).first()
+        if not semester_obj: raise Exception("Semester does not exists")
+        complementry_subjects = ComplementrySubjects.objects.filter(semester=semester_obj).prefetch_related('subjects')
+        if not complementry_subjects: raise Exception("No elective subject ofund for this semester")
+        for complementry_subject in complementry_subjects:
+            complementry_subjects_serialized = ComplementrySubjectsSerializer(instance = complementry_subject)
+            data['data'][complementry_subject.subjects.first().subject_map.category] = complementry_subjects_serialized.data
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_students_for_the_subject(request,subject_slug):
+    try:
+        data = {'data':{},'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")
+        admin_obj = Admin.objects.filter(profile=request.user).first()
+        if not admin_obj:raise Exception("Admin does not exists")
+        subject_obj = Subject.objects.filter(subject_map__slug=subject_slug).first()
+        if not subject_obj:raise Exception("Subject does not exists")
+        subject_choices_objs = SubjectChoices.objects.filter(profile__role='student',finalized_choices=subject_obj,choices_locked=True)
+        if not subject_choices_objs.exists(): raise Exception("No choises for this subject")
+        subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)
+        data['data'] = subject_choices_objs_serialized.data
+        return JsonResponse(data,status=200)
+        
     except Exception as e:
         print(e)
         data['message'] = str(e)

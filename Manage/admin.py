@@ -5,6 +5,7 @@ from .models import Subject,College,Branch,Stream,Semester,Division,Batch,TimeTa
 
 class ComonModelAdmin(admin.ModelAdmin):
     readonly_fields = ['slug'] 
+    search_fields = ['subject_name']
 
 admin.site.register(PermanentSubject,ComonModelAdmin)
 admin.site.register(Subject,ComonModelAdmin)

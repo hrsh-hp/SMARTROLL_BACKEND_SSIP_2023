@@ -290,3 +290,6 @@ class SubjectChoices(models.Model):
         if not self.slug:
             self.slug = generate_unique_hash()
         super(SubjectChoices, self).save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f"{self.profile.name} - {self.semester} "
