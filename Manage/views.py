@@ -1536,9 +1536,8 @@ def get_students_subject_choices(request):
         subject_choices_object = SubjectChoices.objects.filter(profile=request.user,semester=students_semester).first()
         if subject_choices_object.choices_locked:
             finalized_subjects_set = subject_choices_object.finalized_choices.all()
-            finalized_complementry_subject_objs = set(ComplementrySubjects.objects.filter(subjects=subject).first() for subject in finalized_subjects_set)
-            finalized_subject_choices_object_serialized = ComplementrySubjectsSerializer(instance = finalized_complementry_subject_objs,many=True)
-            data['data']['finalized_choices'] = finalized_subject_choices_object_serialized.data        
+            finalized_subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
+            data['data']['finalized_choices'] = finalized_subject_choices_object_serialized.data            
         else:
             available_subjects_set = subject_choices_object.available_choices.all()
             available_complementry_subject_objs = set(ComplementrySubjects.objects.filter(subjects=subject).first() for subject in available_subjects_set)
