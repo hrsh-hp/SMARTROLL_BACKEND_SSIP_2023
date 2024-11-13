@@ -1376,7 +1376,9 @@ def add_subjects_to_semester(request):
         if 'subject_slugs' not in body or 'semester_slug' not in body or 'deadline_timestamp' not in body:raise Exception("Parameters missing")
         deadline_timestamp_obj = datetime.datetime.fromtimestamp(int(body['deadline_timestamp'])).date()
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
-        permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])        
+        if not semester_obj: raise Exception("No semester found")
+        permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])
+        if not permanent_subjects: raise Exception("You haven't selected any subject")
         created_subjects = []
         while permanent_subjects.exists():
             permanent_subject = permanent_subjects.first()            
@@ -1446,8 +1448,6 @@ def get_semsters_from_stream(request,stream_slug):
     try:
         data = {'data':{},'error':False,'message':None}
         if request.user.role == 'admin':
-            admin_obj = Admin.objects.filter(profile=request.user).first()
-            if not admin_obj:raise Exception("Admin does not exists")
             stream_obj = Stream.objects.filter(slug=stream_slug).first()
             if not stream_obj: raise Exception("Stream does not exists")
             semesters = Semester.objects.filter(stream=stream_obj)
@@ -1460,8 +1460,6 @@ def get_semsters_from_stream(request,stream_slug):
             data['data']= semesters_serialized.data        
             return JsonResponse(data,status=200)
         if request.user.role == 'teacher':
-            teacher_obj = Teacher.objects.filter(profile=request.user).first()
-            if not teacher_obj:raise Exception("Teacher does not exists")
             stream_obj = Stream.objects.filter(slug=stream_slug).first()
             if not stream_obj: raise Exception("Stream does not exists")
             semesters = Semester.objects.filter(stream=stream_obj)
@@ -1505,6 +1503,7 @@ def get_teachers_subject_choices(request,semester_slug):
         if request.user.role != 'teacher':raise Exception("You're not allowed to perform this action")
         semester= Semester.objects.get(slug=semester_slug)
         subject_choices_object = SubjectChoices.objects.filter(profile=request.user,semester=semester).first()
+        if not subject_choices_object: raise Exception("No Subject Choices found for this teacher")
         # Check if the choices are locked or not        
         if subject_choices_object.choices_locked:            
             finalized_subjects_set = subject_choices_object.finalized_choices.order_by('orderedfinalizedsubject__ordering')
@@ -1532,8 +1531,11 @@ def get_students_subject_choices(request):
         if request.user.role != 'student':raise Exception("You're not allowed to perform this action")
         student_obj = Student.objects.get(profile=request.user)
         term_obj = Term.objects.filter(status=True).first()
-        students_semester = Semester.objects.get(stream__branch__term=term_obj,students=student_obj)
+        if not term_obj: raise Exception("No active term found for now")
+        students_semester = Semester.objects.filter(stream__branch__term=term_obj,students=student_obj).first()
+        if not students_semester: raise Exception("No semester found for current term for now")
         subject_choices_object = SubjectChoices.objects.filter(profile=request.user,semester=students_semester).first()
+        if not subject_choices_object: raise Exception("No Subject Choices found for this Student")
         if subject_choices_object.choices_locked:
             finalized_subjects_set = subject_choices_object.finalized_choices.order_by('orderedfinalizedsubject__ordering')
             finalized_subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
@@ -1562,6 +1564,7 @@ def mark_subject_choices(request):
         body = request.data
         if 'subject_choices' not in body or 'subject_choices_slug' not in body:raise Exception("Parameters missing")        
         subject_choices_obj = SubjectChoices.objects.get(slug=body['subject_choices_slug'])
+        if not subject_choices_obj:raise Exception("No Subject Choices were found at this moment.")
         if subject_choices_obj.profile != request.user: raise Exception("You're not allowed to fill this choice")                        
         if subject_choices_obj.choices_locked: raise Exception("Your choice has been already locked")
         finalized_permanent_subjects = sorted(PermanentSubject.objects.filter(slug__in=body['subject_choices']).prefetch_related('subject_set'),key=lambda subject: body['subject_choices'].index(subject.slug))        
@@ -1607,11 +1610,12 @@ def get_teachers_for_the_subject(request,subject_slug):
         data = {'data':{},'error':False,'message':None}        
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")        
         subject_obj = Subject.objects.filter(subject_map__slug=subject_slug).first()
+        if not subject_obj: raise Exception("Subject does not exists")
         # get the subject choies objects
         subject_choices_objs = SubjectChoices.objects.filter(profile__role='teacher',finalized_choices=subject_obj,choices_locked=True).prefetch_related(
             'finalized_choices', 'profile'
         )
-        if not subject_choices_objs.exists(): raise Exception("No choises for this subject")        
+        if not subject_choices_objs.exists(): raise Exception("No Choices for this subject")        
         subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)
         data['data'] = subject_choices_objs_serialized.data
         return JsonResponse(data,status=200)
@@ -1647,12 +1651,10 @@ def get_students_for_the_subject(request,subject_slug):
     try:
         data = {'data':{},'error':False,'message':None}
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")
-        admin_obj = Admin.objects.filter(profile=request.user).first()
-        if not admin_obj:raise Exception("Admin does not exists")
         subject_obj = Subject.objects.filter(subject_map__slug=subject_slug).first()
         if not subject_obj:raise Exception("Subject does not exists")
         subject_choices_objs = SubjectChoices.objects.filter(profile__role='student',finalized_choices=subject_obj,choices_locked=True)
-        if not subject_choices_objs.exists(): raise Exception("No choises for this subject")
+        if not subject_choices_objs.exists(): raise Exception("No student choices for this subject")
         subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)
         data['data'] = subject_choices_objs_serialized.data
         return JsonResponse(data,status=200)
