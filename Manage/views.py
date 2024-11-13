@@ -1375,10 +1375,10 @@ def add_subjects_to_semester(request):
         body = request.data
         if 'subject_slugs' not in body or 'semester_slug' not in body or 'deadline_timestamp' not in body:raise Exception("Parameters missing")
         deadline_timestamp_obj = datetime.datetime.fromtimestamp(int(body['deadline_timestamp'])).date()
+        if deadline_timestamp_obj <=  datetime.date.today():raise Exception("The deadline date should be in the future.")
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
-        if not semester_obj: raise Exception("No semester found")
         permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])
-        if not permanent_subjects: raise Exception("You haven't selected any subject")
+        if not permanent_subjects.exists():raise Exception('No subjects found!')
         created_subjects = []
         while permanent_subjects.exists():
             permanent_subject = permanent_subjects.first()            
@@ -1567,9 +1567,22 @@ def mark_subject_choices(request):
         if not subject_choices_obj:raise Exception("No Subject Choices were found at this moment.")
         if subject_choices_obj.profile != request.user: raise Exception("You're not allowed to fill this choice")                        
         if subject_choices_obj.choices_locked: raise Exception("Your choice has been already locked")
-        finalized_permanent_subjects = sorted(PermanentSubject.objects.filter(slug__in=body['subject_choices']).prefetch_related('subject_set'),key=lambda subject: body['subject_choices'].index(subject.slug))        
+        finalized_permanent_subjects = sorted(PermanentSubject.objects.filter(slug__in=body['subject_choices']).prefetch_related('subject_set'),key=lambda subject: body['subject_choices'].index(subject.slug))
+        if len(finalized_permanent_subjects) == 0: raise Exception("No choices given")
         finalized_subjects = [permanent_subject.subject_set.first() for permanent_subject in finalized_permanent_subjects]
-        subject_choices_obj.finalized_choices.clear()        
+        subject_choices_obj.finalized_choices.clear()
+        if request.user.role=='student':
+            semester_obj = subject_choices_obj.semester
+            complementry_subjects = ComplementrySubjects.objects.filter(semester=semester_obj)
+            # Check atleast one of all complementry choices has been marked by the user
+            for complementry_subjects_obj in complementry_subjects:
+                elective_choice_found = False
+                for elective_sub in complementry_subjects_obj.subjects.all():
+                    if elective_sub in finalized_subjects:
+                        elective_choice_found=True
+                if not elective_choice_found:
+                    print(complementry_subjects_obj.subjects.all())
+                    raise Exception("Please choose from all the elective categories")  
         for order, subject in enumerate(finalized_subjects, start=1):
             # Check for student to only add one of the complementry subject (Not possible for frontend but just in case)
             # Logic will be just chcek the subject in the complement subject object's subjects field if the subject beside this one is already in the finalized_subjects queryset field then don't allow to add this one or replace the current
@@ -1578,7 +1591,7 @@ def mark_subject_choices(request):
             if not subject_choices_obj.available_choices.contains(subject):                
                 # for teacher and student both
                 continue
-            if request.user.role=='student':
+            if request.user.role=='student':                
                 # only for student
                 if not subject.is_elective:                    
                     continue
