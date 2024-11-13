@@ -1506,8 +1506,8 @@ def get_teachers_subject_choices(request,semester_slug):
         semester= Semester.objects.get(slug=semester_slug)
         subject_choices_object = SubjectChoices.objects.filter(profile=request.user,semester=semester).first()
         # Check if the choices are locked or not        
-        if subject_choices_object.choices_locked:
-            finalized_subjects_set = subject_choices_object.finalized_choices.all()
+        if subject_choices_object.choices_locked:            
+            finalized_subjects_set = subject_choices_object.finalized_choices.order_by('orderedfinalizedsubject__ordering')
             subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
             data['data']['finalized_choices'] = subject_choices_object_serialized.data
         else:
@@ -1535,7 +1535,7 @@ def get_students_subject_choices(request):
         students_semester = Semester.objects.get(stream__branch__term=term_obj,students=student_obj)
         subject_choices_object = SubjectChoices.objects.filter(profile=request.user,semester=students_semester).first()
         if subject_choices_object.choices_locked:
-            finalized_subjects_set = subject_choices_object.finalized_choices.all()
+            finalized_subjects_set = subject_choices_object.finalized_choices.order_by('orderedfinalizedsubject__ordering')
             finalized_subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
             data['data']['finalized_choices'] = finalized_subject_choices_object_serialized.data            
         else:
@@ -1560,15 +1560,34 @@ def mark_subject_choices(request):
         data = {'data':{},'error':False,'message':None}        
         if request.user.role != 'teacher' and request.user.role != 'student':raise Exception("You're not allowed to perform this action.")        
         body = request.data
-        if 'subject_choices' not in body or 'subject_choices_slug' not in body:raise Exception("Parameters missing")
+        if 'subject_choices' not in body or 'subject_choices_slug' not in body:raise Exception("Parameters missing")        
         subject_choices_obj = SubjectChoices.objects.get(slug=body['subject_choices_slug'])
-        if subject_choices_obj.profile != request.user: raise Exception("You're not allowed to fill this choice")        
-        finalized_permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_choices']).prefetch_related('subject_set')        
+        if subject_choices_obj.profile != request.user: raise Exception("You're not allowed to fill this choice")                        
+        if subject_choices_obj.choices_locked: raise Exception("Your choice has been already locked")
+        finalized_permanent_subjects = sorted(PermanentSubject.objects.filter(slug__in=body['subject_choices']).prefetch_related('subject_set'),key=lambda subject: body['subject_choices'].index(subject.slug))        
         finalized_subjects = [permanent_subject.subject_set.first() for permanent_subject in finalized_permanent_subjects]
-        subject_choices_obj.finalized_choices.add(*finalized_subjects)        
+        subject_choices_obj.finalized_choices.clear()        
+        for order, subject in enumerate(finalized_subjects, start=1):
+            # Check for student to only add one of the complementry subject (Not possible for frontend but just in case)
+            # Logic will be just chcek the subject in the complement subject object's subjects field if the subject beside this one is already in the finalized_subjects queryset field then don't allow to add this one or replace the current
+            # we can't let the student add choice of a pemanent subject
+            # Also have to check the user only tries to add choice for the subject which is in his available sujects list
+            if not subject_choices_obj.available_choices.contains(subject):                
+                # for teacher and student both
+                continue
+            if request.user.role=='student':
+                # only for student
+                if not subject.is_elective:                    
+                    continue
+                complementries = ComplementrySubjects.objects.filter(subjects=subject).first().subjects.exclude(id=subject.id)
+                for complementry in complementries:
+                    if complementry in finalized_subjects:
+                        subject_choices_obj.finalized_choices.clear()
+                        raise Exception("You can mark add choice for only 1 subject from the electives")            
+            subject_choices_obj.finalized_choices.add(subject, through_defaults={'ordering': order})
         subject_choices_obj.choices_locked=True
         subject_choices_obj.save()        
-        finalized_subjects_set = subject_choices_obj.finalized_choices.all()                    
+        finalized_subjects_set = subject_choices_obj.finalized_choices.order_by('orderedfinalizedsubject__ordering')
         subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
         data['data']['finalized_choices'] = subject_choices_object_serialized.data
         data['data']['choices_locked'] = subject_choices_obj.choices_locked

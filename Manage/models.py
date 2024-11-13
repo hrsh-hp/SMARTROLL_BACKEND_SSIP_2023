@@ -278,11 +278,21 @@ class Link(models.Model):
             self.slug = generate_unique_hash()
         super(Link, self).save(*args, **kwargs)
 
+class OrderedFinalizedSubject(models.Model):
+    subject_choices = models.ForeignKey('SubjectChoices', on_delete=models.CASCADE)
+    subject = models.ForeignKey('Subject', on_delete=models.CASCADE)
+    ordering = models.PositiveIntegerField()  # Field to store the order
+
+    class Meta:
+        ordering = ['ordering']  # Ensures ordered retrieval by default
+
 class SubjectChoices(models.Model):
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE)
     available_choices = models.ManyToManyField(Subject, related_name='available_subjects',blank=True)
-    finalized_choices = models.ManyToManyField(Subject, related_name='finalized_subjects',blank=True)
+    finalized_choices = models.ManyToManyField(
+        'Subject', related_name='finalized_subjects', blank=True, through='OrderedFinalizedSubject'
+    )
     deadline_timestamp = models.DateField()
     choices_locked = models.BooleanField(default=False)
     slug = models.SlugField(unique=True, null=True, blank=True)

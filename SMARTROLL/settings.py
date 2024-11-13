@@ -51,7 +51,7 @@ ALLOWED_HOSTS = ['*']
 
 CSRF_COOKIE_SECURE = False
 CSRF_USE_SESSIONS = False
-CSRF_TRUSTED_ORIGINS = ["http://192.168.157.106:8000",'http://192.168.157.106:8000','http://localhost:3000','https://64e7-2405-201-2024-b91e-28ee-181d-8963-d036.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ["https://60eb-2405-201-2024-b91e-4f5d-ed88-8bc4-4101.ngrok-free.app"]
 
 
 # Application definition
@@ -100,7 +100,7 @@ CRONJOBS = [
 ]
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=90),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
