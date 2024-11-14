@@ -1378,7 +1378,7 @@ def add_subjects_to_semester(request):
         if deadline_timestamp_obj <=  datetime.date.today():raise Exception("The deadline date should be in the future.")
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
         permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])
-        if not permanent_subjects.exists():raise Exception('No subjects found!')
+        if not permanent_subjects.exists():raise Exception('No subjects chosen')
         created_subjects = []
         while permanent_subjects.exists():
             permanent_subject = permanent_subjects.first()            
