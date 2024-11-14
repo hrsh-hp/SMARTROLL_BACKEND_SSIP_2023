@@ -51,7 +51,7 @@ ALLOWED_HOSTS = ['*']
 
 CSRF_COOKIE_SECURE = False
 CSRF_USE_SESSIONS = False
-CSRF_TRUSTED_ORIGINS = ["https://60eb-2405-201-2024-b91e-4f5d-ed88-8bc4-4101.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://neat-presently-walrus.ngrok-free.app"]
 
 
 # Application definition

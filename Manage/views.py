@@ -18,6 +18,7 @@ from threading import Thread
 from .utils import parse_be_me_string,parse_time_string,hash_string,check_for_batch_includance
 import json
 from SMARTROLL.GlobalUtils import generate_unique_hash
+from django.db import transaction
 # Create your views here.
 
 User = get_user_model()
@@ -1377,6 +1378,8 @@ def add_subjects_to_semester(request):
         deadline_timestamp_obj = datetime.datetime.fromtimestamp(int(body['deadline_timestamp'])).date()
         if deadline_timestamp_obj <=  datetime.date.today():raise Exception("The deadline date should be in the future.")
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
+        semester_obj.subject_choice_deadline=deadline_timestamp_obj
+        subject_obj.save()
         permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])
         if not permanent_subjects.exists():raise Exception('No subjects chosen')
         created_subjects = []
@@ -1415,7 +1418,7 @@ def add_subjects_to_semester(request):
         # For teachers
         teacher_subject_choices_objects = []
         for teacher_profile in teacher_profiles:
-            subject_choices_object = SubjectChoices(profile=teacher_profile,semester=semester_obj,slug=generate_unique_hash(),deadline_timestamp=deadline_timestamp_obj)
+            subject_choices_object = SubjectChoices(profile=teacher_profile,semester=semester_obj,slug=generate_unique_hash())
             teacher_subject_choices_objects.append(subject_choices_object)
         # Now to bulk create the choices object and add the subjects it it
         SubjectChoices.objects.bulk_create(teacher_subject_choices_objects)
@@ -1425,7 +1428,7 @@ def add_subjects_to_semester(request):
         # For students
         students_subject_choices_objects = []
         for student_profile in student_profiles:
-            student_subject_choices_object = SubjectChoices(profile=student_profile,semester=semester_obj,slug=generate_unique_hash(),deadline_timestamp=deadline_timestamp_obj)
+            student_subject_choices_object = SubjectChoices(profile=student_profile,semester=semester_obj,slug=generate_unique_hash())
             students_subject_choices_objects.append(student_subject_choices_object)
         # Now to bulk create the choices object and add the subjects it it
         SubjectChoices.objects.bulk_create(students_subject_choices_objects)
@@ -1580,8 +1583,7 @@ def mark_subject_choices(request):
                 for elective_sub in complementry_subjects_obj.subjects.all():
                     if elective_sub in finalized_subjects:
                         elective_choice_found=True
-                if not elective_choice_found:
-                    print(complementry_subjects_obj.subjects.all())
+                if not elective_choice_found:                    
                     raise Exception("Please choose from all the elective categories")  
         for order, subject in enumerate(finalized_subjects, start=1):
             # Check for student to only add one of the complementry subject (Not possible for frontend but just in case)
@@ -1591,16 +1593,21 @@ def mark_subject_choices(request):
             if not subject_choices_obj.available_choices.contains(subject):                
                 # for teacher and student both
                 continue
-            if request.user.role=='student':                
+            if request.user.role=='student':
                 # only for student
                 if not subject.is_elective:                    
                     continue
                 complementries = ComplementrySubjects.objects.filter(subjects=subject).first().subjects.exclude(id=subject.id)
-                for complementry in complementries:
-                    if complementry in finalized_subjects:
-                        subject_choices_obj.finalized_choices.clear()
-                        raise Exception("You can mark add choice for only 1 subject from the electives")            
-            subject_choices_obj.finalized_choices.add(subject, through_defaults={'ordering': order})
+                with transaction.atomic():
+                    for complementry in complementries:
+                        if complementry in finalized_subjects:
+                            subject_choices_obj.finalized_choices.clear()
+                            raise Exception("You can mark add choice for only 1 subject from the electives")
+                        subject_choices_obj.available_choices.remove(complementry)
+            subject_choices_obj.finalized_choices.add(subject, through_defaults={'ordering': order})            
+            subject_choices_obj.available_choices.remove(subject)
+
+                
         subject_choices_obj.choices_locked=True
         subject_choices_obj.save()        
         finalized_subjects_set = subject_choices_obj.finalized_choices.order_by('orderedfinalizedsubject__ordering')

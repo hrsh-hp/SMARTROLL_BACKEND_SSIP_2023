@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from Manage.models import SubjectChoices
+from Manage.models import Semester
 from ...models import Alert
 import datetime
 
@@ -9,10 +9,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         today = datetime.datetime.today().date()
         # Get the subject chocie objects which deadline is tomorrow        
-        objs = SubjectChoices.objects.filter(deadline_timestamp=today,choices_locked=False)
+        semesters = Semester.objects.filter(subject_choice_deadline=today)        
         # for this we have to send alerts to the users        
-        for obj in objs:
-            message_string = f"Friendly Reminder: Today is the deadline to mark your subject choices for the {obj.semester.no} Semester. Please ensure that your selections are submitted by the end of the day. Thank you for your attention to this important step!"
-            Alert.objects.create(profile=obj.profile,message=message_string,type='subject_choice_alert')
+        for semester in semesters:
+            for subject_choises in semester.subjectchoices_set.filter(choices_locked=False):
+                message_string = f"Friendly Reminder: Today is the deadline to mark your subject choices for the {semester.no} Semester. Please ensure that your selections are submitted by the end of the day. Thank you for your attention to this important step!"
+                Alert.objects.create(profile=subject_choises.profile,message=message_string,type='subject_choice_alert')
 
         self.stdout.write('Subject choice alerts sent')
