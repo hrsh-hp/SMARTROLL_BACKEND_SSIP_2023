@@ -1378,66 +1378,111 @@ def add_subjects_to_semester(request):
         deadline_timestamp_obj = datetime.datetime.fromtimestamp(int(body['deadline_timestamp'])).date()
         if deadline_timestamp_obj <=  datetime.date.today():raise Exception("The deadline date should be in the future.")
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
-        semester_obj.subject_choice_deadline=deadline_timestamp_obj
-        subject_obj.save()
+        branch_obj = semester_obj.stream.branch
+        if semester_obj.subjects_locked: raise Exception("Subjects are locked for this semester")
         permanent_subjects = PermanentSubject.objects.filter(slug__in=body['subject_slugs'])
         if not permanent_subjects.exists():raise Exception('No subjects chosen')
-        created_subjects = []
-        while permanent_subjects.exists():
-            permanent_subject = permanent_subjects.first()            
-            # Check if the category matches with another subject in the list
-            if permanent_subject.is_elective:   
-                # create complementry subjects here
-                complementries = permanent_subjects.filter(category=permanent_subject.category).exclude(id=permanent_subject.id)
-                if complementries.exists():
-                    current_subject_obj,current_subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject,is_elective=True)
-                    complementry_obj,complementry_obj_created = ComplementrySubjects.objects.get_or_create(semester=semester_obj,category=permanent_subject.category)
-                    complementry_obj.subjects.add(current_subject_obj)
-                    for complimentry_subj in complementries:
-                        subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj,is_elective=True)
-                        created_subjects.append(subject_obj)
-                        complementry_obj.subjects.add(subject_obj)
-                        permanent_subjects = permanent_subjects.exclude(id=complimentry_subj.id)
-                else:
-                    # Elective with no complementry                    
-                    subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
-                    subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
-                    created_subjects.append(subject_obj)
-                    permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
-
-            else:                
-                permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
-                subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
-                created_subjects.append(subject_obj)
-        # By here well get the all the created subjects Now we can create the choices objects
-        # First we need to get all the teacher's profile of this branch and all the student's profile of this semester
-        branch_obj = semester_obj.stream.branch
+        # get the students and teachers profiles for later use        
         student_profiles = [student.profile for student in semester_obj.students.all()]
         teacher_profiles = [teacher.profile for teacher in branch_obj.teachers.all()]
-        # Now to make the SubjectChoices objects
-        # For teachers
-        teacher_subject_choices_objects = []
-        for teacher_profile in teacher_profiles:
-            subject_choices_object = SubjectChoices(profile=teacher_profile,semester=semester_obj,slug=generate_unique_hash())
-            teacher_subject_choices_objects.append(subject_choices_object)
-        # Now to bulk create the choices object and add the subjects it it
-        SubjectChoices.objects.bulk_create(teacher_subject_choices_objects)
-        for teacher_subject_choices_object in teacher_subject_choices_objects:
-            teacher_subject_choices_object.available_choices.add(*created_subjects)
+        # We have to check if subject choices for this semester was already marked sometime before
+        # All subjects from semester
+        sem_subjects_set = semester_obj.subject_set.all()
+        if sem_subjects_set.exists():        
+            # check if any subject is removed from the previous subject set
+            for subject_obj in sem_subjects_set:
+                if subject_obj.subject_map not in permanent_subjects:                       
+                    # for teacher
+                    for teacher_profile in teacher_profiles:
+                        subject_choice_obj = SubjectChoices.objects.get(profile=teacher_profile,semester=semester_obj)                        
+                        subject_choice_obj.choices_locked=False
+                        subject_choice_obj.save()
+                    complementry_obj = subject_obj.complementrysubjects_set.first()
+                    if complementry_obj:
+                        complementry_obj_subjects = complementry_obj.subjects.exclude(id=subject_obj.id)
+                        if complementry_obj_subjects.count() == 1:
+                            for student_profile in student_profiles:
+                                subject_choice_obj = SubjectChoices.objects.get(profile=student_profile,semester=semester_obj)
+                                complementry_sub_to_removed_sub = complementry_obj_subjects.first()
+                                complementry_sub_to_removed_sub.is_elective=False
+                                complementry_sub_to_removed_sub.save()
+                                subject_choice_obj.finalized_choices.add(complementry_sub_to_removed_sub,through_defaults={'ordering': 1})
+                            subject_obj.complementrysubjects_set.first().delete()
+                        else:
+                            for student_profile in student_profiles:
+                                subject_choice_obj = SubjectChoices.objects.get(profile=student_profile,semester=semester_obj)
+                                subject_choice_obj.available_choices.add(*complementry_obj_subjects)
+                                subject_choice_obj.finalized_choices.remove(*complementry_obj_subjects)
+                                subject_choice_obj.choices_locked=False
+                                subject_choice_obj.save()
+                    subject_obj.delete()
+            semester_obj.subjects_locked=True
+            semester_obj.subject_choice_deadline=deadline_timestamp_obj
+            semester_obj.save()
+            subjects_serialized = PermanentSubjectSerializer([subject for subject in permanent_subjects],many=True)
+            data['data'] = subjects_serialized.data
+            return JsonResponse(data,status=200)
+        else:
+            created_subjects = []
+            while permanent_subjects.exists():
+                permanent_subject = permanent_subjects.first()            
+                # Check if the category matches with another subject in the list
+                if permanent_subject.is_elective:   
+                    # create complementry subjects here
+                    complementries = permanent_subjects.filter(category=permanent_subject.category).exclude(id=permanent_subject.id)
+                    if complementries.exists():
+                        current_subject_obj,current_subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject,is_elective=True)
+                        complementry_obj,complementry_obj_created = ComplementrySubjects.objects.get_or_create(semester=semester_obj,category=permanent_subject.category)
+                        complementry_obj.subjects.add(current_subject_obj)
+                        for complimentry_subj in complementries:
+                            subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj,is_elective=True)
+                            created_subjects.append(subject_obj)
+                            complementry_obj.subjects.add(subject_obj)
+                            permanent_subjects = permanent_subjects.exclude(id=complimentry_subj.id)
+                    else:
+                        # Elective with no complementry                    
+                        subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)                    
+                        created_subjects.append(subject_obj)
+                        permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
 
-        # For students
-        students_subject_choices_objects = []
-        for student_profile in student_profiles:
-            student_subject_choices_object = SubjectChoices(profile=student_profile,semester=semester_obj,slug=generate_unique_hash())
-            students_subject_choices_objects.append(student_subject_choices_object)
-        # Now to bulk create the choices object and add the subjects it it
-        SubjectChoices.objects.bulk_create(students_subject_choices_objects)
-        electives = list(filter(lambda subject:subject.is_elective,created_subjects))
-        for subject_choices_object in students_subject_choices_objects:
-            subject_choices_object.available_choices.add(*electives)
-
-        subjects_serialized = PermanentSubjectSerializer([subject.subject_map for subject in created_subjects],many=True)
-        data['data'] = subjects_serialized.data
+                else:                
+                    permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
+                    subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
+                    created_subjects.append(subject_obj)                    
+            # Now to make the SubjectChoices objects
+            # For teachers
+            teacher_subject_choices_objects = []
+            for teacher_profile in teacher_profiles:
+                teacher_subject_choices_object = SubjectChoices.objects.filter(profile=teacher_profile,semester=semester_obj).first()
+                if teacher_subject_choices_object:
+                    teacher_subject_choices_object.available_choices.add(*created_subjects)
+                else:
+                    teacher_subject_choices_objects.append(SubjectChoices(profile=teacher_profile,semester=semester_obj,slug=generate_unique_hash()))
+            # Now to bulk create the choices object and add the subjects it it
+            SubjectChoices.objects.bulk_create(teacher_subject_choices_objects)
+            for teacher_subject_choices_object in teacher_subject_choices_objects:
+                teacher_subject_choices_object.available_choices.add(*created_subjects)
+            # For students
+            students_subject_choices_objects = []
+            for student_profile in student_profiles:
+                student_subject_choices_object = SubjectChoices.objects.filter(profile=student_profile,semester=semester_obj).first()
+                if student_subject_choices_object:
+                    electives = list(filter(lambda subject:subject.is_elective,created_subjects))
+                    student_subject_choices_object.available_choices.add(*electives)
+                else:
+                    student_subject_choices_object = SubjectChoices(profile=student_profile,semester=semester_obj,slug=generate_unique_hash())
+                    students_subject_choices_objects.append(student_subject_choices_object)
+            # Now to bulk create the choices object and add the subjects it it
+            SubjectChoices.objects.bulk_create(students_subject_choices_objects)
+            electives = list(filter(lambda subject:subject.is_elective,created_subjects))
+            for subject_choices_object in students_subject_choices_objects:
+                subject_choices_object.available_choices.add(*electives)
+            # Set the semester deadline
+            semester_obj.subjects_locked=True
+            semester_obj.subject_choice_deadline=deadline_timestamp_obj
+            semester_obj.save()
+            subjects_serialized = PermanentSubjectSerializer([subject.subject_map for subject in created_subjects],many=True)
+            data['data'] = subjects_serialized.data
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
@@ -1447,7 +1492,7 @@ def add_subjects_to_semester(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_semsters_from_stream(request,stream_slug):
+def get_semesters_from_stream(request,stream_slug):
     try:
         data = {'data':{},'error':False,'message':None}
         if request.user.role == 'admin':
@@ -1517,7 +1562,7 @@ def get_teachers_subject_choices(request,semester_slug):
             subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in available_subjects_set],many=True)
             data['data']['available_choices'] = subject_choices_object_serialized.data
         data['data']['choices_locked'] = subject_choices_object.choices_locked
-        data['data']['deadline_timestamp']=subject_choices_object.deadline_timestamp
+        data['data']['deadline_timestamp']=semester.subject_choice_deadline
         data['data']['slug']=subject_choices_object.slug    
         return JsonResponse(data,status=200)
     except Exception as e:
@@ -1549,7 +1594,7 @@ def get_students_subject_choices(request):
             available_subject_choices_object_serialized = ComplementrySubjectsSerializer(instance = available_complementry_subject_objs,many=True)
             data['data']['available_choices'] = available_subject_choices_object_serialized.data        
         data['data']['choices_locked'] = subject_choices_object.choices_locked
-        data['data']['deadline_timestamp']=subject_choices_object.deadline_timestamp
+        data['data']['deadline_timestamp']=students_semester.subject_choice_deadline
         data['data']['slug']=subject_choices_object.slug
         return JsonResponse(data,status=200)
     except Exception as e:
@@ -1562,21 +1607,23 @@ def get_students_subject_choices(request):
 @permission_classes([IsAuthenticated])
 def mark_subject_choices(request):
     try:
-        data = {'data':{},'error':False,'message':None}        
+        data = {'data':{},'error':False,'message':None}                
         if request.user.role != 'teacher' and request.user.role != 'student':raise Exception("You're not allowed to perform this action.")        
         body = request.data
         if 'subject_choices' not in body or 'subject_choices_slug' not in body:raise Exception("Parameters missing")        
-        subject_choices_obj = SubjectChoices.objects.get(slug=body['subject_choices_slug'])
-        if not subject_choices_obj:raise Exception("No Subject Choices were found at this moment.")
+        subject_choices_obj = SubjectChoices.objects.get(slug=body['subject_choices_slug'])        
+        semester_obj = subject_choices_obj.semester
+        if not subject_choices_obj:raise Exception("No Subject Choices were found at this moment.")                
         if subject_choices_obj.profile != request.user: raise Exception("You're not allowed to fill this choice")                        
         if subject_choices_obj.choices_locked: raise Exception("Your choice has been already locked")
         finalized_permanent_subjects = sorted(PermanentSubject.objects.filter(slug__in=body['subject_choices']).prefetch_related('subject_set'),key=lambda subject: body['subject_choices'].index(subject.slug))
         if len(finalized_permanent_subjects) == 0: raise Exception("No choices given")
         finalized_subjects = [permanent_subject.subject_set.first() for permanent_subject in finalized_permanent_subjects]
-        subject_choices_obj.finalized_choices.clear()
-        if request.user.role=='student':
-            semester_obj = subject_choices_obj.semester
-            complementry_subjects = ComplementrySubjects.objects.filter(semester=semester_obj)
+        if request.user.role=='student':            
+            complementry_subjects = ComplementrySubjects.objects.filter(
+                    semester=semester_obj,
+                    id__in=subject_choices_obj.available_choices.values_list('id', flat=True)
+            )            
             # Check atleast one of all complementry choices has been marked by the user
             for complementry_subjects_obj in complementry_subjects:
                 elective_choice_found = False
@@ -1614,7 +1661,7 @@ def mark_subject_choices(request):
         subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_subjects_set],many=True)
         data['data']['finalized_choices'] = subject_choices_object_serialized.data
         data['data']['choices_locked'] = subject_choices_obj.choices_locked
-        data['data']['deadline_timestamp']=subject_choices_obj.deadline_timestamp
+        data['data']['deadline_timestamp']=semester_obj.subject_choice_deadline
         data['data']['slug']=subject_choices_obj.slug
         return JsonResponse(data,status=200)
     except Exception as e:
@@ -1679,6 +1726,26 @@ def get_students_for_the_subject(request,subject_slug):
         data['data'] = subject_choices_objs_serialized.data
         return JsonResponse(data,status=200)
         
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlock_subject_choices(request):
+    try:
+        data = {'data':None,'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
+        body = request.data
+        if 'semester_slug' not in body:raise Exception("parameters missing!!")
+        semester_obj = Semester.objects.get(slug=body['semester_slug'])
+        if not semester_obj.subjects_locked:raise Exception("Choice already unlocked")
+        semester_obj.subjects_locked=False
+        semester_obj.save()
+        data['data']=True
+        return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
         data['message'] = str(e)

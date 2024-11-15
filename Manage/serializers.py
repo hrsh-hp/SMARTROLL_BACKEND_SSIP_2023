@@ -1,5 +1,5 @@
 from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream,PermanentSubject,ComplementrySubjects,SubjectChoices
-from datetime import datetime
+from datetime import datetime,date
 from rest_framework import serializers
 from Session.models import Session,Attendance
 
@@ -104,10 +104,11 @@ class SemesterSerializerByStream(serializers.ModelSerializer):
     stream = StreamSerializer()
     subjects = serializers.SerializerMethodField()
     years = serializers.SerializerMethodField()
+    deadline_reached=serializers.SerializerMethodField()
 
     class Meta:
         model = Semester
-        fields = ['slug','no','status','stream','subjects','years']
+        fields = ['slug','no','status','stream','subjects','years','subjects_locked','deadline_reached']
 
     def __init__(self, years_arr=None, *args, **kwargs):
         super(SemesterSerializerByStream, self).__init__(*args, **kwargs)
@@ -122,6 +123,14 @@ class SemesterSerializerByStream(serializers.ModelSerializer):
         subject_maps = [subject.subject_map for subject in subject_set]
         subject_maps_serialized = PermanentSubjectSerializer(subject_maps,many=True)
         return subject_maps_serialized.data
+    
+    def get_deadline_reached(self,obj):
+        today = date.today()
+        if obj.subject_choice_deadline:
+            if today > obj.subject_choice_deadline:
+                return True
+            return False
+        return None
         
 
 class SubjectSerializer(serializers.ModelSerializer):

@@ -83,7 +83,7 @@ class Semester(models.Model):
     stream = models.ForeignKey(Stream,on_delete=models.CASCADE,null=True,blank=True)    
     students = models.ManyToManyField(Student,blank=True)
     subject_choice_deadline = models.DateField(null=True,blank=True)
-    
+    subjects_locked=models.BooleanField(default=False)
     slug = models.SlugField(unique=True,null=True,blank=True)
 
     def save(self, *args, **kwargs):

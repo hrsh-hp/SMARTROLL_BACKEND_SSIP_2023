@@ -1,0 +1,78 @@
+total_hours = {
+
+    "ML":5,
+
+    "BDA":5,
+
+    "IS":5,
+
+    "MCWC":3,
+
+    "CC":3,
+
+    "MAD":4,
+
+    "DF":4,
+
+}
+
+
+
+above dictionary is the minimum subject hours for each subjects
+
+
+
+now the student will have to select any 4 subjects from above subjects so there are total 178 students and each of them will be able to chose 4 subjects so after the students have chosen their subjects here is the student count for each subjects
+
+ML Student Count - 149
+
+BDA Student Count - 29
+
+IS Student Count - 178
+
+MCWC Student Count - 24
+
+CC Student Count - 154
+
+MAD Student Count - 18
+
+DF Student Count - 160
+
+
+
+and here is the common subjects groups derived from above choises
+
+{
+('ML', 'IS', 'CC', 'DF'):138,
+('ML', 'IS', 'CC', 'MAD'):6,
+('ML', 'IS', 'MCWC', 'MAD'):2,
+('ML', 'IS', 'MCWC', 'DF'):3,
+('BDA', 'IS', 'MCWC', 'MAD'):9,
+('BDA', 'IS', 'CC', 'DF'):9,
+('BDA', 'IS', 'CC', 'MAD'):1,
+('BDA', 'IS', 'MCWC', 'DF'):10,
+}
+
+
+
+which means there are total 138 students who has the same 4 subjects which are ('ML', 'IS', 'CC', 'DF')  and so on for other subject groups
+
+
+
+now i want you to make divisions and allocate subject groups in a way that after division allocation subject hours of each subject should be as close as the initial subject hours
+
+
+
+for example if you decide to make 2 divisions and add the grop 'BDA', 'IS', 'MCWC', 'MAD') to division 1 and group  ('BDA', 'IS', 'CC', 'MAD') to division be then total hours of BDA will be initial hours * 2 because divisions are to
+
+
+
+and also the min student count for 1 division is 60 and maximum count is 90 
+
+you can also split students in 1 group like from this group Group - ('ML', 'IS', 'CC', 'DF') | Student Count 138
+
+90 students can be in division 1 and rest can be in some other division but the main goal of keeping the total hours as close as the initial hours should be satisfied
+
+
+
+and the hour is depended on the division not students so if a subject is in multipel grops and those  groups are divided in let's say 2 division then the total hours for that subject will be initial hours * 2
