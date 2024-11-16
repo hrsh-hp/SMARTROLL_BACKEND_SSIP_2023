@@ -175,6 +175,20 @@ class Subject(models.Model):
 
     def __str__(self) -> str:
         return f"{self.subject_map.subject_name} | {self.semester}"
+    
+class SubjectGroups(models.Model):
+    semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)
+    subjects = models.ManyToManyField(Subject,blank=True)    
+    students = models.ManyToManyField(Student,blank=True)
+    slug = models.SlugField(unique=True,null=True,blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_hash()                                
+        super(SubjectGroups, self).save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f"{self.semester}"
 
 class ComplementrySubjects(models.Model):
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE,blank=True,null=True)

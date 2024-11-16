@@ -2,14 +2,14 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
-from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream,PermanentSubject,Semester,Subject,Branch,College,Term,Stream,ComplementrySubjects,SubjectChoices
+from Manage.models import Division, Semester,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,Stream,PermanentSubject,Semester,Subject,Branch,College,Term,Stream,ComplementrySubjects,SubjectChoices,SubjectGroups
 from StakeHolders.models import Admin,Teacher,Student,NotificationSubscriptions,SuperAdmin
 from Profile.models import Profile
-from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer,PermanentSubjectSerializer,SemesterSerializerByStream,ComplementrySubjectsSerializer,FinalizedSubjectChoicesSerializer
+from .serializers import SemesterSerializer,DivisionSerializer,BatchSerializer,SubjectSerializer,TimeTableSerializer,ClassRoomSerializer,LectureSerializer,TermSerializer,TimeTableSerializerForTeacher,TimeTableSerializerForStudent,LectureSerializerForHistory,BranchWiseTimeTableSerializer,BranchWiseTimeTableSerializerStudent,BranchSerializer,StreamSerializer,PermanentSubjectSerializer,SemesterSerializerByStream,ComplementrySubjectsSerializer,FinalizedSubjectChoicesSerializer,SemesterOnlySerializerByStream,SubjectGroupSerializer
 from Session.models import Session,Attendance
 import pandas as pd
 from django.contrib.auth import get_user_model
-from StakeHolders.serializers import TeacherSerializer
+from StakeHolders.serializers import TeacherSerializer,StudentSerializer
 import datetime
 from django.conf import settings as django_settings
 import os
@@ -19,6 +19,7 @@ from .utils import parse_be_me_string,parse_time_string,hash_string,check_for_ba
 import json
 from SMARTROLL.GlobalUtils import generate_unique_hash
 from django.db import transaction
+from django.db.models import Count, Q
 # Create your views here.
 
 User = get_user_model()
@@ -1524,6 +1525,25 @@ def get_semesters_from_stream(request,stream_slug):
     
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+def get_semesters_only_from_stream(request,stream_slug):
+    try:
+        data = {'data':{},'error':False,'message':None}
+        if request.user.role != 'admin': raise Exception("You're not allowed to perform this action!!")
+        stream_obj = Stream.objects.filter(slug=stream_slug).first()
+        if not stream_obj: raise Exception("Stream does not exists")
+        semesters = Semester.objects.filter(stream=stream_obj)
+        if not semesters:raise Exception("No semester found")                    
+        semesters_serialized = SemesterOnlySerializerByStream(instance=semesters,many=True)
+        data['data']= semesters_serialized.data        
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_subjects_from_acedemic_year(request,semester_slug,acedemic_year):
     try:
         data = {'data':{},'error':False,'message':None}
@@ -1651,7 +1671,7 @@ def mark_subject_choices(request):
                             subject_choices_obj.finalized_choices.clear()
                             raise Exception("You can mark add choice for only 1 subject from the electives")
                         subject_choices_obj.available_choices.remove(complementry)
-            subject_choices_obj.finalized_choices.add(subject, through_defaults={'ordering': order})            
+            subject_choices_obj.finalized_choices.add(subject, through_defaults={'ordering': order})
             subject_choices_obj.available_choices.remove(subject)
 
                 
@@ -1745,6 +1765,68 @@ def unlock_subject_choices(request):
         semester_obj.subjects_locked=False
         semester_obj.save()
         data['data']=True
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+        
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlock_subject_choices(request):
+    try:
+        data = {'data':None,'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
+        body = request.data
+        if 'semester_slug' not in body:raise Exception("parameters missing!!")
+        semester_obj = Semester.objects.get(slug=body['semester_slug'])
+        if not semester_obj.subjects_locked:raise Exception("Choice already unlocked")
+        semester_obj.subjects_locked=False
+        semester_obj.save()
+        data['data']=True
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_subject_choice_groups(request,semester_slug):
+    try:        
+        data = {'data':None,'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
+        semester_obj = Semester.objects.get(slug=semester_slug)
+        if semester_obj.subject_choice_deadline >  datetime.date.today() or not semester_obj.subjects_locked:raise Exception("The subject choice deadline for this semester has not been reached yet!!")
+        subject_groups = SubjectGroups.objects.filter(semester=semester_obj)
+        if subject_groups.exists():
+            subject_groups_serialized = SubjectGroupSerializer(subject_groups,many=True)
+            data['data'] = subject_groups_serialized.data
+        else:
+            subject_groups = {}
+            student_subject_choices = SubjectChoices.objects.filter(semester=semester_obj, profile__role='student').order_by('profile__student__enrollment')
+            if not student_subject_choices.exists():raise("No choices for this semester")
+            for subject_choice_obj in student_subject_choices:
+                student = subject_choice_obj.profile.student_set.first()
+                subject_group = subject_choice_obj.finalized_choices.all()
+                subject_group_tuple = tuple(subject_group)
+                if subject_group_tuple not in subject_groups:
+                    subject_groups[subject_group_tuple] = [student]
+                else:
+                    subject_groups[subject_group_tuple].append(student)
+
+            # Storing the subject gruops
+            subject_groups_objs = []
+            for subjects,students in subject_groups.items():
+                subject_groups = SubjectGroups.objects.filter(semester=semester_obj,subjects__in=subjects)                
+                subject_group_obj = SubjectGroups.objects.create(semester=semester_obj)
+                subject_group_obj.subjects.add(*subjects)
+                subject_group_obj.students.add(*students)
+                subject_groups_objs.append(subject_group_obj)
+            subject_groups_serialized = SubjectGroupSerializer(subject_groups_objs,many=True)
+            data['data'] = subject_groups_serialized.data
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)

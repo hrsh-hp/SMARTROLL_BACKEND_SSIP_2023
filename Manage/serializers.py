@@ -1,4 +1,4 @@
-from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream,PermanentSubject,ComplementrySubjects,SubjectChoices
+from .models import Batch, Division,Semester,Subject,Branch,College,TimeTable,Schedule,Lecture,Classroom,Term,Link,Stream,PermanentSubject,ComplementrySubjects,SubjectChoices,SubjectGroups
 from datetime import datetime,date
 from rest_framework import serializers
 from Session.models import Session,Attendance
@@ -131,6 +131,19 @@ class SemesterSerializerByStream(serializers.ModelSerializer):
                 return True
             return False
         return None
+    
+class SemesterOnlySerializerByStream(serializers.ModelSerializer):            
+    deadline_reached=serializers.SerializerMethodField()
+    class Meta:
+        model = Semester
+        fields = ['slug','no','status','subjects_locked','deadline_reached']        
+    def get_deadline_reached(self,obj):
+        today = date.today()
+        if obj.subject_choice_deadline:
+            if today > obj.subject_choice_deadline:
+                return True
+            return False
+        return None
         
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -144,6 +157,34 @@ class SubjectSerializer(serializers.ModelSerializer):
 
     def get_stream(self,obj):
         return obj.semester.stream.title
+
+class SubjectGroupSerializer(serializers.ModelSerializer):
+    subjects = serializers.SerializerMethodField()
+    students = serializers.SerializerMethodField()
+    totalCount = serializers.SerializerMethodField()
+    availableCount = serializers.SerializerMethodField()
+    class Meta:
+        model = Subject
+        fields = ['subjects','students','slug','totalCount','availableCount']
+
+    def get_subjects(self,obj):
+        subjects =  obj.subjects.all()        
+        subject_maps = [subject.subject_map for subject in subjects]
+        subject_maps_serialized = PermanentSubjectSerializer(subject_maps,many=True)
+        return subject_maps_serialized.data
+    
+    def get_totalCount(self,obj):
+        return self.students_count
+
+    def get_availableCount(self,obj):
+        return self.students_count
+    
+    def get_students(self,obj):
+        from StakeHolders.serializers import StudentSerializer
+        students =  obj.students.all()
+        self.students_count = students.count()
+        students_serialized = StudentSerializer(students,many=True)
+        return students_serialized.data
 
 class DivisionSerializerForTeacher(serializers.ModelSerializer):
     semester = SemesterSerializer()

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subject,College,Branch,Stream,Semester,Division,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,GPSCoordinates,PermanentSubject,ComplementrySubjects,SubjectChoices,OrderedFinalizedSubject
+from .models import Subject,College,Branch,Stream,Semester,Division,Batch,TimeTable,Schedule,Classroom,Lecture,Term,Link,GPSCoordinates,PermanentSubject,ComplementrySubjects,SubjectChoices,OrderedFinalizedSubject,SubjectGroups
 
 # Register your models here.
 
@@ -29,3 +29,4 @@ class SubjectChoicesAdmin(admin.ModelAdmin):
 
 admin.site.register(SubjectChoices,SubjectChoicesAdmin)
 admin.site.register(OrderedFinalizedSubject)
+admin.site.register(SubjectGroups)
