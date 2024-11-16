@@ -1833,3 +1833,35 @@ def get_subject_choice_groups(request,semester_slug):
         data['message'] = str(e)
         data['error'] = True
         return JsonResponse(data,status=500)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlock_subject_choice_for_student(request):
+    try:
+        data = {'data':None,'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
+        body = request.data
+        if 'subject_choices_slug' not in body and 'subject_slug' not in body: raise Exception("Parameters missing!!")
+        subject_obj = Subject.objects.get(slug=body['subject_slug'])
+        subject_choice_obj = SubjectChoices.objects.get(slug=body['subject_choices_slug'])
+        complementry_obj = subject_obj.complementrysubjects_set.first()
+        complementry_obj_subjects = complementry_obj.subjects.exclude(id=subject_obj.id)
+        # if not complementry_obj_subjects:raise Exception("There is no complementry subject in option ")
+        if complementry_obj_subjects.count() == 1:
+            complementry_sub_to_add = complementry_obj_subjects.first()
+            subject_choice_obj.finalized_choices.add(complementry_sub_to_add,through_defaults={'ordering': 1})
+            subject_choices_object_serialized = PermanentSubjectSerializer(instance = complementry_sub_to_add.subject_map)      
+        else:   
+            subject_choice_obj.available_choices.add(*complementry_obj_subjects)
+            subject_choice_obj.choices_locked = False
+            subject_choices_object_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in subject_choice_obj.available_choices.all()],many=True)
+        subject_choice_obj.finalized_choices.remove(subject_obj)
+        subject_choice_obj.save()
+        data['data']=subject_choices_object_serialized.data
+        return JsonResponse(data,status=200)
+
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
