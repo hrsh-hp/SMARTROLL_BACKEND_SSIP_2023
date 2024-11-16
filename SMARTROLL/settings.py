@@ -160,25 +160,25 @@ ASGI_APPLICATION = "SMARTROLL.asgi.application"
 
 
 
-if DEBUG:
-    DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': DATABASE_DIR,
-        }
-    }
-# else:
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'smartroll',            # The database name you created
-#         'USER': 'manav1011',            # The user you set in pg_hba.conf
-#         'PASSWORD': 'Manav@1011',       # The password you set in pg_hba.conf
-#         'HOST': '50.17.207.10',  # Public IP of your EC2 instance
-#         'PORT': '5432',                 # Default PostgreSQL port
+# if DEBUG:
+#     DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': DATABASE_DIR,
+#         }
 #     }
-# }
+# else:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'smartroll',
+        'USER': 'manav1011',
+        'PASSWORD': 'Manav@1011',
+        'HOST': 'localhost',
+        'PORT': '5432'
+    }
+}
 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
