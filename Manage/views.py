@@ -1836,7 +1836,7 @@ def get_subject_choice_groups(request,semester_slug):
         data['message'] = str(e)
         data['error'] = True
         return JsonResponse(data,status=500)
-    
+      
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_division_suggestion(request,semester_slug):
@@ -1907,6 +1907,38 @@ def get_division_suggestion(request,semester_slug):
         data['data']['divisions'] = divisions
         data['data']['hour_deviations']=hour_deviations
         cache.set(f"division_suggestion_{semester_obj.slug}_{max_students}", data['data'], timeout=3600)
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlock_subject_choice_for_student(request):
+    try:
+        data = {'data':{},'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
+        body = request.data
+        if 'subject_choices_slug' not in body and 'subject_slug' not in body: raise Exception("Parameters missing!!")
+        subject_obj = Subject.objects.get(subject_map__slug=body["subject_slug"])
+        subject_choice_obj = SubjectChoices.objects.get(slug=body['subject_choices_slug'])
+        complementry_obj = subject_obj.complementrysubjects_set.first()
+        complementry_obj_subjects = complementry_obj.subjects.exclude(id=subject_obj.id)
+        if complementry_obj_subjects.count() == 1:
+            complementry_sub_to_add = complementry_obj_subjects.first()
+            subject_choice_obj.finalized_choices.add(complementry_sub_to_add,through_defaults={'ordering': 1})
+            subject_choices_object_serialized = PermanentSubjectSerializer(instance = complementry_sub_to_add.subject_map)
+            data['data']['subject']=subject_choices_object_serialized.data
+        else:   
+            subject_choice_obj.available_choices.add(*complementry_obj_subjects)
+            subject_choice_obj.choices_locked = False
+            data['data']['subject']= None
+        subject_choice_obj.finalized_choices.remove(subject_obj)
+        subject_choice_obj.save()
+        data['data']['choice_locked'] = subject_choice_obj.choices_locked
+        data['data']["subject_delete"] = True
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
