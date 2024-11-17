@@ -15,11 +15,14 @@ from django.conf import settings as django_settings
 import os
 from django.core.mail import send_mail
 from threading import Thread
-from .utils import parse_be_me_string,parse_time_string,hash_string,check_for_batch_includance
+from .utils import parse_be_me_string,parse_time_string,hash_string,check_for_batch_includance,allocate_groups_with_splitting,generate_short_form,create_batches
 import json
 from SMARTROLL.GlobalUtils import generate_unique_hash
 from django.db import transaction
 from django.db.models import Count, Q
+import string
+from django.core.cache import cache
+
 # Create your views here.
 
 User = get_user_model()
@@ -1827,6 +1830,83 @@ def get_subject_choice_groups(request,semester_slug):
                 subject_groups_objs.append(subject_group_obj)
             subject_groups_serialized = SubjectGroupSerializer(subject_groups_objs,many=True)
             data['data'] = subject_groups_serialized.data
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
+      
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_division_suggestion(request,semester_slug):
+    try:        
+        data = {'data':{},'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
+        semester_obj = Semester.objects.get(slug=semester_slug)
+        body = request.query_params
+        if 'max_students' not in body:raise Exception("Pleae send a maximum student size count for the division")
+        division_suggestion_dict = cache.get(f'division_suggestion_{semester_obj.slug}_{body["max_students"]}')
+        if division_suggestion_dict:            
+            data['data'] = division_suggestion_dict
+            return JsonResponse(data,status=200)
+        subject_groups_qs = SubjectGroups.objects.filter(semester=semester_obj)
+        subject_groups =  {}        
+        total_hours = {}
+        for subject_group in subject_groups_qs:
+            subjects = frozenset(subject_group.subjects.all())
+            subject_groups[subjects] = subject_group.students.all()            
+            for subject in subjects:
+                if subject not in total_hours:
+                    total_hours[subject] = subject.subject_map.L + subject.subject_map.T + subject.subject_map.P
+        # Constraints
+        min_students = 0  # No minimum size for divisions
+        max_students = int(body['max_students'])  # Maximum size per division
+        result, subject_hours = allocate_groups_with_splitting(subject_groups, total_hours, min_students, max_students)
+        hour_deviations = []
+        for subject, hours in subject_hours.items():
+            deviation = {
+                "subject_name":subject.subject_map.subject_name,
+                "initial_hours":total_hours[subject],
+                "final_hours":hours                    
+                }
+            hour_deviations.append(deviation)
+        divisions = []
+        if result["divisions"]:
+            for i, division in enumerate(result["divisions"]):
+                division_name=string.ascii_uppercase[i]
+                division_obj = {}
+                division_obj["division_name"]=division_name
+                subject_to_student_map = {division_name: set()}  # Initialize with 'common' key
+                student_count_for_division = sum(len(students) for _, students in division)
+                division_obj['total_student_count'] = student_count_for_division
+                for group, students in division:
+                    student_set = set(students)
+                    subject_to_student_map[division_name].update(student_set)  # Add students to 'common'
+
+                    if len(division) != 1:
+                        for subject in group:
+                            if subject.is_elective:
+                                subject_to_student_map.setdefault(subject, set()).update(student_set)                
+                # Now we can make batches        
+                division_obj['total_batches'] = []
+                division_obj['batches'] = []
+                # make common batches for the divisions
+                common_students = set()
+                # if subject is elective them made serpate batches
+                for subject,students in subject_to_student_map.items():            
+                    if  type(subject)!=str and not subject.is_elective:
+                        common_students.update(set(students))     
+                        continue          
+                    batches = create_batches(subject,students)
+                    for batch in batches:
+                        division_obj['total_batches'].append(batch)
+                        students_serialized = StudentSerializer(batches[batch],many=True)
+                        division_obj['batches'].append({'batch_name':batch,'student_count':len(batches[batch]),'students':students_serialized.data})
+                divisions.append(division_obj)
+        data['data']['divisions'] = divisions
+        data['data']['hour_deviations']=hour_deviations
+        cache.set(f"division_suggestion_{semester_obj.slug}_{max_students}", data['data'], timeout=3600)
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)

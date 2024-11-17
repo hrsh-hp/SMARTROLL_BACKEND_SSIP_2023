@@ -96,8 +96,8 @@ class Semester(models.Model):
     
 class Division(models.Model):
     division_name = models.CharField(max_length=2)
-    slug = models.SlugField(unique=True,null=True,blank=True)
     semester = models.ForeignKey(Semester,on_delete=models.CASCADE)
+    slug = models.SlugField(unique=True,null=True,blank=True)
     
     def save(self, *args, **kwargs):
         if not self.slug:
