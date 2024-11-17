@@ -1945,3 +1945,34 @@ def unlock_subject_choice_for_student(request):
         data['message'] = str(e)
         data['error'] = True
         return JsonResponse(data,status=500)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def confirm_suggested_divisions(request):
+    try:
+        data = {'data':{'logs':{},'success_count':0,'error_count':0},'error':False,'message':None}
+        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
+        body = request.data
+        count = 0
+        if 'divisions_data' not in body and 'semester_slug' not in body: raise Exception("Parameters missing!!")
+        semester_obj = Semester.objects.get(slug=body['semester_slug'])
+        for division_data in body['divisions_data']:
+            division_obj = Division.objects.create(division_name=division_data['division_name'],semester=semester_obj)
+            if not division_obj: raise Exception("There is some error in creating division")
+            for batch_data in division_data['batches']:
+                batch_obj = Batch.objects.create(batch_name=batch_data['batch_name'],division=division_obj)
+                if not batch_obj: raise Exception("There is some error in creating batch")
+                for student_data in batch_data['students']:
+                    student_obj = Student.objects.get(slug=student_data['slug'])
+                    batch_obj.students.add(student_obj)
+                    data['data']['success_count'] += 1
+                    data['data']['logs'][student_obj.enrollment]=f"Student Added in {division_obj.division_name} - {batch_obj.batch_name} - {student_obj.enrollment} - {student_obj.profile.name}"
+
+
+        return JsonResponse(data,status=200)
+    except Exception as e:
+        print(e)
+        data['data']['error_count']+=1
+        data['message'] = str(e)
+        data['error'] = True
+        return JsonResponse(data,status=500)
