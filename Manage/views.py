@@ -1799,10 +1799,37 @@ def unlock_subject_choices(request):
 @permission_classes([IsAuthenticated])
 def get_subject_choice_groups(request,semester_slug):
     try:        
-        data = {'data':None,'error':False,'message':None}
+        data = {'data':{},'error':False,'message':None}
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
         semester_obj = Semester.objects.get(slug=semester_slug)
         if semester_obj.subject_choice_deadline >  datetime.date.today() or not semester_obj.subjects_locked:raise Exception("The subject choice deadline for this semester has not been reached yet!!")
+        # Check if the divisions are created or not
+        divisions = Division.objects.filter(semester=semester_obj)
+        if divisions.exists():
+            divisions_cached = cache.get(f"divisions_{semester_obj.slug}")
+            if divisions_cached:            
+                data['data']['divisions'] = divisions_cached
+                return JsonResponse(data,status=200)
+            divisions_arr = []
+            for division in divisions:
+                batches = Batch.objects.filter(division=division)
+                if batches.exists():                    
+                    division_obj = {}
+                    division_obj["division_name"]= division.division_name
+                    division_obj['total_batches'] = []
+                    division_obj['batches'] = []
+                    total_students = set()
+                    for batch in batches:
+                        students = batch.students.all()
+                        division_obj['total_batches'].append(batch.batch_name)
+                        students_serialized = StudentSerializer(students,many=True)
+                        total_students.update(students)
+                        division_obj['batches'].append({'batch_name':batch.batch_name,'student_count':students.count(),'students':students_serialized.data})                
+                    division_obj['total_student_count'] = len(total_students)
+                divisions_arr.append(division_obj)
+            data['data']['divisions'] = divisions_arr
+            cache.set(f"divisions_{semester_obj.slug}", divisions_arr, timeout=3600)
+            return JsonResponse(data,status=200)
         subject_groups = SubjectGroups.objects.filter(semester=semester_obj)
         if subject_groups.exists():
             subject_groups_serialized = SubjectGroupSerializer(subject_groups,many=True)
@@ -1950,29 +1977,24 @@ def unlock_subject_choice_for_student(request):
 @permission_classes([IsAuthenticated])
 def confirm_suggested_divisions(request):
     try:
-        data = {'data':{'logs':{},'success_count':0,'error_count':0},'error':False,'message':None}
+        data = {'data':None,'error':False,'message':None}
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
-        body = request.data
-        count = 0
+        body = request.data        
         if 'divisions_data' not in body and 'semester_slug' not in body: raise Exception("Parameters missing!!")
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
-        for division_data in body['divisions_data']:
-            division_obj = Division.objects.create(division_name=division_data['division_name'],semester=semester_obj)
-            if not division_obj: raise Exception("There is some error in creating division")
-            for batch_data in division_data['batches']:
-                batch_obj = Batch.objects.create(batch_name=batch_data['batch_name'],division=division_obj)
-                if not batch_obj: raise Exception("There is some error in creating batch")
-                for student_data in batch_data['students']:
-                    student_obj = Student.objects.get(slug=student_data['slug'])
-                    batch_obj.students.add(student_obj)
-                    data['data']['success_count'] += 1
-                    data['data']['logs'][student_obj.enrollment]=f"Student Added in {division_obj.division_name} - {batch_obj.batch_name} - {student_obj.enrollment} - {student_obj.profile.name}"
-
-
+        for division_data in body['divisions_data']['divisions']:            
+            division_obj,division_created = Division.objects.get_or_create(division_name=division_data['division_name'],semester=semester_obj)
+            if division_created:            
+                for batch_data in division_data['batches']:
+                    batch_obj,batch_created = Batch.objects.get_or_create(batch_name=batch_data['batch_name'],division=division_obj)
+                    if batch_created:
+                        student_slugs = [student['slug'] for student in batch_data['students']]                        
+                        students = Student.objects.filter(slug__in=student_slugs)
+                        batch_obj.students.add(*students)
+        data['data']=True
         return JsonResponse(data,status=200)
     except Exception as e:
-        print(e)
-        data['data']['error_count']+=1
+        print(e)        
         data['message'] = str(e)
         data['error'] = True
         return JsonResponse(data,status=500)
