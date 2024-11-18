@@ -1322,9 +1322,9 @@ def get_streams(request):
         if request.user.role == 'admin':
             admin_obj = Admin.objects.filter(profile=request.user).first()
             if not admin_obj:raise Exception("Admin does not exists")
-            branch_obj = admin_obj.branch_set.first()
-            if not branch_obj:raise Exception("Branch does not exists")
-            streams = branch_obj.stream_set.all()
+            branches = admin_obj.branch_set.all()
+            if not branches.exists():raise Exception("No active branches currently!!")
+            streams = Stream.objects.filter(branch__in=branches)
             if not streams:raise Exception("No streams found")
             streams_serialized = StreamSerializer(streams,many=True)
             data['data'] = streams_serialized.data
@@ -1332,10 +1332,10 @@ def get_streams(request):
         elif request.user.role == 'teacher':
             teacher_obj = Teacher.objects.filter(profile=request.user).first()
             if not teacher_obj:raise Exception("Teacher does not exists")
-            branch_obj = teacher_obj.branch_set.first()
-            if not branch_obj:raise Exception("Branch does not exists")
-            streams = branch_obj.stream_set.all()
-            if not streams:raise Exception("No streams found")
+            branches = teacher_obj.branch_set.all()
+            if not branches.exists():raise Exception("Branch does not exists")
+            streams = Stream.objects.filter(branch__in=branches)
+            if not streams.exists():raise Exception("No streams found")
             streams_serialized = StreamSerializer(streams,many=True)
             data['data'] = streams_serialized.data
             return JsonResponse(data,status=200)
@@ -1410,6 +1410,7 @@ def add_subjects_to_semester(request):
                                 complementry_sub_to_removed_sub = complementry_obj_subjects.first()
                                 complementry_sub_to_removed_sub.is_elective=False
                                 complementry_sub_to_removed_sub.save()
+                                subject_choice_obj.available_choices.remove(complementry_sub_to_removed_sub)
                                 subject_choice_obj.finalized_choices.add(complementry_sub_to_removed_sub,through_defaults={'ordering': 1})
                             subject_obj.complementrysubjects_set.first().delete()
                         else:
@@ -1614,7 +1615,7 @@ def get_students_subject_choices(request):
         else:
             available_subjects_set = subject_choices_object.available_choices.all()
             available_complementry_subject_objs = set(ComplementrySubjects.objects.filter(subjects=subject).first() for subject in available_subjects_set)
-            available_subject_choices_object_serialized = ComplementrySubjectsSerializer(instance = available_complementry_subject_objs,many=True)
+            available_subject_choices_object_serialized = ComplementrySubjectsSerializer(instance = available_complementry_subject_objs,many=True,available_subjects=available_subjects_set)
             data['data']['available_choices'] = available_subject_choices_object_serialized.data        
         data['data']['choices_locked'] = subject_choices_object.choices_locked
         data['data']['deadline_timestamp']=students_semester.subject_choice_deadline
@@ -1655,7 +1656,7 @@ def mark_subject_choices(request):
                         elective_choice_found=True
                 if not elective_choice_found:                    
                     raise Exception("Please choose from all the elective categories")  
-        for order, subject in enumerate(finalized_subjects, start=1):
+        for order, subject in enumerate(finalized_subjects, start=(subject_choices_obj.finalized_choices.count() + 1)):
             # Check for student to only add one of the complementry subject (Not possible for frontend but just in case)
             # Logic will be just chcek the subject in the complement subject object's subjects field if the subject beside this one is already in the finalized_subjects queryset field then don't allow to add this one or replace the current
             # we can't let the student add choice of a pemanent subject
@@ -1743,31 +1744,10 @@ def get_students_for_the_subject(request,subject_slug):
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action")
         subject_obj = Subject.objects.filter(subject_map__slug=subject_slug).first()
         if not subject_obj:raise Exception("Subject does not exists")
-        subject_choices_objs = SubjectChoices.objects.filter(profile__role='student',finalized_choices=subject_obj,choices_locked=True)
+        subject_choices_objs = SubjectChoices.objects.filter(profile__role='student',finalized_choices=subject_obj)
         if not subject_choices_objs.exists(): raise Exception("No student choices for this subject")
         subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)
         data['data'] = subject_choices_objs_serialized.data
-        return JsonResponse(data,status=200)
-        
-    except Exception as e:
-        print(e)
-        data['message'] = str(e)
-        data['error'] = True
-        return JsonResponse(data,status=500)
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def unlock_subject_choices(request):
-    try:
-        data = {'data':None,'error':False,'message':None}
-        if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
-        body = request.data
-        if 'semester_slug' not in body:raise Exception("parameters missing!!")
-        semester_obj = Semester.objects.get(slug=body['semester_slug'])
-        if not semester_obj.subjects_locked:raise Exception("Choice already unlocked")
-        semester_obj.subjects_locked=False
-        semester_obj.save()
-        data['data']=True
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
@@ -1951,6 +1931,8 @@ def unlock_subject_choice_for_student(request):
         if 'subject_choices_slug' not in body and 'subject_slug' not in body: raise Exception("Parameters missing!!")
         subject_obj = Subject.objects.get(subject_map__slug=body["subject_slug"])
         subject_choice_obj = SubjectChoices.objects.get(slug=body['subject_choices_slug'])
+        if not subject_choice_obj.finalized_choices.contains(subject_obj):
+            raise Exception(f"Student has not selected {subject_obj.subject_map.subject_name}")
         complementry_obj = subject_obj.complementrysubjects_set.first()
         complementry_obj_subjects = complementry_obj.subjects.exclude(id=subject_obj.id)
         if complementry_obj_subjects.count() == 1:
@@ -1961,9 +1943,9 @@ def unlock_subject_choice_for_student(request):
         else:   
             subject_choice_obj.available_choices.add(*complementry_obj_subjects)
             subject_choice_obj.choices_locked = False
+            subject_choice_obj.save()
             data['data']['subject']= None
         subject_choice_obj.finalized_choices.remove(subject_obj)
-        subject_choice_obj.save()
         data['data']['choice_locked'] = subject_choice_obj.choices_locked
         data['data']["subject_delete"] = True
         return JsonResponse(data,status=200)

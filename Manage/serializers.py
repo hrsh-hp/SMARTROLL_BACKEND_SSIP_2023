@@ -93,9 +93,16 @@ class ComplementrySubjectsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ComplementrySubjects
         fields = ['category','subjects','slug']
+    
+    def __init__(self, available_subjects=None, *args, **kwargs):
+        super(ComplementrySubjectsSerializer, self).__init__(*args, **kwargs)
+        self.available_subjects = available_subjects
 
     def get_subjects(self,obj):
-        subjects =  obj.subjects.all()        
+        if self.available_subjects:
+            subjects =  obj.subjects.filter(id__in=self.available_subjects) 
+        else:
+            subjects =  obj.subjects.all()
         subject_maps = [subject.subject_map for subject in subjects]
         subject_maps_serialized = PermanentSubjectSerializer(subject_maps,many=True)
         return subject_maps_serialized.data

@@ -61,22 +61,25 @@ class CustomTokenObtainPairSerializer(TokenObtainSerializer):
 
         if self.user.role == 'teacher':     
             teacher_obj = Teacher.objects.get(profile=self.user)
-            teacher_serialized = TeacherSerializer(teacher_obj,many=False)
-            token = self.get_token(self.user)
-            token['obj'] = teacher_serialized.data
-            data["refresh"] = str(token)
-            data["access"] = str(token.access_token)
+            if teacher_obj.is_active:
+                teacher_serialized = TeacherSerializer(teacher_obj,many=False)                
+                token = self.get_token(self.user)
+                token['obj'] = teacher_serialized.data
+                data["refresh"] = str(token)
+                data["access"] = str(token.access_token)
+            else:
+                data = {'error':True,'code':112500,'message':'Please set new password','profile_slug':self.user.slug}
 
         if self.user.role == 'student':                  
             student_obj = Student.objects.get(profile=self.user)
             if student_obj.is_active:
-                student_serialized = StudentSerializer(student_obj,many=False)
+                student_serialized = StudentSerializer(student_obj,many=False)                
                 token = self.get_token(self.user)
                 token['obj'] = student_serialized.data
                 data["refresh"] = str(token)
                 data["access"] = str(token.access_token)
             else:
-                data = {'error':True,'code':112500,'message':'Please set new password','student_slug':student_obj.slug}
+                data = {'error':True,'code':112500,'message':'Please set new password','profile_slug':self.user.slug}
         if api_settings.UPDATE_LAST_LOGIN:
             update_last_login(None, self.user)
 
@@ -155,25 +158,38 @@ class CustomTokenRefreshView(TokenRefreshView):
     """        
 
 @api_view(['POST'])
-def set_new_password_for_student(request):
+def set_new_password_for_stakeholders(request):
     try:
         data = {'data':None,'error':False,'message':None}
         body = request.data
-        if 'student_slug' not in body or 'password' not in body:
-            raise Exception('Parameters missing')        
-        student_obj = Student.objects.get(slug=body['student_slug'])
-        student_obj.profile.set_password(body['password'])
-        student_obj.profile.save()
-        student_obj.is_active = True
-        student_obj.save()
+        if 'profile_slug' not in body or 'password' not in body:
+            raise Exception('Parameters missing')
+        profile_obj = Profile.objects.get(slug=body['profile_slug'])
+        stakeholder_obj=None
+        stakeholder_obj_serialized=None
+        if profile_obj.role == 'student':
+            stakeholder_obj = Student.objects.get(profile=profile_obj)
+            stakeholder_obj_serialized = StudentSerializer(stakeholder_obj)
+        elif profile_obj.role == 'teacher':
+            stakeholder_obj = Teacher.objects.get(profile=profile_obj)
+            stakeholder_obj_serialized = TeacherSerializer(stakeholder_obj)            
+        else:
+            raise Exception("Invalid role")        
+        if stakeholder_obj.is_active:
+            raise Exception("Your password has already been updated!!")    
+        stakeholder_obj.profile.set_password(body['password'])
+        stakeholder_obj.profile.save()        
+        stakeholder_obj.is_active = True
+        stakeholder_obj.save()             
         TokenObtainSerializer.token_class = RefreshToken
-        token = TokenObtainSerializer.get_token(student_obj.profile)
-        student_serialized = StudentSerializer(student_obj,many=False)        
-        token['obj'] = student_serialized.data
-        data = {}
-        data["refresh"] = str(token)
-        data["access"] = str(token.access_token)        
-        return JsonResponse(data, status=200)
+        token = TokenObtainSerializer.get_token(stakeholder_obj.profile)        
+        token['obj']=stakeholder_obj_serialized.data
+        # Add serialized data and tokens to response                
+        response_data = {
+            "refresh": str(token),
+            "access": str(token.access_token),            
+        }
+        return JsonResponse(response_data, status=200)
 
     except Exception as e:
         print(e)

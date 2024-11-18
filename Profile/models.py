@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User,AbstractUser
 from .managers import CustomUserManager
 from django.utils.translation import gettext_lazy as _
-
+from SMARTROLL.GlobalUtils import generate_unique_hash
 
 
 # Create your models here.
@@ -26,6 +26,7 @@ class Profile(AbstractUser):
     ph_no = models.CharField(max_length=20,null=True,blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
     gender = models.CharField(max_length=1,choices=GENDER_CHOICES,null=True,blank=True)
+    slug = models.SlugField(unique=True, null=True, blank=True)
 
     USERNAME_FIELD='email'
     REQUIRED_FIELDS = []
@@ -34,3 +35,8 @@ class Profile(AbstractUser):
 
     def __str__(self):
         return self.email if self.email else self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_hash()
+        super(Profile, self).save(*args, **kwargs)

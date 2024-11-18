@@ -45,8 +45,9 @@ class Admin(models.Model):
 class Teacher(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)    
     teacher_code = models.CharField(max_length=10,unique=True)    
-    slug = models.SlugField(unique=True, null=True, blank=True)
     web_push_subscription = models.ManyToManyField(NotificationSubscriptions,blank=True)
+    is_active = models.BooleanField(default=False)
+    slug = models.SlugField(unique=True, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
