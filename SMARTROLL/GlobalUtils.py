@@ -13,3 +13,4 @@ def generate_unique_hash():
     unique_hash = f"{random_hash}_{timestamp}"
     
     return unique_hash
+

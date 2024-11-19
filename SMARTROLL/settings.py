@@ -19,17 +19,9 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SSL_CERTIFICATE_PATH = os.path.join(BASE_DIR, "localhost.crt")
-SSL_KEY_PATH = os.path.join(BASE_DIR, "localhost.key")
-
 TIME_ZONE =  'Asia/Kolkata'
 USE_TZ = True
 
-# from django.utils import timezone
-import pytz
-
-# timezone.activate(pytz.timezone("Asia/Kolkata"))
-# timezone.localtime(timezone.now())
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -46,12 +38,12 @@ VAPID_CLAIMS = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+DEBUG = False
+ALLOWED_HOSTS = ['smartroll.mnv-dev.live']
 
 CSRF_COOKIE_SECURE = False
 CSRF_USE_SESSIONS = False
-CSRF_TRUSTED_ORIGINS = ["https://neat-presently-walrus.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://smartroll.mnv-dev.live"]
 
 
 # Application definition
@@ -78,8 +70,6 @@ INSTALLED_APPS = [
     'Session',
     'Alerts'
 ]
-SSL_CERTIFICATE = SSL_CERTIFICATE_PATH
-SSL_KEY = SSL_KEY_PATH
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -182,6 +172,9 @@ DATABASES = {
 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis broker
+CELERY_ACCEPT_CONTENT = ['json']               # Accept JSON messages
+CELERY_TASK_SERIALIZER = 'json'
 
 if DEBUG:
     CHANNEL_LAYERS = {

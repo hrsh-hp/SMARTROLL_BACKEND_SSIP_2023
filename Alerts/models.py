@@ -1,6 +1,8 @@
 from django.db import models
 from SMARTROLL.GlobalUtils import generate_unique_hash
 from StakeHolders.models import Profile
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 # Create your models here.
 
 alert_status_choices = (
@@ -10,6 +12,9 @@ alert_status_choices = (
 
 alert_types = (
     ('subject_choice_alert', 'Subject Choice Alert'),
+    ('subject_deletion_alert', 'Subject Deletion Alert'),
+    ('subject_choice_deadline_alert', 'Subject Choice Deadline Alert'),
+    ('subject_choice_reset_alert', 'Subject Choice Reset Alert'),
 )
 
 class Alert(models.Model):
@@ -26,3 +31,7 @@ class Alert(models.Model):
     
     def __str__(self):
         return f"{self.profile.name} | {self.status}"
+
+@receiver(post_save, sender=Alert)
+def save_user_profile(sender, instance, **kwargs):
+    print(instance)

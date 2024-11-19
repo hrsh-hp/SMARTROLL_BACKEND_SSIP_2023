@@ -9319,3 +9319,431 @@ HTTP close for ['127.0.0.1', 42030]
 HTTP response complete for ['127.0.0.1', 42030]
 [mHTTP GET /manage/get_object_counts 200 [1.17, 127.0.0.1:42030][0m
 /home/manav1011/Documents/SMARTROLL_SSIP_2023/SMARTROLL/SMARTROLL/settings.py changed, reloading.
+Watching for file changes with StatReloader
+HTTP/2 support enabled
+Configuring endpoint tcp:port=8000:interface=0.0.0.0
+Listening on TCP address 0.0.0.0:8000
+HTTP b'GET' request for ['127.0.0.1', 45502]
+HTTP 200 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[mHTTP GET / 200 [0.02, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+HTTP b'GET' request for ['127.0.0.1', 45504]
+Internal Server Error: /static/assets/index-DmOBOeol.css
+Internal Server Error: /static/assets/index-CVhbOCmt.js
+HTTP 500 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[35;1mHTTP GET /static/assets/index-DmOBOeol.css 500 [0.02, 127.0.0.1:45502][0m
+HTTP 500 response started for ['127.0.0.1', 45504]
+HTTP close for ['127.0.0.1', 45504]
+HTTP response complete for ['127.0.0.1', 45504]
+[35;1mHTTP GET /static/assets/index-CVhbOCmt.js 500 [0.02, 127.0.0.1:45504][0m
+HTTP b'GET' request for ['127.0.0.1', 45504]
+Internal Server Error: /static/favicon.ico
+HTTP 500 response started for ['127.0.0.1', 45504]
+HTTP close for ['127.0.0.1', 45504]
+HTTP response complete for ['127.0.0.1', 45504]
+[35;1mHTTP GET /static/favicon.ico 500 [0.01, 127.0.0.1:45504][0m
+HTTP b'GET' request for ['127.0.0.1', 45504]
+HTTP 200 response started for ['127.0.0.1', 45504]
+HTTP close for ['127.0.0.1', 45504]
+HTTP response complete for ['127.0.0.1', 45504]
+[mHTTP GET / 200 [0.01, 127.0.0.1:45504][0m
+HTTP b'GET' request for ['127.0.0.1', 45504]
+HTTP b'GET' request for ['127.0.0.1', 45502]
+Internal Server Error: /static/assets/index-CVhbOCmt.js
+Internal Server Error: /static/assets/index-DmOBOeol.css
+HTTP 500 response started for ['127.0.0.1', 45504]
+HTTP close for ['127.0.0.1', 45504]
+HTTP response complete for ['127.0.0.1', 45504]
+[35;1mHTTP GET /static/assets/index-CVhbOCmt.js 500 [0.01, 127.0.0.1:45504][0m
+HTTP 500 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[35;1mHTTP GET /static/assets/index-DmOBOeol.css 500 [0.01, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+Internal Server Error: /static/favicon.ico
+HTTP 500 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[35;1mHTTP GET /static/favicon.ico 500 [0.01, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+Internal Server Error: /static/assets/index-DmOBOeol.css
+HTTP 500 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[35;1mHTTP GET /static/assets/index-DmOBOeol.css 500 [0.01, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+HTTP 200 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[mHTTP GET / 200 [0.01, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+HTTP b'GET' request for ['127.0.0.1', 45504]
+Internal Server Error: /static/assets/index-DmOBOeol.css
+Internal Server Error: /static/assets/index-CVhbOCmt.js
+HTTP 500 response started for ['127.0.0.1', 45504]
+HTTP close for ['127.0.0.1', 45504]
+HTTP response complete for ['127.0.0.1', 45504]
+[35;1mHTTP GET /static/assets/index-DmOBOeol.css 500 [0.02, 127.0.0.1:45504][0m
+HTTP 500 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[35;1mHTTP GET /static/assets/index-CVhbOCmt.js 500 [0.02, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+Internal Server Error: /static/favicon.ico
+HTTP 500 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[35;1mHTTP GET /static/favicon.ico 500 [0.01, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+HTTP 200 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[mHTTP GET / 200 [0.01, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+HTTP b'GET' request for ['127.0.0.1', 45504]
+Internal Server Error: /static/assets/index-DmOBOeol.css
+Internal Server Error: /static/assets/index-CVhbOCmt.js
+HTTP 500 response started for ['127.0.0.1', 45504]
+HTTP close for ['127.0.0.1', 45504]
+HTTP response complete for ['127.0.0.1', 45504]
+[35;1mHTTP GET /static/assets/index-DmOBOeol.css 500 [0.01, 127.0.0.1:45504][0m
+HTTP 500 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[35;1mHTTP GET /static/assets/index-CVhbOCmt.js 500 [0.02, 127.0.0.1:45502][0m
+HTTP b'GET' request for ['127.0.0.1', 45502]
+Internal Server Error: /static/favicon.ico
+HTTP 500 response started for ['127.0.0.1', 45502]
+HTTP close for ['127.0.0.1', 45502]
+HTTP response complete for ['127.0.0.1', 45502]
+[35;1mHTTP GET /static/favicon.ico 500 [0.01, 127.0.0.1:45502][0m
+Watching for file changes with StatReloader
+HTTP/2 support enabled
+Configuring endpoint tcp:port=8000:interface=0.0.0.0
+Listening on TCP address 0.0.0.0:8000
+HTTP b'GET' request for ['127.0.0.1', 56102]
+HTTP 200 response started for ['127.0.0.1', 56102]
+HTTP close for ['127.0.0.1', 56102]
+HTTP response complete for ['127.0.0.1', 56102]
+[mHTTP GET / 200 [0.03, 127.0.0.1:56102][0m
+HTTP b'GET' request for ['127.0.0.1', 56102]
+HTTP b'GET' request for ['127.0.0.1', 56112]
+HTTP 200 response started for ['127.0.0.1', 56112]
+HTTP 200 response started for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56112]
+HTTP close for ['127.0.0.1', 56112]
+HTTP response complete for ['127.0.0.1', 56112]
+[mHTTP GET /static/assets/index-DmOBOeol.css 200 [0.03, 127.0.0.1:56112][0m
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP close for ['127.0.0.1', 56102]
+HTTP response complete for ['127.0.0.1', 56102]
+[mHTTP GET /static/assets/index-CVhbOCmt.js 200 [0.05, 127.0.0.1:56102][0m
+HTTP b'GET' request for ['127.0.0.1', 56102]
+HTTP 200 response started for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP close for ['127.0.0.1', 56102]
+HTTP response complete for ['127.0.0.1', 56102]
+[mHTTP GET /static/assets/index-CVhbOCmt.js.map 200 [0.05, 127.0.0.1:56102][0m
+HTTP b'GET' request for ['127.0.0.1', 56102]
+HTTP 200 response started for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP close for ['127.0.0.1', 56102]
+HTTP response complete for ['127.0.0.1', 56102]
+[mHTTP GET /static/assets/smartroll-DOVQR7z6.png 200 [0.01, 127.0.0.1:56102][0m
+HTTP b'GET' request for ['127.0.0.1', 56102]
+HTTP 200 response started for ['127.0.0.1', 56102]
+HTTP response chunk for ['127.0.0.1', 56102]
+HTTP close for ['127.0.0.1', 56102]
+HTTP response complete for ['127.0.0.1', 56102]
+[mHTTP GET /static/favicon.ico 200 [0.01, 127.0.0.1:56102][0m
+HTTP b'GET' request for ['127.0.0.1', 56102]
+HTTP 200 response started for ['127.0.0.1', 56102]
+HTTP close for ['127.0.0.1', 56102]
+HTTP response complete for ['127.0.0.1', 56102]
+[mHTTP GET /manage/get_students_subject_choices 200 [0.08, 127.0.0.1:56102][0m
+/home/manav1011/Documents/SMARTROLL_SSIP_2023/SMARTROLL/SMARTROLL/settings.py changed, reloading.
+Watching for file changes with StatReloader
+HTTP/2 support enabled
+Configuring endpoint tcp:port=8000:interface=0.0.0.0
+Listening on TCP address 0.0.0.0:8000
+HTTP b'GET' request for ['127.0.0.1', 47848]
+Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/manav1011/Documents/SMARTROLL_SSIP_2023/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/manav1011/Documents/SMARTROLL_SSIP_2023/venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/manav1011/Documents/SMARTROLL_SSIP_2023/venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/manav1011/Documents/SMARTROLL_SSIP_2023/venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS.
+Bad Request: /
+HTTP 400 response started for ['127.0.0.1', 47848]
+HTTP close for ['127.0.0.1', 47848]
+HTTP response complete for ['127.0.0.1', 47848]
+[31;1mHTTP GET / 400 [0.01, 127.0.0.1:47848][0m
+/home/manav1011/Documents/SMARTROLL_SSIP_2023/SMARTROLL/SMARTROLL/settings.py changed, reloading.
+Watching for file changes with StatReloader
+HTTP/2 support enabled
+Configuring endpoint tcp:port=8000:interface=0.0.0.0
+Listening on TCP address 0.0.0.0:8000
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP 200 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[mHTTP GET / 200 [0.02, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP b'GET' request for ['127.0.0.1', 37408]
+HTTP 304 response started for ['127.0.0.1', 37408]
+HTTP close for ['127.0.0.1', 37408]
+HTTP response complete for ['127.0.0.1', 37408]
+[36mHTTP GET /static/assets/index-DmOBOeol.css 304 [0.01, 127.0.0.1:37408][0m
+HTTP 304 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[36mHTTP GET /static/assets/index-CVhbOCmt.js 304 [0.02, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP 304 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[36mHTTP GET /static/assets/smartroll-DOVQR7z6.png 304 [0.00, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+Internal Server Error: /login
+HTTP 500 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[35;1mHTTP GET /login 500 [0.01, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+Internal Server Error: /login
+HTTP 500 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[35;1mHTTP GET /login 500 [0.01, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP 200 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[mHTTP GET / 200 [0.01, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP b'GET' request for ['127.0.0.1', 37408]
+HTTP 304 response started for ['127.0.0.1', 37408]
+HTTP close for ['127.0.0.1', 37408]
+HTTP response complete for ['127.0.0.1', 37408]
+[36mHTTP GET /static/assets/index-DmOBOeol.css 304 [0.01, 127.0.0.1:37408][0m
+HTTP 304 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[36mHTTP GET /static/assets/index-CVhbOCmt.js 304 [0.02, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP 304 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[36mHTTP GET /static/assets/smartroll-DOVQR7z6.png 304 [0.01, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP 304 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[36mHTTP GET /static/favicon.ico 304 [0.01, 127.0.0.1:37398][0m
+HTTP b'POST' request for ['127.0.0.1', 37398]
+HTTP 200 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[mHTTP POST /auth/api/login/ 200 [0.65, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP 200 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[mHTTP GET /manage/get_streams 200 [0.06, 127.0.0.1:37398][0m
+HTTP b'GET' request for ['127.0.0.1', 37398]
+HTTP 200 response started for ['127.0.0.1', 37398]
+HTTP close for ['127.0.0.1', 37398]
+HTTP response complete for ['127.0.0.1', 37398]
+[mHTTP GET /manage/get_semesters_from_stream/175157_1731147160 200 [0.11, 127.0.0.1:37398][0m
+/home/manav1011/Documents/SMARTROLL_SSIP_2023/SMARTROLL/SMARTROLL/settings.py changed, reloading.
+Watching for file changes with StatReloader
+HTTP/2 support enabled
+Configuring endpoint tcp:port=8000:interface=0.0.0.0
+Listening on TCP address 0.0.0.0:8000
+HTTP b'GET' request for ['127.0.0.1', 45990]
+HTTP 200 response started for ['127.0.0.1', 45990]
+HTTP close for ['127.0.0.1', 45990]
+HTTP response complete for ['127.0.0.1', 45990]
+[mHTTP GET / 200 [0.02, 127.0.0.1:45990][0m
+HTTP b'GET' request for ['127.0.0.1', 45990]
+HTTP b'GET' request for ['127.0.0.1', 45998]
+HTTP 304 response started for ['127.0.0.1', 45998]
+HTTP close for ['127.0.0.1', 45998]
+HTTP response complete for ['127.0.0.1', 45998]
+[36mHTTP GET /static/assets/index-DmOBOeol.css 304 [0.01, 127.0.0.1:45998][0m
+HTTP 304 response started for ['127.0.0.1', 45990]
+HTTP close for ['127.0.0.1', 45990]
+HTTP response complete for ['127.0.0.1', 45990]
+[36mHTTP GET /static/assets/index-CVhbOCmt.js 304 [0.02, 127.0.0.1:45990][0m
+HTTP b'GET' request for ['127.0.0.1', 45990]
+HTTP 304 response started for ['127.0.0.1', 45990]
+HTTP close for ['127.0.0.1', 45990]
+HTTP response complete for ['127.0.0.1', 45990]
+[36mHTTP GET /static/assets/smartroll-DOVQR7z6.png 304 [0.01, 127.0.0.1:45990][0m
+HTTP b'GET' request for ['127.0.0.1', 45990]
+HTTP 200 response started for ['127.0.0.1', 45990]
+HTTP close for ['127.0.0.1', 45990]
+HTTP response complete for ['127.0.0.1', 45990]
+[mHTTP GET / 200 [0.01, 127.0.0.1:45990][0m
+HTTP b'GET' request for ['127.0.0.1', 45990]
+HTTP 200 response started for ['127.0.0.1', 45990]
+HTTP close for ['127.0.0.1', 45990]
+HTTP response complete for ['127.0.0.1', 45990]
+[mHTTP GET / 200 [0.01, 127.0.0.1:45990][0m
+HTTP b'GET' request for ['127.0.0.1', 45990]
+HTTP 200 response started for ['127.0.0.1', 45990]
+HTTP close for ['127.0.0.1', 45990]
+HTTP response complete for ['127.0.0.1', 45990]
+[mHTTP GET / 200 [0.01, 127.0.0.1:45990][0m
+HTTP b'GET' request for ['127.0.0.1', 45990]
+HTTP b'GET' request for ['127.0.0.1', 45998]
+HTTP 304 response started for ['127.0.0.1', 45998]
+HTTP close for ['127.0.0.1', 45998]
+HTTP response complete for ['127.0.0.1', 45998]
+[36mHTTP GET /static/assets/index-DmOBOeol.css 304 [0.01, 127.0.0.1:45998][0m
+HTTP 304 response started for ['127.0.0.1', 45990]
+HTTP close for ['127.0.0.1', 45990]
+HTTP response complete for ['127.0.0.1', 45990]
+[36mHTTP GET /static/assets/index-CVhbOCmt.js 304 [0.01, 127.0.0.1:45990][0m
+HTTP b'GET' request for ['127.0.0.1', 45990]
+HTTP 304 response started for ['127.0.0.1', 45990]
+HTTP close for ['127.0.0.1', 45990]
+HTTP response complete for ['127.0.0.1', 45990]
+[36mHTTP GET /static/assets/smartroll-DOVQR7z6.png 304 [0.01, 127.0.0.1:45990][0m
+/home/manav1011/Documents/SMARTROLL_SSIP_2023/SMARTROLL/SMARTROLL/settings.py changed, reloading.
+Watching for file changes with StatReloader
+HTTP/2 support enabled
+Configuring endpoint tcp:port=8000:interface=0.0.0.0
+Listening on TCP address 0.0.0.0:8000
+HTTP b'GET' request for ['127.0.0.1', 55842]
+HTTP 200 response started for ['127.0.0.1', 55842]
+HTTP close for ['127.0.0.1', 55842]
+HTTP response complete for ['127.0.0.1', 55842]
+[mHTTP GET / 200 [0.02, 127.0.0.1:55842][0m
+HTTP b'GET' request for ['127.0.0.1', 55842]
+HTTP b'GET' request for ['127.0.0.1', 55854]
+HTTP 304 response started for ['127.0.0.1', 55854]
+HTTP close for ['127.0.0.1', 55854]
+HTTP response complete for ['127.0.0.1', 55854]
+[36mHTTP GET /static/assets/index-DmOBOeol.css 304 [0.01, 127.0.0.1:55854][0m
+HTTP 304 response started for ['127.0.0.1', 55842]
+HTTP close for ['127.0.0.1', 55842]
+HTTP response complete for ['127.0.0.1', 55842]
+[36mHTTP GET /static/assets/index-CVhbOCmt.js 304 [0.01, 127.0.0.1:55842][0m
+HTTP b'GET' request for ['127.0.0.1', 55842]
+HTTP 304 response started for ['127.0.0.1', 55842]
+HTTP close for ['127.0.0.1', 55842]
+HTTP response complete for ['127.0.0.1', 55842]
+[36mHTTP GET /static/assets/smartroll-DOVQR7z6.png 304 [0.00, 127.0.0.1:55842][0m
+HTTP b'GET' request for ['127.0.0.1', 55842]
+HTTP 304 response started for ['127.0.0.1', 55842]
+HTTP close for ['127.0.0.1', 55842]
+HTTP response complete for ['127.0.0.1', 55842]
+[36mHTTP GET /static/favicon.ico 304 [0.00, 127.0.0.1:55842][0m
+/home/manav1011/Documents/SMARTROLL_SSIP_2023/SMARTROLL/SMARTROLL/settings.py changed, reloading.
+Watching for file changes with StatReloader
+HTTP/2 support enabled
+Configuring endpoint tcp:port=8000:interface=0.0.0.0
+Listening on TCP address 0.0.0.0:8000
+/home/manav1011/Documents/SMARTROLL_SSIP_2023/SMARTROLL/SMARTROLL/settings.py changed, reloading.
+Watching for file changes with StatReloader
+HTTP/2 support enabled
+Configuring endpoint tcp:port=8000:interface=0.0.0.0
+Listening on TCP address 0.0.0.0:8000

@@ -58,13 +58,7 @@ class FinalizedSubjectChoicesSerializer(serializers.ModelSerializer):
 
     def __init__(self,instance, subject=None, *args, **kwargs):
         super(FinalizedSubjectChoicesSerializer, self).__init__(*args, **kwargs)
-        self.subject = subject        
-
-    
-    def get_finalized_choises(self,obj):
-        finalized_choises = self.finalized_choises
-        finalized_choises_serialized = PermanentSubjectSerializer(instance = [subject.subject_map for subject in finalized_choises],many=True)
-        return finalized_choises_serialized.data
+        self.subject = subject
     
     def get_profile(self,obj):
         from StakeHolders.serializers import ProfileSerializer,StudentSerializer
@@ -77,14 +71,15 @@ class FinalizedSubjectChoicesSerializer(serializers.ModelSerializer):
 
     def get_finalized_choises(self, obj):
         # Since `finalized_choices` is pre-fetched, no additional query will be triggered here
-        finalized_choises = [subject.subject_map for subject in obj.finalized_choices.all()]
+        finalized_choises = [subject.subject_map for subject in obj.finalized_choices.order_by('orderedfinalizedsubject__ordering')]        
         return PermanentSubjectSerializer(instance=finalized_choises, many=True).data
 
     def get_priority(self, obj):
-        try:            
-            ids = list(obj.finalized_choices.values_list('id', flat=True))
-            return ids.index(self.subject.id) + 1
-        except ValueError:
+        try:                        
+            finalized_choises = [subject.subject_map for subject in obj.finalized_choices.order_by('orderedfinalizedsubject__ordering')]
+            return finalized_choises.index(self.subject.subject_map) + 1
+        except Exception as e:
+            print(e)
             return None
 
 

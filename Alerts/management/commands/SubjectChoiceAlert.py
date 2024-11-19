@@ -14,6 +14,6 @@ class Command(BaseCommand):
         for semester in semesters:
             for subject_choises in semester.subjectchoices_set.filter(choices_locked=False):
                 message_string = f"Friendly Reminder: Today is the deadline to mark your subject choices for the {semester.no} Semester. Please ensure that your selections are submitted by the end of the day. Thank you for your attention to this important step!"
-                Alert.objects.create(profile=subject_choises.profile,message=message_string,type='subject_choice_alert')
+                Alert.objects.create(profile=subject_choises.profile,message=message_string,type='subject_choice_deadline_alert')
 
         self.stdout.write('Subject choice alerts sent')

@@ -22,6 +22,7 @@ from django.db import transaction
 from django.db.models import Count, Q
 import string
 from django.core.cache import cache
+from Alerts.models import Alert
 
 # Create your views here.
 
@@ -1397,9 +1398,11 @@ def add_subjects_to_semester(request):
             for subject_obj in sem_subjects_set:
                 if subject_obj.subject_map not in permanent_subjects:                       
                     # for teacher
-                    for teacher_profile in teacher_profiles:
+                    for teacher_profile in teacher_profiles:                        
                         subject_choice_obj = SubjectChoices.objects.get(profile=teacher_profile,semester=semester_obj)                        
                         subject_choice_obj.choices_locked=False
+                        # Here we'll alert the teachers
+                        Alert.objects.create(profile=teacher_profile,type='subject_deletion_alert',message=f"Dear Teacher, The subject {subject_obj.subject_map.subject_name} has been removed from the list. If you'd like to update your choices or select additional subjects, please visit the portal here: https://smartroll.mnv-dev.live/teacher-dashboard/subject-choice If you do not wish to make any changes, you may safely ignore this alert.Thank you for your attention!")
                         subject_choice_obj.save()
                     complementry_obj = subject_obj.complementrysubjects_set.first()
                     if complementry_obj:
@@ -1410,6 +1413,8 @@ def add_subjects_to_semester(request):
                                 complementry_sub_to_removed_sub = complementry_obj_subjects.first()
                                 complementry_sub_to_removed_sub.is_elective=False
                                 complementry_sub_to_removed_sub.save()
+                                # here we'll alert the students
+                                Alert.objects.create(profile=student_profile,type='subject_deletion_alert',message=f"The subject {subject_obj.subject_map.subject_name} from {complementry_obj.category} has been removed. As a result, the subject {complementry_sub_to_removed_sub.subject_map.subject_name} has been allocated to all students of Semester {semester_obj.no}")
                                 subject_choice_obj.available_choices.remove(complementry_sub_to_removed_sub)
                                 subject_choice_obj.finalized_choices.add(complementry_sub_to_removed_sub,through_defaults={'ordering': 1})
                             subject_obj.complementrysubjects_set.first().delete()
@@ -1419,6 +1424,8 @@ def add_subjects_to_semester(request):
                                 subject_choice_obj.available_choices.add(*complementry_obj_subjects)
                                 subject_choice_obj.finalized_choices.remove(*complementry_obj_subjects)
                                 subject_choice_obj.choices_locked=False
+                                # here we'll alert the students
+                                Alert.objects.create(profile=student_profile,type='subject_deletion_alert',message=f"The subject {subject_obj.subject_map.subject_name} from {complementry_obj.category} has been removed. As a result, the new subject choices are { ", ".join([complementry_sub.subject_map.subject_name for complementry_sub in complementry_obj_subjects])}")
                                 subject_choice_obj.save()
                     subject_obj.delete()
             semester_obj.subjects_locked=True
@@ -1458,6 +1465,8 @@ def add_subjects_to_semester(request):
             # For teachers
             teacher_subject_choices_objects = []
             for teacher_profile in teacher_profiles:
+                # here we'll alert the teachers
+                Alert.objects.create(profile=teacher_profile,type='subject_choice_alert',message=f'Hello {teacher_profile.name}, the portal is now open for you to mark your subject choices for Semester {semester_obj.no}. Please submit your preferences at https://smartroll.mnv-dev.live by the deadline to ensure proper allocation. Thank you!')
                 teacher_subject_choices_object = SubjectChoices.objects.filter(profile=teacher_profile,semester=semester_obj).first()
                 if teacher_subject_choices_object:
                     teacher_subject_choices_object.available_choices.add(*created_subjects)
@@ -1470,6 +1479,8 @@ def add_subjects_to_semester(request):
             # For students
             students_subject_choices_objects = []
             for student_profile in student_profiles:
+                # here we'll alert the students
+                Alert.objects.create(profile=student_profile,type='subject_choice_alert',message=f'Hello {student_profile.name}, the portal is now open for you to mark your subject choices for Semester {semester_obj.no}. Please submit your preferences at https://smartroll.mnv-dev.live by the deadline to ensure proper allocation. Thank you!')
                 student_subject_choices_object = SubjectChoices.objects.filter(profile=student_profile,semester=semester_obj).first()
                 if student_subject_choices_object:
                     electives = list(filter(lambda subject:subject.is_elective,created_subjects))
@@ -1642,11 +1653,11 @@ def mark_subject_choices(request):
         if subject_choices_obj.choices_locked: raise Exception("Your choice has been already locked")
         finalized_permanent_subjects = sorted(PermanentSubject.objects.filter(slug__in=body['subject_choices']).prefetch_related('subject_set'),key=lambda subject: body['subject_choices'].index(subject.slug))
         if len(finalized_permanent_subjects) == 0: raise Exception("No choices given")
-        finalized_subjects = [permanent_subject.subject_set.first() for permanent_subject in finalized_permanent_subjects]
+        finalized_subjects = [permanent_subject.subject_set.first() for permanent_subject in finalized_permanent_subjects]        
         if request.user.role=='student':            
             complementry_subjects = ComplementrySubjects.objects.filter(
                     semester=semester_obj,
-                    id__in=subject_choices_obj.available_choices.values_list('id', flat=True)
+                    subjects__id__in=subject_choices_obj.available_choices.values_list('id', flat=True)
             )            
             # Check atleast one of all complementry choices has been marked by the user
             for complementry_subjects_obj in complementry_subjects:
@@ -1686,7 +1697,7 @@ def mark_subject_choices(request):
         data['data']['finalized_choices'] = subject_choices_object_serialized.data
         data['data']['choices_locked'] = subject_choices_obj.choices_locked
         data['data']['deadline_timestamp']=semester_obj.subject_choice_deadline
-        data['data']['slug']=subject_choices_obj.slug
+        data['data']['slug']=subject_choices_obj.slug        
         return JsonResponse(data,status=200)
     except Exception as e:
         print(e)
@@ -1707,7 +1718,7 @@ def get_teachers_for_the_subject(request,subject_slug):
             'finalized_choices', 'profile'
         )
         if not subject_choices_objs.exists(): raise Exception("No Choices for this subject")        
-        subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)
+        subject_choices_objs_serialized = FinalizedSubjectChoicesSerializer(instance=subject_choices_objs,subject=subject_obj,many=True)                
         data['data'] = subject_choices_objs_serialized.data
         return JsonResponse(data,status=200)
     except Exception as e:
@@ -1938,12 +1949,14 @@ def unlock_subject_choice_for_student(request):
         if complementry_obj_subjects.count() == 1:
             complementry_sub_to_add = complementry_obj_subjects.first()
             subject_choice_obj.finalized_choices.add(complementry_sub_to_add,through_defaults={'ordering': 1})
+            Alert.objects.create(profile=subject_choice_obj.profile,type='subject_choice_reset_alert',message=f"Hello {subject_choice_obj.profile.name}, Your subject choice for {complementry_obj.category} has been reset. As a result, the subject {complementry_sub_to_add.subject_map.subject_name} has been allocated you!!")
             subject_choices_object_serialized = PermanentSubjectSerializer(instance = complementry_sub_to_add.subject_map)
             data['data']['subject']=subject_choices_object_serialized.data
         else:   
             subject_choice_obj.available_choices.add(*complementry_obj_subjects)
             subject_choice_obj.choices_locked = False
             subject_choice_obj.save()
+            Alert.objects.create(profile=subject_choice_obj.profile,type='subject_choice_reset_alert',message=f"Hello {subject_choice_obj.profile.name}, Your subject choice for {complementry_obj.category} has been reset. As a result, the new subject choices are { ", ".join([complementry_sub.subject_map.subject_name for complementry_sub in complementry_obj_subjects])}")
             data['data']['subject']= None
         subject_choice_obj.finalized_choices.remove(subject_obj)
         data['data']['choice_locked'] = subject_choice_obj.choices_locked
