@@ -1,0 +1,129 @@
+{
+  "faculties": [
+    {
+      "short_name": "CST",
+      "name": "Dr. Chirag S. Thaker",
+      "email": "chiragthaker@ldce.ac.in"
+    },
+    {
+      "short_name": "TJR",
+      "name": "Mr. Tushar Raval",
+      "email": "tushar.raval@gmail.com"
+    },
+    {
+      "short_name": "RJ",
+      "name": "Miss Rajyalakshmi Jaiswal",
+      "email": "rajlakshmijaiswal@yahoo.in"
+    },
+    {
+      "short_name": "HAJ",
+      "name": "Miss Hetal Joshiyara",
+      "email": "hetaljoshiyara@ldce.ac.in"
+    },
+    {
+      "short_name": "HBP",
+      "name": "Miss Hetalben Gevariya",
+      "email": "hetalnakrani@gmail.com"
+    },
+    {
+      "short_name": "AVS",
+      "name": "Mrs. Amita Shah",
+      "email": "ami1382@gmail.com"
+    },
+    {
+      "short_name": "DHB",
+      "name": "Dr. Dhara Buch",
+      "email": "dharabuch.ce@ldce.ac.in"
+    },
+    {
+      "short_name": "HKG",
+      "name": "Miss HETALBEN GEVARIYA",
+      "email": "hetalnakrani@gmail.com"
+    },
+    {
+      "short_name": "BAO",
+      "name": "Mr. BHAVESH OZA",
+      "email": "bhavesh.oza.123@gmail.com"
+    },
+    {
+      "short_name": "KMP",
+      "name": "Mr. Kalpesh Patel",
+      "email": "kalpeshpatel11@yahoo.com"
+    },
+    {
+      "short_name": "SAP",
+      "name": "Mr. Sunil Patel",
+      "email": "sunilpatel.ce@ldce.ac.in"
+    },
+    {
+      "short_name": "VBV",
+      "name": "Mr. Vimalkumar Vaghela",
+      "email": "vimalvaghela@gmail.com"
+    },
+    {
+      "short_name": "RAD",
+      "name": "Miss Reshma Dayma",
+      "email": "ceradayma@gmail.com"
+    },
+    {
+      "short_name": "MKS",
+      "name": "Mr. Maitrik Shah",
+      "email": "maitrikshah.ce@gmail.com"
+    },
+    {
+      "short_name": "ZYN",
+      "name": "Mr. ZishanHaider Noorani",
+      "email": "er_zishan@yahoo.com"
+    },
+    {
+      "short_name": "PGP",
+      "name": "Mr. Parth Dave",
+      "email": "parthdave.ce@ldce.ac.in"
+    },
+    {
+      "short_name": "SRM",
+      "name": "Miss Shraddha Modi",
+      "email": "shraddhamodi@ldce.ac.in"
+    },
+    {
+      "short_name": "PVP",
+      "name": "Miss Prachi Pancholi",
+      "email": "prachipancholi@ldce.ac.in"
+    },
+    {
+      "short_name": "NHD",
+      "name": "Mr. Nikunj Kumar Domadiya",
+      "email": "nikunjdomadiya.ce@ldce.ac.in"
+    },
+    {
+      "short_name": "HDR",
+      "name": "Mr. Hitesh Rajput",
+      "email": "hitesh.rajput@ldce.ac.in"
+    },
+    {
+      "short_name": "BHT",
+      "name": "Mr. Bhoomi Trivedi",
+      "email": "bhoomitrivedi@ldce.ac.in"
+    },
+    {
+      "short_name": "PRD",
+      "name": "Mr. Parth Raval",
+      "email": "parth.raval@ldce.ac.in"
+    },
+    {
+      "short_name": "PDS",
+      "name": "Miss Pinal Salot",
+      "email": "pinal.salot@ldce.ac.in"
+    },
+    {
+      "short_name": "ABG",
+      "name": "Miss Archana Gondalia",
+      "email": "archana.gondalia@ldce.ac.in"
+    },
+    {
+      "short_name": "PJP",
+      "name": "Miss Payal Prajapati",
+      "email": "payal.prajapati@ldce.ac.in"
+    }
+  ]
+}
