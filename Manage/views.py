@@ -1393,7 +1393,7 @@ def add_subjects_to_semester(request):
         # We have to check if subject choices for this semester was already marked sometime before
         # All subjects from semester
         sem_subjects_set = semester_obj.subject_set.all()
-        if sem_subjects_set.exists():        
+        if sem_subjects_set.exists():      
             # check if any subject is removed from the previous subject set
             for subject_obj in sem_subjects_set:
                 if subject_obj.subject_map not in permanent_subjects:                       

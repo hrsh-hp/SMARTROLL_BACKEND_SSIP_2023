@@ -71,7 +71,7 @@ class CustomTokenObtainPairSerializer(TokenObtainSerializer):
                 data = {'error':True,'code':112500,'message':'Please set new password','profile_slug':self.user.slug}
 
         if self.user.role == 'student':                  
-            student_obj = Student.objects.get(profile=self.user)
+            student_obj = Student.objects.get(profile=self.user)            
             if student_obj.is_active:
                 student_serialized = StudentSerializer(student_obj,many=False)                
                 token = self.get_token(self.user)
