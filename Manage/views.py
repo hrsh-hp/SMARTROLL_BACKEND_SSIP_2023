@@ -1379,7 +1379,7 @@ def add_subjects_to_semester(request):
         data = {'data':None,'error':False,'message':None}
         if request.user.role != 'admin':raise Exception("You're not allowed to perform this action.")
         body = request.data
-        if 'subject_slugs' not in body or 'semester_slug' not in body or 'deadline_timestamp' not in body:raise Exception("Parameters missing")
+        if 'subject_slugs' not in body or 'non_tech_subjects' not in body or 'semester_slug' not in body or 'deadline_timestamp' not in body:raise Exception("Parameters missing")
         deadline_timestamp_obj = datetime.datetime.fromtimestamp(int(body['deadline_timestamp'])).date()
         if deadline_timestamp_obj <=  datetime.date.today():raise Exception("The deadline date should be in the future.")
         semester_obj = Semester.objects.get(slug=body['semester_slug'])
@@ -1448,18 +1448,24 @@ def add_subjects_to_semester(request):
                         complementry_obj.subjects.add(current_subject_obj)
                         for complimentry_subj in complementries:
                             subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=complimentry_subj,is_elective=True)
+                            subject_obj.is_technical = subject_obj.subject_map.slug not in body['non_tech_subjects'] 
+                            subject_obj.save()
                             created_subjects.append(subject_obj)
                             complementry_obj.subjects.add(subject_obj)
                             permanent_subjects = permanent_subjects.exclude(id=complimentry_subj.id)
                     else:
                         # Elective with no complementry                    
                         subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)                    
+                        subject_obj.is_technical = subject_obj.subject_map.slug not in body['non_tech_subjects'] 
+                        subject_obj.save()
                         created_subjects.append(subject_obj)
                         permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
 
                 else:                
                     permanent_subjects = permanent_subjects.exclude(id=permanent_subject.id)
                     subject_obj,subject_created = Subject.objects.get_or_create(semester=semester_obj,subject_map=permanent_subject)
+                    subject_obj.is_technical = subject_obj.subject_map.slug not in body['non_tech_subjects'] 
+                    subject_obj.save()
                     created_subjects.append(subject_obj)                    
             # Now to make the SubjectChoices objects
             # For teachers

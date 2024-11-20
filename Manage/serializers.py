@@ -44,9 +44,13 @@ class SemesterSerializer(serializers.ModelSerializer):
 
 
 class PermanentSubjectSerializer(serializers.ModelSerializer):
+    is_technical = serializers.SerializerMethodField()
     class Meta:
         model = PermanentSubject
-        fields = ['stream_code','sem_year','subject_code','eff_from','subject_name','short_name','category','L','P','T','credit','E','M','I','V','total_marks','is_elective','is_practical','is_theory','is_semipractical','is_functional','practical_exam_duration','theory_exam_duration','remark','acedemic_year','slug']
+        fields = ['stream_code','sem_year','subject_code','eff_from','subject_name','short_name','category','L','P','T','credit','E','M','I','V','total_marks','is_elective','is_practical','is_theory','is_semipractical','is_functional','practical_exam_duration','theory_exam_duration','remark','acedemic_year','is_technical','slug']
+
+    def get_is_technical(self,obj):
+        return Subject.objects.get(subject_map=obj).is_technical
     
 class FinalizedSubjectChoicesSerializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField()

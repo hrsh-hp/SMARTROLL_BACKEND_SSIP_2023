@@ -165,6 +165,7 @@ class Subject(models.Model):
     included_batches = models.ManyToManyField(Batch,blank=True)    
     subject_map = models.ForeignKey(PermanentSubject,on_delete=models.CASCADE,blank=True,null=True)
     is_elective = models.BooleanField(default=False)
+    is_technical = models.BooleanField(default=True)
     slug = models.SlugField(unique=True,null=True,blank=True)
     
     def save(self, *args, **kwargs):
