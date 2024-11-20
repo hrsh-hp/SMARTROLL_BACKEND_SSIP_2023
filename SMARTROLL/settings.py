@@ -39,11 +39,11 @@ VAPID_CLAIMS = {
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['smartroll.mnv-dev.live']
+ALLOWED_HOSTS = ['*']
 
 CSRF_COOKIE_SECURE = False
 CSRF_USE_SESSIONS = False
-CSRF_TRUSTED_ORIGINS = ["https://smartroll.mnv-dev.live"]
+CSRF_TRUSTED_ORIGINS = [""]
 
 
 # Application definition
